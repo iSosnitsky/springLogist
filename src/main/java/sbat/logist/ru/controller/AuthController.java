@@ -8,9 +8,6 @@ import sbat.logist.ru.model.User;
 public class AuthController {
     @RequestMapping("/")
     public String index() {
-        User user = new User();
-        user.getClientID();
-
         return "index";
     }
 }

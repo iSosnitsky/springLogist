@@ -32,7 +32,7 @@ public class Client {
     @Column(name = "CORACCOUNT")
     private String corAccount;
 
-    @Column(name = "curAccount")
+    @Column(name = "CURACCOUNT")
     private String curAccount;
 
     private String bik;
