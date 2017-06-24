@@ -3,17 +3,17 @@ package sbat.logist.ru.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
-@Table(name = "clients")
 @NoArgsConstructor
 @Entity
+@Table(name = "clients", indexes = {
+        @Index(name = "external_id_datasource_index", columnList = "CLIENTIDEXTERNAL,DATASOURCEID", unique = true),
+        @Index(name = "datasource_index", columnList = "DATASOURCEID")
+})
 public class Client {
 
     @Id
@@ -21,16 +21,20 @@ public class Client {
     @Column(name = "CLIENTID")
     private Long clientID;
 
+    @NotNull
     @Column(name = "CLIENTIDEXTERNAL")
     private String clientIDExternal;
 
-    @Column(name = "DATASOURCEID")
-    private String dataSourceID;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "DATASOURCEID")
+    private DataSource dataSource;
 
     private String inn;
-    @Column(name = "CLIENTNAME")
 
+    @Column(name = "CLIENTNAME")
     private String clientName;
+
     private String kpp;
 
     @Column(name = "CORACCOUNT")
@@ -55,5 +59,4 @@ public class Client {
 
     @Column(name = "ENDCONTRACTDATE")
     private Date endContractDate;
-
 }

@@ -1,5 +1,7 @@
 package sbat.logist.ru.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,10 +13,13 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users", indexes = {
         @Index(name = "client_id_index", columnList = "CLIENTID"),
         @Index(name = "data_source_index", columnList = "DATASOURCEID"),
@@ -29,20 +34,29 @@ public class User {
     @Column(name = "USERID")
     private Long userID;
 
+
+    @NotNull
     @Column(name = "USERIDEXTERNAL")
     private String userIDExternal;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "DATASOURCEID")
     private DataSource dataSource;
 
+    @NotNull
     @Column(name = "LOGIN")
     private String login;
+
+    @NotNull
     @Column(name = "SALT")
     private String salt;
+
+    @NotNull
     @Column(name = "PASSANDSALT")
     private String passAndSalt;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "USERROLEID")
     private UserRole userRole;

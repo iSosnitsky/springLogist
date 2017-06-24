@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/transmaster_transport_db?useSSL=false
+    password: MyNewPass
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    rest:
+      base-path: /api
+  thymeleaf:
+    cache: false
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
