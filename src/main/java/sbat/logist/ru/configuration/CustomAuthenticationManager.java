@@ -10,8 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.DigestUtils;
-import sbat.logist.ru.model.User;
-import sbat.logist.ru.repositories.UserRepository;
+import sbat.logist.ru.constant.UserRole;
+import sbat.logist.ru.jpa.User;
+import sbat.logist.ru.jpa.UserRepository;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -33,13 +34,12 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         final String encodedPasswordWithOldSalt = DigestUtils.md5DigestAsHex((encodedPassword + user.getSalt()).getBytes());
 
         Optional.of(user)
-                .filter(u -> !"TEMP_REMOVED".equals(u.getUserRole().getUserRoleId()))
+                .filter(u -> u.getUserRole().getUserRoleId() != UserRole.TEMP_REMOVED)
                 .orElseThrow(() -> new DisabledException("Account is disabled"));
 
         if (user.getPassAndSalt().equals(encodedPasswordWithOldSalt)) {
-            return new UsernamePasswordAuthenticationToken(user.getLogin(), authentication.getCredentials(), Collections.singletonList(new SimpleGrantedAuthority(user.getUserRole().getUserRoleId())));
-        }
-        else {
+            return new UsernamePasswordAuthenticationToken(user.getLogin(), authentication.getCredentials(), Collections.singletonList(new SimpleGrantedAuthority(user.getUserRole().getUserRoleId().name())));
+        } else {
             throw new BadCredentialsException("Invalid username or password");
         }
     }

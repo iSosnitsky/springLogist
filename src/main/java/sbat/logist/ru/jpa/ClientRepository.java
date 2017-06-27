@@ -1,7 +1,6 @@
-package sbat.logist.ru.repositories;
+package sbat.logist.ru.jpa;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
-import sbat.logist.ru.model.Client;
 
 public interface ClientRepository extends PagingAndSortingRepository<Client, Long> {
 }

@@ -1,12 +1,9 @@
-package sbat.logist.ru.model;
+package sbat.logist.ru.jpa;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -15,7 +12,8 @@ import javax.persistence.Table;
 public class UserRole {
     @Id
     @Column(name = "USERROLEID")
-    private String userRoleId;
+    @Enumerated(EnumType.STRING)
+    private sbat.logist.ru.constant.UserRole userRoleId;
 
     @Column(name = "USERROLERUSNAME")
     private String userRoleRusname;

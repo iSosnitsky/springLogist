@@ -12,6 +12,11 @@ public class AuthController {
 		return "redirect:/index";
 	}
 
+	@RequestMapping("/react")
+	public String react() {
+    	return "redirect:/react/";
+    }
+
 	@RequestMapping("/index")
 	public String index() {
 		return "index";

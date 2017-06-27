@@ -1,7 +1,6 @@
-package sbat.logist.ru.repositories;
+package sbat.logist.ru.jpa;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
-import sbat.logist.ru.model.User;
 
 import java.util.List;
 import java.util.Optional;

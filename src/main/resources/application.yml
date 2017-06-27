@@ -14,3 +14,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+parser:
+  json-data-dir: /home/user/ed/sbatlogistru-java/src/main/resources/templates/angular
+  logs-dir: /home/pigin_s/exchange/logs
+  backup-dir: /home/pigin_s/exchange/backup
+  response-dir: /home/pigin_s/exchange/parser-response

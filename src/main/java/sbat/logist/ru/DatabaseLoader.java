@@ -2,21 +2,16 @@ package sbat.logist.ru;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.crypto.password.AbstractPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
-import sbat.logist.ru.model.User;
-import sbat.logist.ru.repositories.DataSourceRepository;
-import sbat.logist.ru.repositories.UserRepository;
-import sbat.logist.ru.repositories.UserRoleRepository;
+import sbat.logist.ru.configuration.property.ParserProperties;
+import sbat.logist.ru.jpa.User;
+import sbat.logist.ru.jpa.DataSourceRepository;
+import sbat.logist.ru.jpa.UserRepository;
+import sbat.logist.ru.jpa.UserRoleRepository;
 
-import javax.xml.bind.DatatypeConverter;
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Component
@@ -25,16 +20,19 @@ public class DatabaseLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final DataSourceRepository dataSourceRepository;
+    private final ParserProperties parserProperties;
 
     @Autowired
     public DatabaseLoader(
             UserRepository userRepository,
             UserRoleRepository userRoleRepository,
-            DataSourceRepository dataSourceRepository
+            DataSourceRepository dataSourceRepository,
+            ParserProperties parserProperties
     ) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.dataSourceRepository = dataSourceRepository;
+        this.parserProperties = parserProperties;
     }
 
     @Override

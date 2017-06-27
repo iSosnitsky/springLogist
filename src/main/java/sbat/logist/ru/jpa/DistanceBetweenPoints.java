@@ -1,4 +1,4 @@
-package sbat.logist.ru.model;
+package sbat.logist.ru.jpa;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
