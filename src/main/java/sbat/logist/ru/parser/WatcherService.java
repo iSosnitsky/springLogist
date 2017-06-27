@@ -88,14 +88,14 @@ public class WatcherService {
             }
 
         } // end infinite for loop
-        closeWatchService();
+//        closeWatchService();
     }
 
-    public void closeWatchService() {
-        try {
-            if (watchService != null)
-                watchService.close();
-        } catch (IOException e) {/*NOPE*/}
-
-    }
+//    public void closeWatchService() {
+//        try {
+//            if (watchService != null)
+//                watchService.close();
+//        } catch (IOException e) {/*NOPE*/}
+//
+//    }
 }
