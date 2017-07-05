@@ -11,8 +11,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.DigestUtils;
 import sbat.logist.ru.constant.UserRole;
-import sbat.logist.ru.jpa.User;
-import sbat.logist.ru.jpa.UserRepository;
+import sbat.logist.ru.transport.User;
+import sbat.logist.ru.transport.UserRepository;
 
 import java.util.Collections;
 import java.util.Optional;

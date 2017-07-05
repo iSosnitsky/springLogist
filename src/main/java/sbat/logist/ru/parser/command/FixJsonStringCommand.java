@@ -10,25 +10,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component("json")
-public class StringToJsonCmd implements Command<String, Map<String, Object>> {
+@Component("fixJson")
+public class FixJsonStringCommand implements Command<String, String> {
     private static final Logger logger = LoggerFactory.getLogger("main");
 
-    private final JsonParser parser = new BasicJsonParser();
-
-    public Map<String, Object> execute(String fileAsString) {
+    public String execute(String fileAsString) {
         return getJsonObjectFromString(fileAsString);
     }
 
-    protected Map<String, Object> getJsonObjectFromString(String jsonFileAsString) {
+    protected String getJsonObjectFromString(String jsonFileAsString) {
         // идти по файлу используя regex и исправлять все ошибки
         final String jsonFileAsStringWithoutBom = jsonFileAsString.replaceAll("\uFEFF", "");
-        final String fixedString = fixString(jsonFileAsStringWithoutBom);
-        try {
-            return parser.parseMap(fixedString);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("cant parse json");
-        }
+        return fixString(jsonFileAsStringWithoutBom);
     }
 
     protected String fixString(String jsonFileAsString) {
@@ -41,7 +34,7 @@ public class StringToJsonCmd implements Command<String, Map<String, Object>> {
             if (!forReplace.equals("\"\"") && !forReplace.matches("\\d+")) {
                 String replacement = "\"\"";
                 matcher.appendReplacement(stringBuffer, "$1" + replacement + "$3");
-                logger.warn("num_boxes = [{}] is replaced with [{}]", forReplace, replacement);
+                logger.warn("numBoxes = [{}] is replaced with [{}]", forReplace, replacement);
             }
         }
         matcher.appendTail(stringBuffer);

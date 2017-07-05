@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './src/main/js/app.js',
+    entry: './src/main/js/login.js',
     devtool: 'sourcemaps',
     cache: true,
     debug: true,

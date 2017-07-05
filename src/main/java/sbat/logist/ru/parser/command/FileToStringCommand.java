@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipInputStream;
 
@@ -25,7 +28,7 @@ public class FileToStringCommand implements Command<Path, String> {
         try {
             return getStringFromFile(filePath);
         } catch (IOException e) {
-            throw new IllegalStateException("io exception occurred when parsing file to string");
+            throw new IllegalStateException("io exception occurred when parsing file to string", e);
         }
     }
 
@@ -33,7 +36,6 @@ public class FileToStringCommand implements Command<Path, String> {
      *
      * @param filePath
      * @return null if file was not imported
-     * @throws ValidatorException
      * @throws IOException
      */
     private String getStringFromFile(Path filePath) throws IOException {
@@ -50,7 +52,6 @@ public class FileToStringCommand implements Command<Path, String> {
     }
 
     /**
-     *
      * @return zip file with data as decompressed string
      */
     private String readZipFileToUtf8String(File file) throws IOException {
