@@ -8,7 +8,7 @@ import lombok.Data;
 public class Status {
     private String requestId;
     @JsonProperty("num_boxes")
-    private Object numBoxes;
+    private Integer numBoxes;
     private String status;
     private String timeOutStatus;
 

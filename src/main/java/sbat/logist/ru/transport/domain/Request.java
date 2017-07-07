@@ -1,11 +1,11 @@
-package sbat.logist.ru.transport;
+package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import sbat.logist.ru.constant.DataSource;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,9 +23,8 @@ public class Request {
     @JsonProperty("requestId")
     private String externalId;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "DATASOURCEID")
+    @Column(name = "DATASOURCEID", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DataSource dataSource;
 
     @Column(name = "REQUESTNUMBER")

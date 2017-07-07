@@ -1,7 +1,11 @@
-package sbat.logist.ru.transport;
+package sbat.logist.ru.transport.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.constant.PointType;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -9,6 +13,8 @@ import java.sql.Time;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "points")
 public class Point {
     @Id
@@ -19,8 +25,8 @@ public class Point {
     @Column(name = "POINTIDEXTERNAL")
     private String pointIdExternal;
 
-    @ManyToOne
-    @JoinColumn(name = "DATASOURCEID")
+    @Column(name = "DATASOURCEID", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DataSource dataSource;
 
     @Column(name = "POINTNAME")
@@ -55,7 +61,8 @@ public class Point {
     @Column(name = "RESPONSIBLEPERSONID")
     private String responsiblePersonId;
 
-    @Column(name = "POINTTYPEID")
-    private String pointTypeId;
+    @Column(name = "POINTTYPEID", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PointType pointTypeId;
 
 }

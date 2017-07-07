@@ -4,7 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import sbat.logist.ru.parser.exchanger.AddressUpdater;
 import sbat.logist.ru.parser.exchanger.ExchangeUpdater;
+import sbat.logist.ru.parser.exchanger.PointUpdater;
 import sbat.logist.ru.parser.json.Data1c;
 import sbat.logist.ru.parser.json.DataFrom1C;
 
@@ -12,12 +16,21 @@ import sbat.logist.ru.parser.json.DataFrom1C;
 public class DatabaseUpdaterService {
     private static final Logger logger = LoggerFactory.getLogger("main");
     private final ExchangeUpdater exchangeUpdater;
+    private final PointUpdater pointUpdater;
+    private final AddressUpdater addressUpdater;
 
     @Autowired
-    public DatabaseUpdaterService(ExchangeUpdater exchangeUpdater) {
+    public DatabaseUpdaterService(
+            ExchangeUpdater exchangeUpdater,
+            PointUpdater pointUpdater,
+            AddressUpdater addressUpdater
+    ) {
         this.exchangeUpdater = exchangeUpdater;
+        this.pointUpdater = pointUpdater;
+        this.addressUpdater = addressUpdater;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void update(Data1c data1c) {
         final DataFrom1C dataFrom1C = data1c.getDataFrom1C();
         String server = dataFrom1C.getServer();
@@ -28,14 +41,8 @@ public class DatabaseUpdaterService {
 
         exchangeUpdater.excecute(dataFrom1C);
         pointUpdater.execute(dataFrom1C.getPackageData().getUpdatePoints());
+        addressUpdater.execute(dataFrom1C.getPackageData().getUpdateAddress());
 
-//        transactionExecutor.put(2, new DeletePoints(packageData.getDeletePoints()));
-//        transactionExecutor.put(3, new UpdatePoints(packageData.getUpdatePoints()));
-//
-//        transactionExecutor.put(4, new DeleteAddresses(packageData.getDeleteAddresses()));
-//        transactionExecutor.put(5, new UpdatePointsFromAddresses(packageData.getUpdateAddresses()));
-//
-//        transactionExecutor.put(6, new DeleteRoutes(packageData.getDeleteDirections()));
 //        transactionExecutor.put(7, new UpdateRoutes(packageData.getUpdateDirections(), packageData.getUpdateRouteLists()));
 //
 //        transactionExecutor.put(8, new DeleteClients(packageData.getDeleteClients()));

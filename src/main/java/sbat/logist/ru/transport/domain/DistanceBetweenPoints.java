@@ -1,4 +1,4 @@
-package sbat.logist.ru.transport;
+package sbat.logist.ru.transport.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

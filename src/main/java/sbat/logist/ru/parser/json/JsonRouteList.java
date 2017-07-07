@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Data
-public class RouteList {
+public class JsonRouteList {
     private String routeListIdExternal;
     private String routeListNumber;
     private Date routeListDate;

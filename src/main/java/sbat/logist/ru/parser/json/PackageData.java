@@ -6,8 +6,8 @@ import java.util.List;
 
 @Data
 public class PackageData {
-    private List<Point> updatePoints;
-    private List<Point> deletePoints;
+    private List<JsonPoint> updatePoints;
+    private List<JsonPoint> deletePoints;
 
     private List<Direction> updateDirections;
     private List<Direction> deleteDirections;
@@ -18,8 +18,8 @@ public class PackageData {
     private List<Client> updateClients;
     private List<Client> deleteClients;
 
-    private List<Address> updateAddress;
-    private List<Address> deleteAddress;
+    private List<JsonAddress> updateAddress;
+    private List<JsonAddress> deleteAddress;
 
     private List<Request> updateRequests;
     private List<Request> deleteRequests;
@@ -27,6 +27,6 @@ public class PackageData {
     private List<Status> updateStatus;
     private List<Status> deleteStatus;
 
-    private List<RouteList> updateRouteLists;
-    private List<RouteList> deleteRouteLists;
+    private List<JsonRouteList> updateRouteLists;
+    private List<JsonRouteList> deleteRouteLists;
 }

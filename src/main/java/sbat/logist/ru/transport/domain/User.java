@@ -1,9 +1,11 @@
-package sbat.logist.ru.transport;
+package sbat.logist.ru.transport.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.constant.UserRole;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,9 +34,8 @@ public class User {
     @Column(name = "USERIDEXTERNAL")
     private String userIDExternal;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "DATASOURCEID")
+    @Column(name = "DATASOURCEID", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DataSource dataSource;
 
     @NotNull
@@ -49,9 +50,8 @@ public class User {
     @Column(name = "PASSANDSALT")
     private String passAndSalt;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "USERROLEID")
+    @Column(name = "USERROLEID", nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @Column(name = "USERNAME")
