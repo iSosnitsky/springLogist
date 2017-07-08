@@ -66,10 +66,6 @@ public class RouteUpdater {
 
     /**
      * emulates on duplicates key
-     * @param externalId
-     * @param name
-     * @param nameSupplier
-     * @return
      */
     private Route getRouteToInsert(String externalId, String name, Supplier<String> nameSupplier) {
         return routeRepository.findByExternalIdAndDataSource(externalId, DATA_SOURCE)
@@ -93,12 +89,12 @@ public class RouteUpdater {
         final Point pointArrival = pointRepository.findByPointIdExternalAndDataSource(pointArrivalIdExternal, DATA_SOURCE)
                 .orElseThrow(() -> {
                     logger.error("arrival point doesn't exist in database. pointIdExternal: {}", pointArrivalIdExternal);
-                    throw new IllegalStateException("database doesn't have point with id " + pointArrivalIdExternal);
+                    return new IllegalStateException("database doesn't have point with id " + pointArrivalIdExternal);
                 });
         Point pointDeparture = pointRepository.findByPointIdExternalAndDataSource(pointArrivalIdExternal, DATA_SOURCE)
                 .orElseThrow(() -> {
                     logger.error("departure point doesn't exist in database. pointIdExternal: {}", pointDepartureIdExternal);
-                    throw new IllegalStateException("database doesn't have point with id " + pointDepartureIdExternal);
+                    return new IllegalStateException("database doesn't have point with id " + pointDepartureIdExternal);
                 });
         return pointDeparture.getPointName() + '-' + pointArrival.getPointName();
     }

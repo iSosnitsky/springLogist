@@ -10,6 +10,7 @@ import sbat.logist.ru.Application;
 import sbat.logist.ru.parser.json.JsonDirection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -25,7 +26,7 @@ public class RouteUpdaterTest {
         List<JsonDirection> list = new ArrayList<JsonDirection>() {{
             add(createJsonDirection("dirIdExt1", "route112"));
         }};
-        routeUpdater.execute(list, null);
+        routeUpdater.execute(list, Collections.emptyList());
     }
 
     private JsonDirection createJsonDirection(String extId, String name) {

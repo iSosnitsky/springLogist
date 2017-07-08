@@ -24,7 +24,7 @@ public class ExchangeRepositoryTest {
     @Test
     public void test() {
         ExchangeId id = new ExchangeId();
-        id.setPackageNumber(1);
+        id.setPackageNumber(4);
         id.setServerName("KEK");
 
         Exchange exchange = new Exchange();

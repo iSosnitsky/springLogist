@@ -9,11 +9,10 @@ import sbat.logist.ru.parser.command.Command;
 import sbat.logist.ru.parser.command.JsonStringToObjectCommand;
 import sbat.logist.ru.parser.command.WriteBadFileResponseCommand;
 import sbat.logist.ru.parser.json.Data1c;
-import sbat.logist.ru.parser.json.DataFrom1C;
-import sun.security.validator.ValidatorException;
 
 import java.nio.file.Path;
-import java.util.Map;
+
+//import sbat.logist.ru.parser.command.Command;
 
 @Service
 public class CommandExecutorService {

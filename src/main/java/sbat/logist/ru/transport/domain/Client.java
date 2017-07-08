@@ -1,5 +1,7 @@
 package sbat.logist.ru.transport.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sbat.logist.ru.constant.DataSource;
@@ -10,11 +12,13 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "clients", indexes = {
         @Index(name = "external_id_datasource_index", columnList = "CLIENTIDEXTERNAL,DATASOURCEID", unique = true),
         @Index(name = "datasource_index", columnList = "DATASOURCEID")
 })
+@Builder
 public class Client {
 
     @Id
@@ -30,6 +34,7 @@ public class Client {
     @Enumerated(EnumType.STRING)
     private DataSource dataSource;
 
+    @Column(name = "INN", nullable = false)
     private String inn;
 
     @Column(name = "CLIENTNAME")
