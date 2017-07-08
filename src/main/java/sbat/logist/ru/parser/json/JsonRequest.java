@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Request {
+public class JsonRequest {
     private String requestId;
     private String requestNumber;
     private Date requestDate;

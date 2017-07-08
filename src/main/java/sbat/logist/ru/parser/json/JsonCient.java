@@ -3,7 +3,7 @@ package sbat.logist.ru.parser.json;
 import lombok.Data;
 
 @Data
-public class Client {
+public class JsonCient {
     private String clientId;
     private String clientName;
     private String clientINN;

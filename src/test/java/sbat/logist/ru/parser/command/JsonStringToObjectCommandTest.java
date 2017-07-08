@@ -1,7 +1,7 @@
 package sbat.logist.ru.parser.command;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.Assert;
+import org.junit.Test;
 import sbat.logist.ru.parser.json.Data1c;
 
 import java.nio.file.Path;

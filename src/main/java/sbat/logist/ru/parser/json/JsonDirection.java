@@ -1,9 +1,11 @@
 package sbat.logist.ru.parser.json;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class Direction {
+@Builder
+public class JsonDirection {
     private String directId;
     private String directName;
 }

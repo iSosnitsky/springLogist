@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class Status {
+public class JsonStatus {
     private String requestId;
     @JsonProperty("num_boxes")
     private Integer numBoxes;

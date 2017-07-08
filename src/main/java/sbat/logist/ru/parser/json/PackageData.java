@@ -9,23 +9,23 @@ public class PackageData {
     private List<JsonPoint> updatePoints;
     private List<JsonPoint> deletePoints;
 
-    private List<Direction> updateDirections;
-    private List<Direction> deleteDirections;
+    private List<JsonDirection> updateDirections;
+    private List<JsonDirection> deleteDirections;
 
-    private List<Trader> updateTrader;
-    private List<Trader> deleteTrader;
+    private List<JsonTrader> updateTrader;
+    private List<JsonTrader> deleteTrader;
 
-    private List<Client> updateClients;
-    private List<Client> deleteClients;
+    private List<JsonCient> updateClients;
+    private List<JsonCient> deleteClients;
 
     private List<JsonAddress> updateAddress;
     private List<JsonAddress> deleteAddress;
 
-    private List<Request> updateRequests;
-    private List<Request> deleteRequests;
+    private List<JsonRequest> updateRequests;
+    private List<JsonRequest> deleteRequests;
 
-    private List<Status> updateStatus;
-    private List<Status> deleteStatus;
+    private List<JsonStatus> updateStatus;
+    private List<JsonStatus> deleteStatus;
 
     private List<JsonRouteList> updateRouteLists;
     private List<JsonRouteList> deleteRouteLists;

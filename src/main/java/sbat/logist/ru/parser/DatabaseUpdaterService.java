@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sbat.logist.ru.parser.exchanger.AddressUpdater;
 import sbat.logist.ru.parser.exchanger.ExchangeUpdater;
 import sbat.logist.ru.parser.exchanger.PointUpdater;
+import sbat.logist.ru.parser.exchanger.RouteUpdater;
 import sbat.logist.ru.parser.json.Data1c;
 import sbat.logist.ru.parser.json.DataFrom1C;
 
@@ -18,16 +19,19 @@ public class DatabaseUpdaterService {
     private final ExchangeUpdater exchangeUpdater;
     private final PointUpdater pointUpdater;
     private final AddressUpdater addressUpdater;
+    private final RouteUpdater routeUpdater;
 
     @Autowired
     public DatabaseUpdaterService(
             ExchangeUpdater exchangeUpdater,
             PointUpdater pointUpdater,
-            AddressUpdater addressUpdater
+            AddressUpdater addressUpdater,
+            RouteUpdater routeUpdater
     ) {
         this.exchangeUpdater = exchangeUpdater;
         this.pointUpdater = pointUpdater;
         this.addressUpdater = addressUpdater;
+        this.routeUpdater = routeUpdater;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -42,11 +46,7 @@ public class DatabaseUpdaterService {
         exchangeUpdater.excecute(dataFrom1C);
         pointUpdater.execute(dataFrom1C.getPackageData().getUpdatePoints());
         addressUpdater.execute(dataFrom1C.getPackageData().getUpdateAddress());
-
-//        transactionExecutor.put(7, new UpdateRoutes(packageData.getUpdateDirections(), packageData.getUpdateRouteLists()));
-//
-//        transactionExecutor.put(8, new DeleteClients(packageData.getDeleteClients()));
-//        transactionExecutor.put(9, new UpdateClients(packageData.getUpdateClients()));
+        routeUpdater.execute(dataFrom1C.getPackageData().getUpdateDirections(), dataFrom1C.getPackageData().getUpdateRouteLists());
 //
 //        transactionExecutor.put(10, new DeleteTraders(packageData.getDeleteTraders()));
 //        transactionExecutor.put(11, new UpdateUsersFromTraders(packageData.getUpdateTraders()));

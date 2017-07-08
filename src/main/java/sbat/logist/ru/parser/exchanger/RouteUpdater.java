@@ -3,78 +3,104 @@ package sbat.logist.ru.parser.exchanger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
+import org.springframework.stereotype.Component;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.parser.json.JsonDirection;
 import sbat.logist.ru.parser.json.JsonRouteList;
+import sbat.logist.ru.transport.domain.Point;
 import sbat.logist.ru.transport.domain.Route;
+import sbat.logist.ru.transport.repository.PointRepository;
 import sbat.logist.ru.transport.repository.RouteRepository;
 
-import java.util.*;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
+@Component
 public class RouteUpdater {
-    public static final DataSource DATA_SOURCE = DataSource.LOGIST_1C;
+    private static final DataSource DATA_SOURCE = DataSource.LOGIST_1C;
     private static final Logger logger = LoggerFactory.getLogger("main");
+
     private final RouteRepository routeRepository;
+    private final PointRepository pointRepository;
 
     @Autowired
-    public RouteUpdater(RouteRepository routeRepository) {
+    public RouteUpdater(
+            RouteRepository routeRepository,
+            PointRepository pointRepository
+    ) {
         this.routeRepository = routeRepository;
+        this.pointRepository = pointRepository;
     }
 
-    @Autowired
-
-    public void execute(List<JsonRouteList> routeLists) {
+    public void execute(List<JsonDirection> directions, List<JsonRouteList> routeLists) {
         logger.info("START update routes table from JSON object:[updateDirections]");
 
-        Map<String, String> map = new HashMap<>();
-        routeLists.forEach(routeList -> {
-            final Route route = new Route();
-            route.setExternalId(routeList.getDirectId());
-            route.setDataSource(DATA_SOURCE);
-            route.setRouteName(getUniqueDirectionName(generateNewDirectionNameIfDuplicate(routeList.getDirectId(), routeList.getDirectName)));
-        });
-//        PreparedStatement preparedStatement = connection.prepareStatement(
-//                "INSERT INTO routes (directionIDExternal, dataSourceID, routeName) VALUE (?, ?, ?)\n" +
-//                        "ON DUPLICATE KEY UPDATE\n" +
-//                        "  routeName = VALUES(routeName);"
-//        );
+        final AtomicInteger counter = new AtomicInteger(0);
+        directions.forEach(direction -> {
+            final String externalId = direction.getDirectId();
+            final String directionName = direction.getDirectName();
+            final Route r = getRouteToInsert(externalId, directionName, () -> generateNewDirectionNameIfDuplicate(externalId, directionName));
 
-//
-//        BidiMap<String, String> allRoutes = Selects.getInstance().selectAllRoutesAsExtKeyAndName(DBManager.LOGIST_1C);
-//        for (DirectionsData updateRoute : updateRoutesArray) {
-//            String directionIDExternal = updateRoute.getDirectId();
-//            String directionName = updateRoute.getDirectName();
-//            String uniqueDirectionName = generateNewDirectionNameIfDuplicate(allRoutes, directionIDExternal, directionName);
-//            preparedStatement.setString(1, directionIDExternal);
-//            preparedStatement.setString(2, DBManager.LOGIST_1C);
-//            preparedStatement.setString(3, uniqueDirectionName);
-//            preparedStatement.addBatch();
-//        }
-//
-//        Map<String, Integer> allPoints = Selects.getInstance().allPointsAsKeyPairs();
-//        Map<Integer, String> allPointNamesById = Selects.getInstance().allPointNamesById(DBManager.LOGIST_1C);
-//        for (RouteListsData updateRouteList : updateRouteLists) {
-//
-//            // create new route only for trunk routes
-//            if (updateRouteList.isTrunkRoute()) {
-//                // insert or update route
-//                preparedStatement.setString(1, updateRouteList.getGeneratedRouteId());
-//                preparedStatement.setString(2, DBManager.LOGIST_1C);
-//                try{
-//                    String generatedRouteName = getGeneratedRouteName(allPoints, allPointNamesById, updateRouteList.getPointArrivalId(), updateRouteList.getPointDepartureId());
-//                    preparedStatement.setString(3, generatedRouteName);
-//                } catch (DBCohesionException e) {
-//                    logger.warn(e);
-//                    continue;
-//                }
-//                preparedStatement.addBatch();
-//            }
-//        }
-//
-//        int[] affectedRecords = preparedStatement.executeBatch();
-//        logger.info("INSERT OR UPDATE ON DUPLICATE INTO [routes] completed, affected records size = [{}]", affectedRecords.length);
-//
-//        return preparedStatement;
+            routeRepository.save(r);
+            counter.incrementAndGet();
+        });
+
+        routeLists.forEach(r -> {
+            if (r.isTrunkRoute()) {
+                try {
+                    final String generatedRouteId = r.getGeneratedRouteId();
+                    final String generatedRouteName = generateRouteName(r.getPointArrivalId(), r.getPointDepartureId());
+                    final Route routeToInsert = getRouteToInsert(generatedRouteId, generatedRouteName, () -> generateNewDirectionNameIfDuplicate(generatedRouteId, generatedRouteName));
+
+                    routeRepository.save(routeToInsert);
+                    counter.incrementAndGet();
+                } catch (IllegalStateException e) {
+                    logger.error("can't insert route: {}", r);
+                }
+            }
+        });
+
+        logger.info("INSERT OR UPDATE INTO [routes] completed, affected records size = [{}]", counter);
+    }
+
+    /**
+     * emulates on duplicates key
+     * @param externalId
+     * @param name
+     * @param nameSupplier
+     * @return
+     */
+    private Route getRouteToInsert(String externalId, String name, Supplier<String> nameSupplier) {
+        return routeRepository.findByExternalIdAndDataSource(externalId, DATA_SOURCE)
+                .map(r -> {
+                    if (!r.getRouteName().equals(name)) {
+                        r.setRouteName(nameSupplier.get());
+                    }
+                    return r;
+                })
+                .orElseGet(() -> {
+                    final Route route = new Route();
+                    route.setExternalId(externalId);
+                    route.setDataSource(DATA_SOURCE);
+                    route.setRouteName(nameSupplier.get());
+                    return route;
+                });
+    }
+
+    private String generateRouteName(String pointArrivalIdExternal, String pointDepartureIdExternal) {
+        // check points that they are exist.
+        final Point pointArrival = pointRepository.findByPointIdExternalAndDataSource(pointArrivalIdExternal, DATA_SOURCE)
+                .orElseThrow(() -> {
+                    logger.error("arrival point doesn't exist in database. pointIdExternal: {}", pointArrivalIdExternal);
+                    throw new IllegalStateException("database doesn't have point with id " + pointArrivalIdExternal);
+                });
+        Point pointDeparture = pointRepository.findByPointIdExternalAndDataSource(pointArrivalIdExternal, DATA_SOURCE)
+                .orElseThrow(() -> {
+                    logger.error("departure point doesn't exist in database. pointIdExternal: {}", pointDepartureIdExternal);
+                    throw new IllegalStateException("database doesn't have point with id " + pointDepartureIdExternal);
+                });
+        return pointDeparture.getPointName() + '-' + pointArrival.getPointName();
     }
 
     private String generateNewDirectionNameIfDuplicate(String directionIDExternal, String directionName) {

@@ -1,8 +1,8 @@
 package sbat.logist.ru.parser.command;
 
-import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 public class FileToStringCommandTest {
     private FileToStringCommand command;
 
-    @BeforeMethod
+    @Before
     public void setUp() throws Exception {
         command = new FileToStringCommand();
     }
