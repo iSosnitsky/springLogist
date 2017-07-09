@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface ClientRepository extends PagingAndSortingRepository<Client, Long> {
     Optional<Client> findByClientIDExternalAndDataSource(String clientIdExternal, DataSource dataSource);
+    Optional<Client> findByClientIDExternal(String clientIdExternal);
 }

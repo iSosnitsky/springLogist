@@ -68,7 +68,7 @@ public class UserFromTraderUpdater {
         map.get(false).forEach(trader -> {
                     final String uniqueLogin = generateUniqueLogin();
                     final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
-                    final String passAndSalt = md5DigestAsHex((md5DigestAsHex(trader.getTraderPassword().getBytes()) + salt).getBytes());
+                    final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
                     final User user = User.builder()
                             .userIDExternal(trader.getTraderId())
                             .dataSource(DataSource.LOGIST_1C)
@@ -95,5 +95,9 @@ public class UserFromTraderUpdater {
             login = randomStringGenerator.generate(GENERATED_LENGTH);
         }
         return login;
+    }
+
+    private String generatePassword() {
+        return randomStringGenerator.generate(GENERATED_LENGTH);
     }
 }

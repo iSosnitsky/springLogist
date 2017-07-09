@@ -10,4 +10,8 @@ public class JsonClient {
     @JsonProperty("clientINN")
     private String clientInn;
     private String clientPassword;
+
+    public boolean hasValidPassword() {
+        return (clientPassword!= null && !clientPassword.isEmpty());
+    }
 }

@@ -19,6 +19,7 @@ public class DatabaseUpdaterService {
     private final RouteUpdater routeUpdater;
     private final ClientUpdater clientUpdater;
     private final UserFromTraderUpdater userFromTraderUpdater;
+    private final UserFromClientUpdater userFromClientUpdater;
 
     @Autowired
     public DatabaseUpdaterService(
@@ -27,7 +28,8 @@ public class DatabaseUpdaterService {
             AddressUpdater addressUpdater,
             RouteUpdater routeUpdater,
             ClientUpdater clientUpdater,
-            UserFromTraderUpdater userFromTraderUpdater
+            UserFromTraderUpdater userFromTraderUpdater,
+            UserFromClientUpdater userFromClientUpdater
     ) {
         this.exchangeUpdater = exchangeUpdater;
         this.pointUpdater = pointUpdater;
@@ -35,6 +37,7 @@ public class DatabaseUpdaterService {
         this.routeUpdater = routeUpdater;
         this.clientUpdater = clientUpdater;
         this.userFromTraderUpdater = userFromTraderUpdater;
+        this.userFromClientUpdater = userFromClientUpdater;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -52,8 +55,7 @@ public class DatabaseUpdaterService {
         routeUpdater.execute(dataFrom1C.getPackageData().getUpdateDirections(), dataFrom1C.getPackageData().getUpdateRouteLists());
         clientUpdater.execute(dataFrom1C.getPackageData().getUpdateClients());
         userFromTraderUpdater.execute(dataFrom1C.getPackageData().getUpdateTrader());
-
-//        transactionExecutor.put(11, new UpdateUsersFromTraders(packageData.getUpdateTraders()));
+        userFromClientUpdater.execute(dataFrom1C.getPackageData().getUpdateClients());
 //
 //        transactionExecutor.put(12, new UpdateUsersFromClients(packageData.getUpdateClients()));
 //
