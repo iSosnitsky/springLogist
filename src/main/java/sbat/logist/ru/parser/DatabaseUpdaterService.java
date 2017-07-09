@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import sbat.logist.ru.parser.exchanger.AddressUpdater;
-import sbat.logist.ru.parser.exchanger.ExchangeUpdater;
-import sbat.logist.ru.parser.exchanger.PointUpdater;
-import sbat.logist.ru.parser.exchanger.RouteUpdater;
+import sbat.logist.ru.parser.exchanger.*;
 import sbat.logist.ru.parser.json.Data1c;
 import sbat.logist.ru.parser.json.DataFrom1C;
 
@@ -20,18 +17,24 @@ public class DatabaseUpdaterService {
     private final PointUpdater pointUpdater;
     private final AddressUpdater addressUpdater;
     private final RouteUpdater routeUpdater;
+    private final ClientUpdater clientUpdater;
+    private final UserFromTraderUpdater userFromTraderUpdater;
 
     @Autowired
     public DatabaseUpdaterService(
             ExchangeUpdater exchangeUpdater,
             PointUpdater pointUpdater,
             AddressUpdater addressUpdater,
-            RouteUpdater routeUpdater
+            RouteUpdater routeUpdater,
+            ClientUpdater clientUpdater,
+            UserFromTraderUpdater userFromTraderUpdater
     ) {
         this.exchangeUpdater = exchangeUpdater;
         this.pointUpdater = pointUpdater;
         this.addressUpdater = addressUpdater;
         this.routeUpdater = routeUpdater;
+        this.clientUpdater = clientUpdater;
+        this.userFromTraderUpdater = userFromTraderUpdater;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -47,8 +50,9 @@ public class DatabaseUpdaterService {
         pointUpdater.execute(dataFrom1C.getPackageData().getUpdatePoints());
         addressUpdater.execute(dataFrom1C.getPackageData().getUpdateAddress());
         routeUpdater.execute(dataFrom1C.getPackageData().getUpdateDirections(), dataFrom1C.getPackageData().getUpdateRouteLists());
-//
-//        transactionExecutor.put(10, new DeleteTraders(packageData.getDeleteTraders()));
+        clientUpdater.execute(dataFrom1C.getPackageData().getUpdateClients());
+        userFromTraderUpdater.execute(dataFrom1C.getPackageData().getUpdateTrader());
+
 //        transactionExecutor.put(11, new UpdateUsersFromTraders(packageData.getUpdateTraders()));
 //
 //        transactionExecutor.put(12, new UpdateUsersFromClients(packageData.getUpdateClients()));

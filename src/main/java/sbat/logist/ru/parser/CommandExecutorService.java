@@ -12,8 +12,6 @@ import sbat.logist.ru.parser.json.Data1c;
 
 import java.nio.file.Path;
 
-//import sbat.logist.ru.parser.command.Command;
-
 @Service
 public class CommandExecutorService {
     private static final Logger logger = LoggerFactory.getLogger("main");

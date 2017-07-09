@@ -13,4 +13,8 @@ public class JsonTrader {
     private String traderOffice;
     private String traderLogin;
     private String traderPassword;
+
+    public boolean hasValidLoginAndPassword() {
+        return traderLogin != null && !traderLogin.isEmpty() && traderPassword != null && !traderPassword.isEmpty();
+    }
 }
