@@ -3,7 +3,6 @@ package sbat.logist.ru.parser.json;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-
 @Data
 public class JsonClient {
     private String clientId;

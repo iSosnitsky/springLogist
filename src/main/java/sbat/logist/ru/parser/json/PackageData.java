@@ -15,8 +15,8 @@ public class PackageData {
     private List<JsonTrader> updateTrader;
     private List<JsonTrader> deleteTrader;
 
-    private List<JsonCient> updateClients;
-    private List<JsonCient> deleteClients;
+    private List<JsonClient> updateClients;
+    private List<JsonClient> deleteClients;
 
     private List<JsonAddress> updateAddress;
     private List<JsonAddress> deleteAddress;

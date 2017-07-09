@@ -29,7 +29,6 @@ public class User {
     @Column(name = "USERID")
     private Long userID;
 
-
     @NotNull
     @Column(name = "USERIDEXTERNAL")
     private String userIDExternal;
