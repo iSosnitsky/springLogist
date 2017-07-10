@@ -1,7 +1,5 @@
 package sbat.logist.ru.transport.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import sbat.logist.ru.constant.DataSource;
 
@@ -32,14 +30,17 @@ public class Request {
     private Date requestDate;
 
     //TODO: доделать джойны
-    @Column(name = "CLIENTID")
-    private Integer clientId;
+    @ManyToOne
+    @JoinColumn(name = "CLIENTID")
+    private User clientId;
 
-    @Column(name = "DESTINATIONPOINTID")
-    private Integer destinationPointId;
+    @ManyToOne
+    @JoinColumn(name="DESTINATIONPOINTID")
+    private Point destinationPointId;
 
-    @Column(name = "MARKETAGENTUSERID")
-    private Integer marketAgentUserId;
+    @ManyToOne
+    @JoinColumn(name = "MARKETAGENTUSERID")
+    private User marketAgentUserId;
 
     @Column(name = "INVOICENUMBER")
     private String invoiceNumber;
@@ -81,6 +82,7 @@ public class Request {
     @Column(name = "VOLUME")
     private Integer volume;
 
+
     @Column(name = "GOODSCOST")
     private BigDecimal goodsCost;
 
@@ -88,14 +90,29 @@ public class Request {
     @Column(name = "LASTSTATUSUPDATED")
     private Date lastStatusUpdated;
 
-    @Column(name = "LASTMODIFIEDBY")
-    private Integer lastModifiedBy;
+    @ManyToOne
+    @JoinColumn(name = "LASTMODIFIEDBY")
+    private User lastModifiedBy;
 
-    @Column(name = "REQUESTSTATUSID")
-    private String requestStatusId;
+    @ManyToOne
+    @JoinColumn(name = "REQUESTSTATUSID")
+    private RequestStatus requestStatusId;
 
     @Column(name = "COMMENTFORSTATUS")
     private String commentForStatus;
+
+    @ManyToOne
+    @JoinColumn(name= "ROUTELISTID")
+    private RouteList routeList;
+
+    @ManyToOne
+    @JoinColumn(name = "LASTVISITEDROUTEPOINTID")
+    private Point lastVisitedRoutePointId;
+
+    @ManyToOne
+    @JoinColumn(name = "WAREHOUSEPOINTID")
+    private Point warehousePoint;
+
 
 
  }
