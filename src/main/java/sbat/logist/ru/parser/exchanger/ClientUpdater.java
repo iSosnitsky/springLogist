@@ -34,6 +34,7 @@ public class ClientUpdater {
             counter.incrementAndGet();
         });
 
+        logger.info("INSERT OR UPDATE for clients completed, affected records size = [{}]", counter.get());
     }
 
     private Client mapJson(JsonClient jsonClient) {
