@@ -3,7 +3,7 @@ package sbat.logist.ru.parser.json;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 @Data
@@ -38,8 +38,16 @@ public class JsonRouteList {
     }
 
     /**
-     * directId is NULL, pointArrivalId is not NULL If a route is the trunk route then it has no any
-     * direction, so method get directId has no sens. We must generate route for such case, with
+     * directId is not NULL, pointArrivalId is NULL
+     * @return true if route is intrasite, false in other case.
+     */
+    public boolean isIntrasiteRoute() {
+        return getRouteState().equals(RouteScopeType.INTRASITE_ROUTE);
+    }
+
+    /**
+     * directId is NULL, pointArrivalId is not NULL If a route is the trunk route then it has no
+     * direction, so method get directId makes no sense. We must generate route for such case, with
      * routeName like 52MAG607 where 52 is point departure id and 607 is point arrival id.
      *
      * @return true if route is trunk route, false in other case.

@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "requests")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Request {
     @Id
     @GeneratedValue
@@ -20,7 +19,6 @@ public class Request {
     private Integer id;
 
     @Column(name = "REQUESTIDEXTERNAL")
-    @JsonProperty("requestId")
     private String externalId;
 
     @Column(name = "DATASOURCEID", nullable = false)
