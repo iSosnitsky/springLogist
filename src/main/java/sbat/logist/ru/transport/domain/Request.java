@@ -113,6 +113,18 @@ public class Request {
     @JoinColumn(name = "WAREHOUSEPOINTID")
     private Point warehousePoint;
 
+    @ManyToOne
+    @JoinColumn(name = "TRANSPORTCOMPANYID")
+    private TransportCompany transportCompany;
+
+    @ManyToOne
+    @JoinColumn(name="VEHICLEID")
+    private Vehicle vehicle;
+
+    @ManyToOne
+    @JoinColumn(name="DRIVERID")
+    private Driver driver;
+
 
 
  }
