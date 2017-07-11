@@ -1,8 +1,9 @@
 package sbat.logist.ru.parser.json;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import java.sql.Date;
 
 @Data
 public class JsonStatus {
@@ -10,7 +11,7 @@ public class JsonStatus {
     @JsonProperty("num_boxes")
     private Integer numBoxes;
     private String status;
-    private String timeOutStatus;
+    private Date timeOutStatus;
 
     @JsonProperty("Comment")
     private String comment;

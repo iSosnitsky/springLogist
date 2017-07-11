@@ -21,6 +21,8 @@ public class DatabaseUpdaterService {
     private final UserFromTraderUpdater userFromTraderUpdater;
     private final UserFromClientUpdater userFromClientUpdater;
     private final RouteListUpdater routeListUpdater;
+    private final AssignRouteListsToRequests assignRouteListsToRequests;
+    private final RequestStatusUpdater requestStatusUpdater;
 
     @Autowired
     public DatabaseUpdaterService(
@@ -31,7 +33,9 @@ public class DatabaseUpdaterService {
             ClientUpdater clientUpdater,
             UserFromTraderUpdater userFromTraderUpdater,
             UserFromClientUpdater userFromClientUpdater,
-            RouteListUpdater routeListUpdater) {
+            RouteListUpdater routeListUpdater,
+            AssignRouteListsToRequests assignRouteListsToRequests,
+            RequestStatusUpdater requestStatusUpdater) {
         this.exchangeUpdater = exchangeUpdater;
         this.pointUpdater = pointUpdater;
         this.addressUpdater = addressUpdater;
@@ -40,6 +44,8 @@ public class DatabaseUpdaterService {
         this.userFromTraderUpdater = userFromTraderUpdater;
         this.userFromClientUpdater = userFromClientUpdater;
         this.routeListUpdater = routeListUpdater;
+        this.assignRouteListsToRequests = assignRouteListsToRequests;
+        this.requestStatusUpdater = requestStatusUpdater;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -69,8 +75,10 @@ public class DatabaseUpdaterService {
 //        transactionExecutor.put(16, new UpdateRequests(packageData.getUpdateRequests()));
 //
 //        transactionExecutor.put(17, new AssignStatusesInRequests(packageData.getUpdateStatuses()));
+        requestStatusUpdater.execute(dataFrom1C.getPackageData().getUpdateStatus());
 //        transactionExecutor.put(18, new ClearRouteListsInRequests(packageData.getUpdateRouteLists()));
-//        transactionExecutor.put(19, new AssignRouteListsInRequests(packageData.getUpdateRouteLists()));
+
+        assignRouteListsToRequests.execute(dataFrom1C.getPackageData().getUpdateRouteLists());
 //        transactionExecutor.put(20, new RefreshMatView());
 //
 //        try {

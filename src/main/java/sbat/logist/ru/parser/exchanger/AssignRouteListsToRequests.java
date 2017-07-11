@@ -14,8 +14,6 @@ import sbat.logist.ru.transport.repository.RequestRepository;
 import sbat.logist.ru.transport.repository.RouteListRepository;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Component
 public class AssignRouteListsToRequests {
@@ -37,8 +35,8 @@ public class AssignRouteListsToRequests {
     }
 
 
-    public void execute(Map<Long, Set<String>> routeListsAndInvoices, List<JsonRouteList> jsonRouteLists){
-        if (routeListsAndInvoices.isEmpty()) return;
+    public void execute( List<JsonRouteList> jsonRouteLists){
+        if (jsonRouteLists.isEmpty()) return;
         logger.info("START UPDATE requests assign routeLists");
 
 

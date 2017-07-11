@@ -125,6 +125,41 @@ public class Request {
     @JoinColumn(name="DRIVERID")
     private Driver driver;
 
-
-
- }
+    @Override
+    public String toString() {
+        return "Request{" +
+                "id=" + id +
+                ", externalId='" + externalId + '\'' +
+                ", dataSource=" + dataSource +
+                ", requestNumber='" + requestNumber + '\'' +
+                ", requestDate=" + requestDate +
+                ", clientId=" + clientId +
+                ", destinationPointId=" + destinationPointId +
+                ", marketAgentUserId=" + marketAgentUserId +
+                ", invoiceNumber='" + invoiceNumber + '\'' +
+                ", invoiceDate='" + invoiceDate + '\'' +
+                ", documentNumber='" + documentNumber + '\'' +
+                ", documentDate=" + documentDate +
+                ", firma='" + firma + '\'' +
+                ", storage='" + storage + '\'' +
+                ", contactName='" + contactName + '\'' +
+                ", contactPhone='" + contactPhone + '\'' +
+                ", deliveryOption='" + deliveryOption + '\'' +
+                ", deliveryDate=" + deliveryDate +
+                ", boxQuantity=" + boxQuantity +
+                ", weight=" + weight +
+                ", volume=" + volume +
+                ", goodsCost=" + goodsCost +
+                ", lastStatusUpdated=" + lastStatusUpdated +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", requestStatusId=" + requestStatusId +
+                ", commentForStatus='" + commentForStatus + '\'' +
+                ", routeList=" + routeList +
+                ", lastVisitedRoutePointId=" + lastVisitedRoutePointId +
+                ", warehousePoint=" + warehousePoint +
+                ", transportCompany=" + transportCompany +
+                ", vehicle=" + vehicle +
+                ", driver=" + driver +
+                '}';
+    }
+}
