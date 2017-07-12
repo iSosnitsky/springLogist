@@ -104,7 +104,7 @@ public class UserFromClientUpdater {
 
     private String generateUniqueLogin() {
         String login = randomStringGenerator.generate(GENERATED_LENGTH);
-        while (!userRepository.findUserByLogin(login).isPresent()) {
+        while (userRepository.findUserByLogin(login).isPresent()) {
             login = randomStringGenerator.generate(GENERATED_LENGTH);
         }
         return login;

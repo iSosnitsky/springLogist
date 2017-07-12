@@ -16,7 +16,9 @@ public class JsonStringToObjectCommand implements Command<String, Optional<Data1
         Objects.requireNonNull(json);
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return Optional.of(mapper.readValue(json, Data1c.class));
+            Data1c value = mapper.readValue(json, Data1c.class);
+            value.setJson(json);
+            return Optional.of(value);
         } catch (IOException e) {
             logger.error("Can't parse string.", e);
             return Optional.empty();

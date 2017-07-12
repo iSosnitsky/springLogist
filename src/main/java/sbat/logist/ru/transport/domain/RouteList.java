@@ -22,7 +22,7 @@ import java.sql.Date;
 })
 public class RouteList {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ROUTELISTID")
     private Long routeListId;
 

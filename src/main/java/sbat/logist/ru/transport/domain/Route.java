@@ -16,7 +16,7 @@ import java.sql.Time;
 })
 public class Route {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROUTEID")
     private Integer id;
 

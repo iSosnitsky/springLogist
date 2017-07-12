@@ -3,14 +3,18 @@ package sbat.logist.ru.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import sbat.logist.ru.parser.exchanger.*;
 import sbat.logist.ru.parser.json.Data1c;
 import sbat.logist.ru.parser.json.DataFrom1C;
+import sbat.logist.ru.parser.json.PackageData;
 
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class DatabaseUpdaterService {
     private static final Logger logger = LoggerFactory.getLogger("main");
     private final ExchangeUpdater exchangeUpdater;
@@ -23,6 +27,9 @@ public class DatabaseUpdaterService {
     private final RouteListUpdater routeListUpdater;
     private final AssignRouteListsToRequests assignRouteListsToRequests;
     private final RequestStatusUpdater requestStatusUpdater;
+    private final RequestUpdater requestUpdater;
+    private final ClearRequestsFromRouteList clearRequestsFromRouteList;
+    private final MatViewUpdater matViewUpdater;
 
     @Autowired
     public DatabaseUpdaterService(
@@ -35,7 +42,11 @@ public class DatabaseUpdaterService {
             UserFromClientUpdater userFromClientUpdater,
             RouteListUpdater routeListUpdater,
             AssignRouteListsToRequests assignRouteListsToRequests,
-            RequestStatusUpdater requestStatusUpdater) {
+            RequestStatusUpdater requestStatusUpdater,
+            RequestUpdater requestUpdater,
+            ClearRequestsFromRouteList clearRequestsFromRouteList,
+            MatViewUpdater matViewUpdater
+    ) {
         this.exchangeUpdater = exchangeUpdater;
         this.pointUpdater = pointUpdater;
         this.addressUpdater = addressUpdater;
@@ -46,6 +57,9 @@ public class DatabaseUpdaterService {
         this.routeListUpdater = routeListUpdater;
         this.assignRouteListsToRequests = assignRouteListsToRequests;
         this.requestStatusUpdater = requestStatusUpdater;
+        this.requestUpdater = requestUpdater;
+        this.clearRequestsFromRouteList = clearRequestsFromRouteList;
+        this.matViewUpdater = matViewUpdater;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -57,35 +71,21 @@ public class DatabaseUpdaterService {
         logger.info("packageNumber = {}", packageNumber);
         logger.info("dateCreated = {}", dataFrom1C.getCreated());
 
-        exchangeUpdater.excecute(dataFrom1C);
-        pointUpdater.execute(dataFrom1C.getPackageData().getUpdatePoints());
-        addressUpdater.execute(dataFrom1C.getPackageData().getUpdateAddress());
-        routeUpdater.execute(dataFrom1C.getPackageData().getUpdateDirections(), dataFrom1C.getPackageData().getUpdateRouteLists());
-        clientUpdater.execute(dataFrom1C.getPackageData().getUpdateClients());
-        userFromTraderUpdater.execute(dataFrom1C.getPackageData().getUpdateTrader());
-        userFromClientUpdater.execute(dataFrom1C.getPackageData().getUpdateClients());
-        routeListUpdater.execute(dataFrom1C.getPackageData().getUpdateRouteLists());
-//
-//        transactionExecutor.put(12, new UpdateUsersFromClients(packageData.getUpdateClients()));
-//
-//        transactionExecutor.put(13, new DeleteRouteLists(packageData.getDeleteRouteLists()));
-//        transactionExecutor.put(14, new UpdateRouteLists(packageData.getUpdateRouteLists()));
-//
-//        transactionExecutor.put(15, new DeleteRequests(packageData.getDeleteRequests()));
-//        transactionExecutor.put(16, new UpdateRequests(packageData.getUpdateRequests()));
-//
-//        transactionExecutor.put(17, new AssignStatusesInRequests(packageData.getUpdateStatuses()));
-        requestStatusUpdater.execute(dataFrom1C.getPackageData().getUpdateStatus());
-//        transactionExecutor.put(18, new ClearRouteListsInRequests(packageData.getUpdateRouteLists()));
+        exchangeUpdater.excecute(data1c);
+//        if(true) throw new RuntimeException();
+        PackageData packageData = dataFrom1C.getPackageData();
+        pointUpdater.execute(packageData.getUpdatePoints());
+        addressUpdater.execute(packageData.getUpdateAddress());
+        routeUpdater.execute(packageData.getUpdateDirections(), packageData.getUpdateRouteLists());
+        clientUpdater.execute(packageData.getUpdateClients());
+        userFromTraderUpdater.execute(packageData.getUpdateTrader());
+        userFromClientUpdater.execute(packageData.getUpdateClients());
+        routeListUpdater.execute(packageData.getUpdateRouteLists());
+        requestUpdater.execute(packageData.getUpdateRequests());
+        requestStatusUpdater.execute(packageData.getUpdateStatus());
+        clearRequestsFromRouteList.execute(packageData.getUpdateRouteLists());
+        assignRouteListsToRequests.execute(packageData.getUpdateRouteLists());
+        matViewUpdater.execute();
 
-        assignRouteListsToRequests.execute(dataFrom1C.getPackageData().getUpdateRouteLists());
-//        transactionExecutor.put(20, new RefreshMatView());
-//
-//        try {
-//            transactionExecutor.executeAll();
-//            connection.commit();
-//        } finally {
-//            transactionExecutor.closeAll();
-//        }
     }
 }

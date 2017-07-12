@@ -14,14 +14,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 @Component
-public class RouteListsRequestClearer {
+public class ClearRequestsFromRouteList {
     private static final Logger logger = LoggerFactory.getLogger("main");
 
     private final RouteListRepository routeListRepository;
     private final RequestRepository requestRepository;
 
     @Autowired
-    public RouteListsRequestClearer(RouteListRepository routeListRepository, RequestRepository requestRepository) {
+    public ClearRequestsFromRouteList(RouteListRepository routeListRepository, RequestRepository requestRepository) {
         this.routeListRepository = routeListRepository;
         this.requestRepository = requestRepository;
     }
@@ -36,12 +36,12 @@ public class RouteListsRequestClearer {
                 .flatMap(routeList -> routeListRepository.findByRouteListIdExternalAndAndDataSourceId(routeList.getRouteListIdExternal(), DataSource.LOGIST_1C)
                         .map(Stream::of)
                         .orElseGet(() -> {
-                            logger.warn("Can't find route list in database. routeList external id: {}", routeList.getRouteListIdExternal());
+                            logger.warn("Can't find route list in database. routeListId external id: {}", routeList.getRouteListIdExternal());
                             return Stream.empty();
                         }))
                 .flatMap(routeList -> requestRepository.findByRouteListId(routeList.getRouteListId()).stream())
                 .forEach(request -> {
-                    request.setRouteList(null);
+                    request.setRouteListId(null);
                     request.setWarehousePoint(null);
                     requestRepository.save(request);
 

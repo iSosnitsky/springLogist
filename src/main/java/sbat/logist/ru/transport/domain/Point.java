@@ -18,7 +18,7 @@ import java.sql.Time;
 @Table(name = "points")
 public class Point {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POINTID")
     private Long pointId;
 

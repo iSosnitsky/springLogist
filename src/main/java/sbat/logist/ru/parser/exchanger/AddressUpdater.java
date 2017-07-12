@@ -30,7 +30,7 @@ public class AddressUpdater {
         final AtomicInteger counter = new AtomicInteger(0);
         jsonAddresses.forEach(jsonAddress -> {
             final Point foundPoint = pointRepository.findByPointIdExternalAndDataSource(jsonAddress.getAddressId(), DATA_SOURCE)
-                    .map(point -> mapJsonAddress(jsonAddress))
+                    .map(point -> updatePoint(point,jsonAddress))
                     .orElseGet(() -> mapJsonAddress(jsonAddress));
 
             pointRepository.save(foundPoint);
@@ -48,5 +48,11 @@ public class AddressUpdater {
                 .address(jsonAddress.getAddressFull())
                 .pointTypeId(PointType.AGENCY)
                 .build();
+    }
+
+    private Point updatePoint(Point point, JsonAddress jsonAddress){
+        point.setPointName(jsonAddress.getAddressShot());
+        point.setAddress(jsonAddress.getAddressFull());
+        return point;
     }
 }

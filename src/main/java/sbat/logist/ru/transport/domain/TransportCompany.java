@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class TransportCompany {
     @Id
     @Column(name="ID")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="NAME")

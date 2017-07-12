@@ -1,7 +1,6 @@
 package sbat.logist.ru.transport.domain;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import sbat.logist.ru.constant.DataSource;
 
 import javax.persistence.*;
@@ -10,11 +9,15 @@ import java.util.Date;
 
 @Data
 @Entity
+@Builder
 @Table(name = "requests")
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Request {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "REQUESTID")
     private Integer id;
 
@@ -48,7 +51,7 @@ public class Request {
     private String invoiceNumber;
 
     @Column(name = "INVOICEDATE")
-    private String invoiceDate;
+    private Date invoiceDate;
 
     @Column(name = "DOCUMENTNUMBER")
     private String documentNumber;
@@ -105,7 +108,7 @@ public class Request {
 
     @ManyToOne
     @JoinColumn(name= "ROUTELISTID")
-    private RouteList routeList;
+    private RouteList routeListId;
 
     @ManyToOne
     @JoinColumn(name = "LASTVISITEDROUTEPOINTID")

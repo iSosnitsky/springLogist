@@ -69,7 +69,8 @@ public class UserFromTraderUpdater {
                     final String uniqueLogin = generateUniqueLogin();
                     final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
                     final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
-                    final User user = User.builder()
+                    final User user = userRepository.findByUserIDExternalAndDataSource(trader
+                    .getTraderId(),DataSource.LOGIST_1C).orElseGet(() -> User.builder()
                             .userIDExternal(trader.getTraderId())
                             .dataSource(DataSource.LOGIST_1C)
                             .login(uniqueLogin)
@@ -80,7 +81,7 @@ public class UserFromTraderUpdater {
                             .phoneNumber(trader.getTraderPhone())
                             .email(trader.getTraderEmail())
                             .position(trader.getTraderOffice())
-                            .build();
+                            .build());
                     userRepository.save(user);
                     counter.incrementAndGet();
                 }
@@ -91,7 +92,7 @@ public class UserFromTraderUpdater {
 
     private String generateUniqueLogin() {
         String login = randomStringGenerator.generate(GENERATED_LENGTH);
-        while (!userRepository.findUserByLogin(login).isPresent()) {
+        while (userRepository.findUserByLogin(login).isPresent()) {
             login = randomStringGenerator.generate(GENERATED_LENGTH);
         }
         return login;

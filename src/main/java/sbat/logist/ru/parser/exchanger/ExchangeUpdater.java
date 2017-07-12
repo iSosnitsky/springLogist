@@ -1,6 +1,5 @@
 package sbat.logist.ru.parser.exchanger;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Component;
 import sbat.logist.ru.backup.Exchange;
 import sbat.logist.ru.backup.ExchangeId;
 import sbat.logist.ru.backup.ExchangeRepository;
+import sbat.logist.ru.parser.json.Data1c;
 import sbat.logist.ru.parser.json.DataFrom1C;
 
 import java.util.List;
@@ -25,7 +25,8 @@ public class ExchangeUpdater {
         this.exchangeRepository = exchangeRepository;
     }
 
-    public void excecute(DataFrom1C dataFrom1C) {
+    public void excecute(Data1c data1c) {
+        DataFrom1C dataFrom1C = data1c.getDataFrom1C();
         logger.info("START update exchange table from JSON object:[dataFrom1C]");
         final List<ExchangeId> list = exchangeRepository.findMaxExchangedIdGroupedByServerName();
         final Map<String, Integer> map = list.stream()
@@ -42,12 +43,9 @@ public class ExchangeUpdater {
 
         ObjectMapper mapper = new ObjectMapper();
         String objectToJson;
-        try {
-            objectToJson = mapper.writeValueAsString(dataFrom1C);
-        } catch (JsonProcessingException e) {
-            logger.error("can't map object to json: {}", dataFrom1C);
-            throw new IllegalStateException("can't map object to json");
-        }
+
+        objectToJson = data1c.getJson();
+
         ExchangeId id = new ExchangeId();
         id.setPackageNumber(packageNumber);
         id.setServerName(server);

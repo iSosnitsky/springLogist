@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name="DRIVERS")
 public class Driver {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
     private Long id;
 

@@ -1,5 +1,6 @@
 package sbat.logist.ru.parser.json;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,8 +10,25 @@ import java.util.Set;
 @Data
 @ToString
 public class JsonRouteList {
+//    {
+//        "routerSheetId": "6WT11MOS",
+//            "routerSheetNumber": "MOS0005261",
+//            "routerSheetDate": "20170626",
+//            "departureDate": "20170627",
+//            "forwarderId": "Fgsfds12",
+//            "driverId": "123",
+//            "pointDepartureId": "1",
+//            "pointArrivalId": "2",
+//            "directId": "dirIdExt1",
+//            "status": "APPROVED",
+//            "invoices": ["LSS-1","LSS-5","LSS-7"]
+//    }
+
+    @JsonProperty("routerSheetId")
     private String routeListIdExternal;
+    @JsonProperty("routerSheetNumber")
     private String routeListNumber;
+    @JsonProperty("routerSheetDate")
     private Date routeListDate;
     private Date departureDate;
     private String forwarderId;

@@ -47,8 +47,8 @@ public class AssignRouteListsToRequests {
                 jsonRouteList.getInvoices().forEach(invoice ->{
                     final Request request = requestRepository.findByExternalIdAndDataSource(invoice,DATA_SOURCE).orElseThrow(IllegalStateException::new);
 
-//                    final Point destinationPointId = routeList
-                    request.setRouteList(routeList);
+//                    final Point destinationPointId = routeListId
+                    request.setRouteListId(routeList);
                     request.setWarehousePoint(warehousePoint);
                     requestRepository.save(request);
                 });

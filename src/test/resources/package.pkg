@@ -1,7 +1,7 @@
 ﻿{
   "dataFrom1C": {
     "server": "SPB",
-    "packageNumber": 7389,
+    "packageNumber": 7399,
     "created": "2017-07-02T23:48:52",
     "packageData": {
       "updatePoints": [
@@ -14,7 +14,7 @@
       ],
       "updateTrader": [
         {
-          "traderId": "ЦБ000176",
+          "traderId": "125",
           "traderName": "Выставочный зал",
           "traderEMail": "5901701@aneva.ru",
           "traderPhone": "",
@@ -44,12 +44,12 @@
           "documentDate": "",
           "firma": "Терлова О.А.",
           "storage": "Краснодар",
-          "clientId": "w14131",
-          "addressId": "2E8MSPB",
+          "clientId": "127",
+          "addressId": "wla",
           "contactName": "",
           "contactPhone": "",
           "deliveryOption": "Доставка с пересчетом",
-          "traderId": "Ц0000292",
+          "traderId": "125",
           "deliveryDate": "20170630"
         },
         {
@@ -62,12 +62,12 @@
           "documentDate": "",
           "firma": "Бабурин Д.А.",
           "storage": "Краснодар",
-          "clientId": "w11937",
-          "addressId": "26ZBSPB",
+          "clientId": "127",
+          "addressId": "ЦБ000424",
           "contactName": "не указано",
           "contactPhone": "",
           "deliveryOption": "Доставка без пересчета",
-          "traderId": "Ц0000223",
+          "traderId": "125",
           "deliveryDate": "20170701"
         },
         {
@@ -80,12 +80,12 @@
           "documentDate": "",
           "firma": "Кучумова Н.Вл.",
           "storage": "Центральный",
-          "clientId": "w13881",
-          "addressId": "2BM7SPB",
+          "clientId": "127",
+          "addressId": "wla",
           "contactName": "",
           "contactPhone": "",
           "deliveryOption": "Доставка без пересчета",
-          "traderId": "Ц0000247",
+          "traderId": "125",
           "deliveryDate": "20170703"
         },
         {
@@ -98,12 +98,12 @@
           "documentDate": "",
           "firma": "Кучумова Н.Вл.",
           "storage": "Всеволожск",
-          "clientId": "w13881",
-          "addressId": "2BM7SPB",
+          "clientId": "127",
+          "addressId": "wla",
           "contactName": "",
           "contactPhone": "",
           "deliveryOption": "Доставка без пересчета",
-          "traderId": "Ц0000247",
+          "traderId": "125",
           "deliveryDate": "20170703"
         },
         {
@@ -116,12 +116,12 @@
           "documentDate": "",
           "firma": "Кучумова Н.Вл.",
           "storage": "Всеволожск",
-          "clientId": "w13881",
-          "addressId": "2BM7SPB",
+          "clientId": "127",
+          "addressId": "wla",
           "contactName": "",
           "contactPhone": "",
           "deliveryOption": "Доставка без пересчета",
-          "traderId": "Ц0000247",
+          "traderId": "125",
           "deliveryDate": "20170703"
         },
         {
@@ -134,12 +134,12 @@
           "documentDate": "",
           "firma": "Альфа-Нева ООО",
           "storage": "Краснодар",
-          "clientId": "w13087",
-          "addressId": "2AKQSPB",
+          "clientId": "127",
+          "addressId": "wla",
           "contactName": "",
           "contactPhone": "",
           "deliveryOption": "Доставка без пересчета",
-          "traderId": "Ц0000270",
+          "traderId": "125",
           "deliveryDate": "20170703"
         },
         {
@@ -152,12 +152,12 @@
           "documentDate": "",
           "firma": "",
           "storage": "Центральный",
-          "clientId": "w03282",
-          "addressId": "AFMSPB",
+          "clientId": "127",
+          "addressId": "wla",
           "contactName": "",
           "contactPhone": "",
           "deliveryOption": "Доставка без пересчета",
-          "traderId": "ЦБ000176",
+          "traderId": "125",
           "deliveryDate": "20170703"
         },
         {
@@ -170,12 +170,12 @@
           "documentDate": "",
           "firma": "",
           "storage": "Центральный",
-          "clientId": "w03282",
-          "addressId": "AFMSPB",
+          "clientId": "127",
+          "addressId": "wla",
           "contactName": "",
           "contactPhone": "",
           "deliveryOption": "Доставка без пересчета",
-          "traderId": "ЦБ000176",
+          "traderId": "125",
           "deliveryDate": "20170703"
         }
       ],

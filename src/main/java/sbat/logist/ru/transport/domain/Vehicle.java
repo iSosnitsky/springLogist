@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Vehicle {
     @Id
     @Column(name="ID")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
