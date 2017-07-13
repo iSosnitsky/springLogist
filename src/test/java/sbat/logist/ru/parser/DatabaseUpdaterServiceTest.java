@@ -37,7 +37,7 @@ public class DatabaseUpdaterServiceTest {
         final String fixedString = fixJsonStringCommand.execute(execute);
         final Optional<Data1c> execute1 = cmd.execute(fixedString);
         Assert.assertTrue(execute1.isPresent());
-        databaseUpdaterService.update(execute1.get());
+        databaseUpdaterService.updateBackup(execute1.get());
     }
 
 }
