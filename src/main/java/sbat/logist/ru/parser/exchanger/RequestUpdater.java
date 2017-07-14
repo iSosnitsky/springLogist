@@ -7,10 +7,7 @@ import org.springframework.stereotype.Component;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.parser.json.JsonRequest;
 import sbat.logist.ru.transport.domain.Request;
-import sbat.logist.ru.transport.repository.PointRepository;
-import sbat.logist.ru.transport.repository.RequestRepository;
-import sbat.logist.ru.transport.repository.RequestStatusRepository;
-import sbat.logist.ru.transport.repository.UserRepository;
+import sbat.logist.ru.transport.repository.*;
 
 import java.util.Calendar;
 import java.util.List;
@@ -22,13 +19,15 @@ public class RequestUpdater {
 
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
     private final PointRepository pointRepository;
     private final RequestStatusRepository requestStatusRepository;
 
     @Autowired
-    public RequestUpdater(RequestRepository requestRepository, UserRepository userRepository, PointRepository pointRepository, RequestStatusRepository requestStatusRepository) {
+    public RequestUpdater(RequestRepository requestRepository, UserRepository userRepository, ClientRepository clientRepository, PointRepository pointRepository, RequestStatusRepository requestStatusRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
         this.pointRepository = pointRepository;
         this.requestStatusRepository = requestStatusRepository;
     }
@@ -50,7 +49,7 @@ public class RequestUpdater {
     private Request updateRequest(Request request, JsonRequest jsonRequest)
     {
 
-        request.setClientId(userRepository.findByUserIDExternalAndDataSource(jsonRequest.getClientId(),DATA_SOURCE)
+        request.setClientId(clientRepository.findByClientIDExternalAndDataSource(jsonRequest.getClientId(),DATA_SOURCE)
                 .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"clientId",jsonRequest.getClientId(),"users"))));
         request.setRequestNumber(jsonRequest.getRequestNumber());
         request.setRequestDate(jsonRequest.getRequestDate());
@@ -78,7 +77,7 @@ public class RequestUpdater {
         return Request.builder()
                 .dataSource(DATA_SOURCE)
                 .externalId(jsonRequest.getRequestId())
-                .clientId(userRepository.findByUserIDExternalAndDataSource(jsonRequest.getClientId(),DATA_SOURCE)
+                .clientId(clientRepository.findByClientIDExternalAndDataSource(jsonRequest.getClientId(),DATA_SOURCE)
                         .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"clientId",jsonRequest.getClientId(),"users"))))
                 .requestNumber(jsonRequest.getRequestNumber())
                 .requestDate(jsonRequest.getRequestDate())

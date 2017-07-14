@@ -1,6 +1,8 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
+import org.springframework.boot.autoconfigure.web.WebMvcProperties;
 import sbat.logist.ru.constant.DataSource;
 
 import javax.persistence.*;
@@ -37,7 +39,7 @@ public class Request {
     //TODO: доделать джойны
     @ManyToOne
     @JoinColumn(name = "CLIENTID")
-    private User clientId;
+    private Client clientId;
 
     @ManyToOne
     @JoinColumn(name="DESTINATIONPOINTID")
@@ -106,6 +108,7 @@ public class Request {
     @Column(name = "COMMENTFORSTATUS")
     private String commentForStatus;
 
+    @JsonView(WebMvcProperties.View.class)
     @ManyToOne
     @JoinColumn(name= "ROUTELISTID")
     private RouteList routeListId;
