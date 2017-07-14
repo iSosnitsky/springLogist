@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Component
+@Component("badResponse")
 public class WriteBadFileResponseCommand implements Command<Path, Boolean> {
     private static final String RESPONSE_FILE_EXTENSION = ".ans";
     private final Path responseDir;

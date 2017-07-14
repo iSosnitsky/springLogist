@@ -7,20 +7,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import sbat.logist.ru.parser.command.Command;
 import sbat.logist.ru.parser.command.JsonStringToObjectCommand;
-import sbat.logist.ru.parser.command.WriteBadFileResponseCommand;
+import sbat.logist.ru.parser.command.TransactionResult;
 import sbat.logist.ru.parser.json.Data1c;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 @Service
 public class CommandExecutorService {
     private static final Logger logger = LoggerFactory.getLogger("main");
 
-    private final WriteBadFileResponseCommand writeBadFileResponseCommand;
+    private final Command<Path, Boolean> writeBadFileResponseCommand;
     private final Command<Path, Boolean> removeFileCommand;
     private final Command<Path, Boolean> backupCommand;
     private final Command<Path, String> toMessageCommand;
     private final Command<String, String> fixJsonCommand;
+    private final Command<TransactionResult, Boolean> writeDbResponseCommand;
+    private final DatabaseUpdaterService databaseUpdaterService;
     private final Path responseDir;
     private final Path backupDir;
 
@@ -28,11 +31,13 @@ public class CommandExecutorService {
     public CommandExecutorService(
             @Qualifier("responseDirPath") Path responseDirPath,
             @Qualifier("backupDirPath") Path backupDir,
-            WriteBadFileResponseCommand writeBadFileResponseCommand,
+            @Qualifier("badResponse") Command<Path, Boolean> writeBadFileResponseCommand,
             @Qualifier("remove") Command<Path, Boolean> removeFileCommand,
             @Qualifier("backup") Command<Path, Boolean> backupCommand,
             @Qualifier("toMessage") Command<Path, String> toMessageCommand,
-            @Qualifier("fixJson") Command<String, String> fixJsonCommand
+            @Qualifier("fixJson") Command<String, String> fixJsonCommand,
+            @Qualifier("writeDb") Command<TransactionResult, Boolean> writeDbWorkResponseCommand,
+            DatabaseUpdaterService databaseUpdaterService
     ) {
         this.responseDir = responseDirPath;
         this.backupDir = backupDir;
@@ -41,6 +46,8 @@ public class CommandExecutorService {
         this.backupCommand = backupCommand;
         this.toMessageCommand = toMessageCommand;
         this.fixJsonCommand = fixJsonCommand;
+        this.writeDbResponseCommand = writeDbWorkResponseCommand;
+        this.databaseUpdaterService = databaseUpdaterService;
     }
 
     public void executeAll(Path filePath) throws Exception {
@@ -82,46 +89,26 @@ public class CommandExecutorService {
             return;
         }
 
-        // load data into database
-        /*BeanIntoDataBaseCmd beanIntoDataBaseCmd = new BeanIntoDataBaseCmd(dataFrom1c, dbManager);
         TransactionResult transactionResult = new TransactionResult();
-        transactionResult.setServer(dataFrom1c.getServer());
-        transactionResult.setPackageNumber(dataFrom1c.getPackageNumber().intValue());
+        transactionResult.setServer(data1c.getDataFrom1C().getServer());
+        transactionResult.setPackageNumber(data1c.getDataFrom1C().getPackageNumber());
 
         try {
-            beanIntoDataBaseCmd.execute();
-            transactionResult.setStatus(TransactionResult.OK_STATUS);
-        } catch (DBCohesionException e) {
-            logger.warn(e);
-            rollback();
-            deleteIncomingFile();
-            transactionResult.setStatus(TransactionResult.ERROR_STATUS);
-            writeDbFileResponse(transactionResult);
-            return;
-        } catch (SQLException | ResourceInitException e) {
-            logger.error(e);
-            rollback();
-            deleteIncomingFile();
+            databaseUpdaterService.updateBackup(data1c);
+        } catch (Exception e) {
+            logger.warn("Error ocurred while updating database: ", e);
+            deleteIncomingFile(filePath);
             transactionResult.setStatus(TransactionResult.ERROR_STATUS);
             writeDbFileResponse(transactionResult);
             return;
         }
 
-        /*
+
         // write response into response directory
         writeDbFileResponse(transactionResult);
         // remove incoming file
-        deleteIncomingFile();
-  */
+        deleteIncomingFile(filePath);
     }
-
-//    private void rollback() throws FatalException {
-//        try {
-//            dbManager.getConnection().rollback();
-//        } catch (SQLException ex) {
-//            throw new FatalException(ex);
-//        }
-//    }
 
 
 
@@ -132,16 +119,13 @@ public class CommandExecutorService {
     private void writeBadFileResponse(Path filePath) {
         writeBadFileResponseCommand.execute(filePath);
     }
-/*
-    private void writeDbFileResponse(TransactionResult transactionResult) throws FatalException {
-        WriteDbWorkResponseCmd writeDbWorkResponseCmd = new WriteDbWorkResponseCmd(filePath, responseDir, transactionResult);
-        try {
-            writeDbWorkResponseCmd.execute();
-        } catch (IOException e) {
-            throw new FatalException(e);
+
+    private void writeDbFileResponse(TransactionResult transactionResult) {
+        if (!writeDbResponseCommand.execute(transactionResult)) {
+            throw new RuntimeException("Can't write db file response");
         }
 
-    }*/
+    }
 
 }
 
