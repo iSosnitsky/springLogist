@@ -19,7 +19,6 @@ public class Exchange {
     @Column(name = "PACKAGECREATED")
     private Date packageCreated;
 
-    @Basic(fetch= FetchType.LAZY)
-    @Column(name = "PACKAGEDATA")
+    @Column(name = "PACKAGEDATA", columnDefinition="LONGTEXT")
     private String packageData;
 }

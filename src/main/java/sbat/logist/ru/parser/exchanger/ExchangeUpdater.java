@@ -1,5 +1,7 @@
 package sbat.logist.ru.parser.exchanger;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +44,14 @@ public class ExchangeUpdater {
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        String objectToJson;
-
-        objectToJson = data1c.getJson();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        String jsonInString;
+        try {
+            jsonInString = mapper.writeValueAsString(data1c);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't parse object to json", e);
+        }
 
         ExchangeId id = new ExchangeId();
         id.setPackageNumber(packageNumber);
@@ -52,7 +59,7 @@ public class ExchangeUpdater {
         Exchange exchange = new Exchange();
         exchange.setExchangeId(id);
         exchange.setPackageCreated(dataFrom1C.getCreated());
-        exchange.setPackageData(objectToJson);
+        exchange.setPackageData(jsonInString);
 
         exchangeRepository.save(exchange);
 

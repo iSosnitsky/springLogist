@@ -14,7 +14,7 @@ import java.sql.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="ROUTE_LISTS", indexes = {
+@Table(name="route_lists", indexes = {
         @Index(unique = true, columnList = "ROUTELISTIDEXTERNAL,DATASOURCEID"),
         @Index(columnList = "ROUTEID"),
         @Index(columnList = "STATUS"),
