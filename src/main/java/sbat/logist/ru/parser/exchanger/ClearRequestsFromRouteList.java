@@ -39,7 +39,7 @@ public class ClearRequestsFromRouteList {
                             logger.warn("Can't find route list in database. routeListId external id: {}", routeList.getRouteListIdExternal());
                             return Stream.empty();
                         }))
-                .flatMap(routeList -> requestRepository.findByRouteListId(routeList.getRouteListId()).stream())
+                .flatMap(routeList -> requestRepository.findByRouteListId(routeList).stream())
                 .forEach(request -> {
                     request.setRouteListId(null);
                     request.setWarehousePoint(null);
