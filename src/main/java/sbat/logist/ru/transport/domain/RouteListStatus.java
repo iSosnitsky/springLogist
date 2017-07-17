@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name="ROUTE_LIST_STATUSES")
+@Table(name="route_list_statuses")
 public class RouteListStatus {
     @Id
     @Column(name="ROUTELISTSTATUSID")

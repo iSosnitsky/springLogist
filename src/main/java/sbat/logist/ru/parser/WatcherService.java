@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 
 @Service
-public class WatcherService {
+public class WatcherService implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger("main");
 
     private final Path watchPath;
@@ -31,7 +32,8 @@ public class WatcherService {
         this.fileChangeListener = fileChangeListenerService;
     }
 
-    public void doWatch() throws IOException {
+    @Override
+    public void run(String... strings) throws Exception {
         WatchService watchService = FileSystems.getDefault().newWatchService();
         logger.info("start watch service for [{}]", watchPath.toString());
         WatchKey watchKey = watchPath.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
@@ -87,15 +89,6 @@ public class WatcherService {
                 break; // infinite for loop
             }
 
-        } // end infinite for loop
-//        closeWatchService();
+        }
     }
-
-//    public void closeWatchService() {
-//        try {
-//            if (watchService != null)
-//                watchService.close();
-//        } catch (IOException e) {/*NOPE*/}
-//
-//    }
 }

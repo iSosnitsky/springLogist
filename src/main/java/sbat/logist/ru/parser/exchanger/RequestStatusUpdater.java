@@ -12,6 +12,7 @@ import sbat.logist.ru.transport.repository.RequestRepository;
 import sbat.logist.ru.transport.repository.RequestStatusRepository;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class RequestStatusUpdater {
@@ -28,8 +29,8 @@ public class RequestStatusUpdater {
     }
 
     public void execute(List<JsonStatus> jsonStatuses){
-        if (jsonStatuses.isEmpty()) return;
         logger.info("START assign statuses in requests table from JSON object:[updateStatus]");
+        AtomicInteger counter = new AtomicInteger(0);
         jsonStatuses.forEach(jsonStatus -> {
             try{
                 final Request request = requestRepository.findByExternalIdAndDataSource(jsonStatus.getRequestId(),DATA_SOURCE).orElseThrow(IllegalStateException::new);
@@ -40,6 +41,7 @@ public class RequestStatusUpdater {
                 request.setBoxQuantity(jsonStatus.getNumBoxes());
                 try{
                     requestRepository.save(request);
+                    counter.incrementAndGet();
                 } catch (Exception e){
                     logger.error("unable to save request[{}]",request.getExternalId());
                     logger.error(request.toString());
@@ -48,9 +50,8 @@ public class RequestStatusUpdater {
             } catch (IllegalStateException e){
                 logger.warn("Unable to update request [{}], because it's not present in table [requests], or because there is no such status as [{}]",jsonStatus.getRequestId(),jsonStatus.getStatus());
             }
-
-
         });
+        logger.info("ASSIGN statuses in requests completed, affected records size = [{}]", counter.get());
     }
 
 }

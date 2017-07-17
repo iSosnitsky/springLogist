@@ -19,19 +19,16 @@ public class SystemResourcesConfiguration {
     private Path jsonDataDirPath;
     private Path backupDirPath;
     private Path responseDirPath;
-    private Path logsDirPath;
 
     @Autowired
     public SystemResourcesConfiguration(ParserProperties configuration) {
         jsonDataDirPath = Paths.get(configuration.getJsonDataDir());
         backupDirPath = Paths.get(configuration.getBackupDir());
         responseDirPath = Paths.get(configuration.getResponseDir());
-        logsDirPath = Paths.get(configuration.getLogsDir());
 
         validatePathIsDirectory(jsonDataDirPath);
         validatePathIsDirectory(backupDirPath);
         validatePathIsDirectory(responseDirPath);
-        validatePathIsDirectory(logsDirPath);
     }
 
     private void validatePathIsDirectory(Path path) {
@@ -63,11 +60,5 @@ public class SystemResourcesConfiguration {
     @Qualifier("jsonDataDirPath")
     public Path jsonDataDirPath() {
         return jsonDataDirPath;
-    }
-
-    @Bean
-    @Qualifier("logsDirPath")
-    public Path logsDirPath() {
-        return logsDirPath;
     }
 }

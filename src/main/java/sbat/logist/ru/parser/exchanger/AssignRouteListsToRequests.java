@@ -14,6 +14,7 @@ import sbat.logist.ru.transport.repository.RequestRepository;
 import sbat.logist.ru.transport.repository.RouteListRepository;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class AssignRouteListsToRequests {
@@ -35,27 +36,26 @@ public class AssignRouteListsToRequests {
     }
 
 
-    public void execute( List<JsonRouteList> jsonRouteLists){
-        if (jsonRouteLists.isEmpty()) return;
+    public void execute(List<JsonRouteList> jsonRouteLists) {
         logger.info("START UPDATE requests assign routeLists");
 
+        AtomicInteger counter = new AtomicInteger(0);
+        jsonRouteLists.forEach((jsonRouteList) -> {
+            try {
+                final RouteList routeList = routeListRepository.findByRouteListIdExternalAndAndDataSourceId(jsonRouteList.getRouteListIdExternal(), DATA_SOURCE).orElseThrow(IllegalStateException::new);
+                final Point warehousePoint = pointRepository.findByPointIdExternalAndDataSource(jsonRouteList.getPointDepartureId(), DATA_SOURCE).orElseThrow(IllegalStateException::new);
+                jsonRouteList.getInvoices().forEach(invoice -> {
+                    final Request request = requestRepository.findByExternalIdAndDataSource(invoice, DATA_SOURCE).orElseThrow(IllegalStateException::new);
 
-            jsonRouteLists.forEach((jsonRouteList)->{
-                try {
-                final RouteList routeList = routeListRepository.findByRouteListIdExternalAndAndDataSourceId(jsonRouteList.getRouteListIdExternal(),DATA_SOURCE).orElseThrow(IllegalStateException::new);
-                final Point warehousePoint = pointRepository.findByPointIdExternalAndDataSource(jsonRouteList.getPointDepartureId(),DATA_SOURCE).orElseThrow(IllegalStateException::new);
-                jsonRouteList.getInvoices().forEach(invoice ->{
-                    final Request request = requestRepository.findByExternalIdAndDataSource(invoice,DATA_SOURCE).orElseThrow(IllegalStateException::new);
-
-//                    final Point destinationPointId = routeListId
                     request.setRouteListId(routeList);
                     request.setWarehousePoint(warehousePoint);
                     requestRepository.save(request);
+                    counter.incrementAndGet();
                 });
-                } catch (IllegalStateException e) {
-                    logger.warn("something real bad happened when assigning RouteLists to Requests. I's just sleep deprived as hell writing this. Just in case, routeListId was [{}]",jsonRouteList.getRouteListIdExternal());
-                }
-            });
-
+            } catch (IllegalStateException e) {
+                logger.warn("something real bad happened when assigning RouteLists to Requests. I's just sleep deprived as hell writing this. Just in case, routeListId was [{}]", jsonRouteList.getRouteListIdExternal());
+            }
+        });
+        logger.info("UPDATE requests assign routeLists completed, affected records size = [{}]", counter.get());
     }
 }

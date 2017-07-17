@@ -22,4 +22,14 @@ public class JsonStringToObjectCommandTest {
         final Optional<Data1c> execute1 = cmd.execute(fixedString);
         Assert.assertTrue(execute1.isPresent());
     }
+
+    @Test
+    public void testMos() throws Exception {
+        Path path = Paths.get(getClass().getClassLoader().getResource("MOS_OLD.pkg").toURI());
+
+        final String execute = command.execute(path);
+        final String fixedString = fixJsonStringCommand.execute(execute);
+        final Optional<Data1c> execute1 = cmd.execute(fixedString);
+        Assert.assertTrue(execute1.isPresent());
+    }
 }

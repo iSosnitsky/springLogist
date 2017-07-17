@@ -1,18 +1,14 @@
 package sbat.logist.ru.parser.command;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
-import sun.security.validator.ValidatorException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipInputStream;
 
@@ -43,8 +39,7 @@ public class FileToStringCommand implements Command<Path, String> {
         if (filePath.toString().endsWith(INCOMING_FILE_EXTENSION_ZIP)) {
             result = readZipFileToUtf8String(filePath.toFile());
         } else if (filePath.toString().endsWith(INCOMING_FILE_EXTENSION_PKG)) {
-            byte[] encoded = Files.readAllBytes(filePath);
-            result = new String(encoded, StandardCharsets.UTF_8);
+            result = FileUtils.readFileToString(filePath.toFile(), StandardCharsets.UTF_8.displayName());
         }
         else
             throw new IllegalStateException(String.format("file {%s} must end with {%s} or {%s} ,file will not be imported", filePath.toString(), INCOMING_FILE_EXTENSION_ZIP, INCOMING_FILE_EXTENSION_PKG));

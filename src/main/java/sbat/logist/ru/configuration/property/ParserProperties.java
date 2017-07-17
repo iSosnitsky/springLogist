@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "parser")
 public class ParserProperties {
-    private String logsDir;
     private String jsonDataDir;
     private String backupDir;
     private String responseDir;

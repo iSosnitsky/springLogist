@@ -1,12 +1,12 @@
 spring:
   firstDatasource:
     username: root
-    url: jdbc:mysql://localhost:3306/transmaster_transport_db?useSSL=false&serverTimezone=UTC&useUnicode=true
+    url: jdbc:mysql://localhost:3306/transmaster_transport_db?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
     password: MyNewPass
     driver-class-name: com.mysql.cj.jdbc.Driver
   secondDatasource:
     username: root
-    url: jdbc:mysql://localhost:3306/backup?useSSL=false&serverTimezone=UTC&useUnicode=true
+    url: jdbc:mysql://localhost:3306/backup?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
     password: MyNewPass
     driver-class-name: com.mysql.cj.jdbc.Driver
   data:
@@ -20,7 +20,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
 parser:
-  json-data-dir: /home/user/
-  logs-dir: /home/user/
-  backup-dir: /home/user/
-  response-dir: /home/user/
+  json-data-dir: /home/
+  backup-dir: /home/
+  response-dir: /home/
+logging:
+  path: /home/

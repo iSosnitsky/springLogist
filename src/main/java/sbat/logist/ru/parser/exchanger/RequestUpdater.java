@@ -11,6 +11,7 @@ import sbat.logist.ru.transport.repository.*;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class RequestUpdater {
@@ -32,25 +33,27 @@ public class RequestUpdater {
         this.requestStatusRepository = requestStatusRepository;
     }
 
-    public void execute (List<JsonRequest> requests){
+    public void execute(List<JsonRequest> requests) {
         logger.info("START update requests table from JSON object:[updateRequestsTable]");
-            requests.forEach(jsonRequest -> {
-                try{
-                Request foundRequest = requestRepository.findByExternalIdAndDataSource(jsonRequest.getRequestId(),DATA_SOURCE)
-                        .map(request -> updateRequest(request,jsonRequest))
+        AtomicInteger counter = new AtomicInteger(0);
+        requests.forEach(jsonRequest -> {
+            try {
+                Request foundRequest = requestRepository.findByExternalIdAndDataSource(jsonRequest.getRequestId(), DATA_SOURCE)
+                        .map(request -> updateRequest(request, jsonRequest))
                         .orElseGet(() -> mapJsonToRequest(jsonRequest));
-                    requestRepository.save(foundRequest);
-                } catch (IllegalStateException e){
-                    logger.warn("failed to update/insert request ",e.getMessage());
-                }
-            });
+                requestRepository.save(foundRequest);
+                counter.incrementAndGet();
+            } catch (IllegalStateException e) {
+                logger.warn("failed to update/insert request {}", e.getMessage());
+            }
+        });
+        logger.info("INSERT OR UPDATE INTO requests completed, affected records size = [{}]", counter.get());
     }
 
-    private Request updateRequest(Request request, JsonRequest jsonRequest)
-    {
+    private Request updateRequest(Request request, JsonRequest jsonRequest) {
 
-        request.setClientId(clientRepository.findByClientIDExternalAndDataSource(jsonRequest.getClientId(),DATA_SOURCE)
-                .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"clientId",jsonRequest.getClientId(),"users"))));
+        request.setClientId(clientRepository.findByClientIDExternalAndDataSource(jsonRequest.getClientId(), DATA_SOURCE)
+                .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "clientId", jsonRequest.getClientId(), "users"))));
         request.setRequestNumber(jsonRequest.getRequestNumber());
         request.setRequestDate(jsonRequest.getRequestDate());
         request.setInvoiceNumber(jsonRequest.getInvoiceNumber());
@@ -59,26 +62,23 @@ public class RequestUpdater {
         request.setDocumentDate(jsonRequest.getDocumentDate());
         request.setFirma(jsonRequest.getFirma());
         request.setStorage(jsonRequest.getStorage());
-        request.setDestinationPointId(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getAddressId(),DATA_SOURCE)
-                .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"destinationPointId",jsonRequest.getAddressId(),"points"))));
+        request.setDestinationPointId(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getAddressId(), DATA_SOURCE)
+                .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "destinationPointId", jsonRequest.getAddressId(), "points"))));
         request.setContactName(jsonRequest.getContactName());
         request.setContactPhone(jsonRequest.getContactPhone());
         request.setDeliveryOption(jsonRequest.getDeliveryOption());
-        request.setMarketAgentUserId(userRepository.findByUserIDExternalAndDataSource(jsonRequest.getTraderId(),DATA_SOURCE)
-                .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"marketAgentUserId",jsonRequest.getTraderId(),"users"))));
+        request.setMarketAgentUserId(userRepository.findByUserIDExternalAndDataSource(jsonRequest.getTraderId(), DATA_SOURCE)
+                .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "marketAgentUserId", jsonRequest.getTraderId(), "users"))));
         request.setDeliveryDate(jsonRequest.getDeliveryDate());
         return request;
     }
 
-
-
-
-    private Request mapJsonToRequest(JsonRequest jsonRequest){
+    private Request mapJsonToRequest(JsonRequest jsonRequest) {
         return Request.builder()
                 .dataSource(DATA_SOURCE)
                 .externalId(jsonRequest.getRequestId())
-                .clientId(clientRepository.findByClientIDExternalAndDataSource(jsonRequest.getClientId(),DATA_SOURCE)
-                        .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"clientId",jsonRequest.getClientId(),"users"))))
+                .clientId(clientRepository.findByClientIDExternalAndDataSource(jsonRequest.getClientId(), DATA_SOURCE)
+                        .orElseThrow(() -> new IllegalStateException(String.format("Failed to create request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "clientId", jsonRequest.getClientId(), "users"))))
                 .requestNumber(jsonRequest.getRequestNumber())
                 .requestDate(jsonRequest.getRequestDate())
                 .invoiceNumber(jsonRequest.getInvoiceNumber())
@@ -87,16 +87,16 @@ public class RequestUpdater {
                 .documentDate(jsonRequest.getDocumentDate())
                 .firma(jsonRequest.getFirma())
                 .storage(jsonRequest.getStorage())
-                .destinationPointId(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getAddressId(),DATA_SOURCE)
-                        .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"destinationPointId",jsonRequest.getAddressId(),"points"))))
+                .destinationPointId(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getAddressId(), DATA_SOURCE)
+                        .orElseThrow(() -> new IllegalStateException(String.format("Failed to create request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "destinationPointId", jsonRequest.getAddressId(), "points"))))
                 .contactName(jsonRequest.getContactName())
                 .contactPhone(jsonRequest.getContactPhone())
                 .deliveryOption(jsonRequest.getDeliveryOption())
-                .marketAgentUserId(userRepository.findByUserIDExternalAndDataSource(jsonRequest.getTraderId(),DATA_SOURCE)
-                        .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(),"marketAgentUserId",jsonRequest.getTraderId(),"users"))))
+                .marketAgentUserId(userRepository.findByUserIDExternalAndDataSource(jsonRequest.getTraderId(), DATA_SOURCE)
+                        .orElseThrow(() -> new IllegalStateException(String.format("Failed to create request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "marketAgentUserId", jsonRequest.getTraderId(), "users"))))
                 .deliveryDate(jsonRequest.getDeliveryDate())
                 .lastStatusUpdated(new java.sql.Date(Calendar.getInstance().getTime().getTime()))
-                .requestStatusId(requestStatusRepository.findByRequestStatusId("CREATED").orElseGet(null))
+                .requestStatusId(requestStatusRepository.findByRequestStatusId("CREATED").orElseThrow(() -> new IllegalStateException("No status 'created' is present in data table")))
                 .commentForStatus("Заявка добавлена из 1С")
                 .lastModifiedBy(userRepository.findOne(Long.parseLong("1")))
                 .build();

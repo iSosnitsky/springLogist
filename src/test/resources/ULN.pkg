@@ -1,0 +1,391 @@
+﻿{
+"dataFrom1C": {
+"server": "ULN",
+"packageNumber": 7499,
+"created": "2017-07-16T23:50:13",
+"packageData": {
+"updatePoints": [
+],
+"deletePoints": [
+],
+"updateDirections": [
+],
+"deleteDirections": [
+],
+"updateTrader": [
+],
+"deleteTrader": [
+],
+"updateClients": [
+],
+"deleteClients": [
+],
+"updateAddress": [
+],
+"deleteAddress": [
+],
+"updateRequests": [
+{
+"requestId": "4QWG1ULN", 
+"requestNumber": "I01-836824", 
+"requestDate": "20170703", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "Асхадуллин А.М.", 
+"storage": "Ульяновск", 
+"clientId": "146994", 
+"addressId": "2BH8EKA", 
+"contactName": "Роман", 
+"contactPhone": "8-927-037-08-75", 
+"deliveryOption": "Доставка торговым представителем", 
+"traderId": "Каз009", 
+"deliveryDate": "20170703"
+}
+, {
+"requestId": "4QWG2ULN", 
+"requestNumber": "I02-836824", 
+"requestDate": "20170703", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "", 
+"storage": "Реклама (Ульяновск)", 
+"clientId": "146994", 
+"addressId": "2BH8EKA", 
+"contactName": "Роман", 
+"contactPhone": "8-927-037-08-75", 
+"deliveryOption": "Доставка торговым представителем", 
+"traderId": "Каз009", 
+"deliveryDate": "20170703"
+}
+, {
+"requestId": "4QWGQULN", 
+"requestNumber": "INT-836960", 
+"requestDate": "20170703", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "Симбирев И.В.", 
+"storage": "Ульяновск", 
+"clientId": "142361", 
+"addressId": "26E4EKA", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "10000461", 
+"deliveryDate": "20170703"
+}
+, {
+"requestId": "4QWN4ULN", 
+"requestNumber": "INT-838443", 
+"requestDate": "20170704", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "Асхадуллин А.М.", 
+"storage": "Ульяновск", 
+"clientId": "146994", 
+"addressId": "2BH8EKA", 
+"contactName": "Роман", 
+"contactPhone": "8-927-037-08-75", 
+"deliveryOption": "Доставка торговым представителем", 
+"traderId": "Каз009", 
+"deliveryDate": "20170704"
+}
+, {
+"requestId": "4QWNIULN", 
+"requestNumber": "INT-838558", 
+"requestDate": "20170704", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "СБ логистик", 
+"storage": "Ульяновск", 
+"clientId": "121762", 
+"addressId": "1LXBEKA", 
+"contactName": "Логигнов Михаил Анатольевич", 
+"contactPhone": "8-917-25-05-55", 
+"deliveryOption": "Доставка торговым представителем", 
+"traderId": "Каз009", 
+"deliveryDate": "20170704"
+}
+, {
+"requestId": "4QWNJULN", 
+"requestNumber": "INT-838559", 
+"requestDate": "20170704", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "СБ логистик", 
+"storage": "Ульяновск", 
+"clientId": "121762", 
+"addressId": "1LXBEKA", 
+"contactName": "Логигнов Михаил Анатольевич", 
+"contactPhone": "8-917-25-05-55", 
+"deliveryOption": "Доставка торговым представителем", 
+"traderId": "Каз009", 
+"deliveryDate": "20170704"
+}
+, {
+"requestId": "4QWNKULN", 
+"requestNumber": "INT-838560", 
+"requestDate": "20170704", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "СБ логистик", 
+"storage": "Ульяновск", 
+"clientId": "121762", 
+"addressId": "1LXBEKA", 
+"contactName": "Логигнов Михаил Анатольевич", 
+"contactPhone": "8-917-25-05-55", 
+"deliveryOption": "Доставка торговым представителем", 
+"traderId": "Каз009", 
+"deliveryDate": "20170704"
+}
+, {
+"requestId": "4QX99ULN", 
+"requestNumber": "INT-844568", 
+"requestDate": "20170706", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "Каратаев Д.В.", 
+"storage": "Ульяновск", 
+"clientId": "135945", 
+"addressId": "20AKEKA", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "80000159", 
+"deliveryDate": "20170706"
+}
+, {
+"requestId": "4QY32ULN", 
+"requestNumber": "INT-851613", 
+"requestDate": "20170711", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "СБ логистик", 
+"storage": "Ульяновск", 
+"clientId": "144312", 
+"addressId": "28HMEKA", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "Улн041", 
+"deliveryDate": "20170711"
+}
+, {
+"requestId": "4QY6IULN", 
+"requestNumber": "INT-853052", 
+"requestDate": "20170712", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "", 
+"storage": "Ульяновск", 
+"clientId": "135069", 
+"addressId": "1ZENEKA", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "80000138", 
+"deliveryDate": "20170712"
+}
+, {
+"requestId": "4QYICULN", 
+"requestNumber": "INT-856421", 
+"requestDate": "20170713", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "Асхадуллин А.М.", 
+"storage": "Ульяновск", 
+"clientId": "133164", 
+"addressId": "1XAREKA", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "10000570", 
+"deliveryDate": "20170713"
+}
+, {
+"requestId": "4QYLKULN", 
+"requestNumber": "INT-857451", 
+"requestDate": "20170714", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "СБ логистик", 
+"storage": "Ульяновск", 
+"clientId": "126005", 
+"addressId": "1QFNEKA", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "Улн053", 
+"deliveryDate": "20170714"
+}
+, {
+"requestId": "4QYQEULN", 
+"requestNumber": "INT-858495", 
+"requestDate": "20170715", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "Каратаев Д.В.", 
+"storage": "Ульяновск", 
+"clientId": "144106", 
+"addressId": "289KEKA", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "80000093", 
+"deliveryDate": "20170715"
+}
+, {
+"requestId": "4QYR1ULN", 
+"requestNumber": "AGN-226090", 
+"requestDate": "20170716", 
+"invoiceNumber": "AGN-226090", 
+"invoiceDate": "20170716", 
+"documentNumber": "Улн-212781", 
+"documentDate": "20170716", 
+"firma": "Симбирев И.В.", 
+"storage": "Ульяновск", 
+"clientId": "150764", 
+"addressId": "2FK7EKA", 
+"contactName": "", 
+"contactPhone": "", 
+"deliveryOption": "Доставка без пересчета", 
+"traderId": "80000278", 
+"deliveryDate": "20170717"
+}
+],
+"deleteRequests": [
+],
+"updateStatus": [
+{
+"requestId": "4QWG1ULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QWG2ULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QWGQULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QWN4ULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QWNIULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QWNJULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QWNKULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QX99ULN", 
+"num_boxes": "", 
+"status": "CREDIT_LIMIT", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QY32ULN", 
+"num_boxes": "", 
+"status": "CREDIT_LIMIT", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QY6IULN", 
+"num_boxes": "", 
+"status": "APPROVED", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QYICULN", 
+"num_boxes": "", 
+"status": "CREDIT_LIMIT", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QYLKULN", 
+"num_boxes": "", 
+"status": "STOP_LIST", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QYQEULN", 
+"num_boxes": "", 
+"status": "CREDIT_LIMIT", 
+"timeOutStatus": "", 
+"Comment": ""
+}
+, {
+"requestId": "4QYR1ULN", 
+"num_boxes": 0, 
+"status": "RASH_CREATED", 
+"timeOutStatus": "16.07.17,22:15:15", 
+"Comment": ""
+}
+],
+"deleteStatus": [
+],
+"updateRouteLists": [
+],
+"deleteRouteLists": [
+]
+}
+}
+}

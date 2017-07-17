@@ -39,10 +39,9 @@ public class RouteListUpdater {
         this.routeListStatusRepository = routeListStatusRepository;
     }
 
-    public Map<Long, Set<String>> execute(List<JsonRouteList> jsonRouteLists) {
+    public void execute(List<JsonRouteList> jsonRouteLists) {
         final AtomicInteger counter = new AtomicInteger(0);
         logger.info("START update route_lists table from JSON object:[updateRouteLists]");
-        Map<Long, Set<String>> map = new HashMap();
 
         jsonRouteLists.forEach(jsonRouteList -> {
             String routeIdExternal = null;
@@ -59,11 +58,8 @@ public class RouteListUpdater {
                     Route route = routeRepository.findByExternalIdAndDataSource(routeIdExternal, DATA_SOURCE)
                             .orElseThrow(IllegalStateException::new);
                     RouteList routeList = mapJson(jsonRouteList, route, driver);
-                    routeList = routeListRepository.save(routeList);
-                    map.put(routeList.getRouteListId(),jsonRouteList.getInvoices());
+                    routeListRepository.save(routeList);
                     counter.incrementAndGet();
-
-
                 } catch (IllegalStateException e) {
                     logger.error("Unable to insert RouteList [{}] because route[{}] wasn't found in routes table", jsonRouteList.getRouteListIdExternal(), routeIdExternal);
                     e.printStackTrace();
@@ -76,7 +72,6 @@ public class RouteListUpdater {
         });
 
         logger.info("INSERT OR UPDATE INTO route_lists completed, affected records size = [{}]", counter.get());
-        return map;
     }
 
     private RouteList mapJson(JsonRouteList jsonRouteList, Route route, User driver) {

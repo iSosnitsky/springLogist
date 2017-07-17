@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Data
-@Table(name="REQUEST_STATUSES")
+@Table(name="request_statuses")
 public class RequestStatus {
     @Id
     @Column(name="REQUESTSTATUSID")
