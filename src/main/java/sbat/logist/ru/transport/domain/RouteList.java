@@ -30,7 +30,7 @@ public class RouteList {
     private String routeListIdExternal;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="DATASOURCEID")
+    @Column(name="DATASOURCEID", nullable = false)
     private DataSource dataSourceId;
 
 

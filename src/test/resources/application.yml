@@ -25,5 +25,3 @@ parser:
   json-data-dir: /home/
   backup-dir: /home/
   response-dir: /home/
-logging:
-  path: /home/

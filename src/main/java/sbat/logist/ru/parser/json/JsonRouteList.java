@@ -1,5 +1,6 @@
 package sbat.logist.ru.parser.json;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -16,7 +17,9 @@ public class JsonRouteList {
     @JsonProperty("routerSheetNumber")
     private String routeListNumber;
     @JsonProperty("routerSheetDate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     private Date routeListDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     private Date departureDate;
     private String forwarderId;
     private String driverId;

@@ -56,7 +56,7 @@ public class RouteUpdater {
                     routeRepository.save(routeToInsert);
                     counter.incrementAndGet();
                 } catch (IllegalStateException e) {
-                    logger.error("can't insert route: {}", r);
+                    logger.error("can't insert route:", e);
                 }
             }
         });
@@ -91,7 +91,7 @@ public class RouteUpdater {
                     logger.error("arrival point doesn't exist in database. pointIdExternal: {}", pointArrivalIdExternal);
                     return new IllegalStateException("database doesn't have point with id " + pointArrivalIdExternal);
                 });
-        Point pointDeparture = pointRepository.findByPointIdExternalAndDataSource(pointArrivalIdExternal, DATA_SOURCE)
+        final Point pointDeparture = pointRepository.findByPointIdExternalAndDataSource(pointDepartureIdExternal, DATA_SOURCE)
                 .orElseThrow(() -> {
                     logger.error("departure point doesn't exist in database. pointIdExternal: {}", pointDepartureIdExternal);
                     return new IllegalStateException("database doesn't have point with id " + pointDepartureIdExternal);
@@ -111,7 +111,7 @@ public class RouteUpdater {
                         return directionName;
                     }
                 })
-                .orElseGet(() -> directionName);
+                .orElse(directionName);
     }
 
     /**

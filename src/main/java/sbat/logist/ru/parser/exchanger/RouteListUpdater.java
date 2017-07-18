@@ -52,17 +52,24 @@ public class RouteListUpdater {
             }
             if (routeIdExternal != null) {
                 try {
-                    User driver = userRepository.findByUserIDExternalAndDataSource(jsonRouteList.getDriverId(), DATA_SOURCE)
-                            .orElse(null);
+                    User driver = userRepository.findByUserIDExternalAndDataSource(jsonRouteList.getDriverId(), DATA_SOURCE).orElse(null);
+                    Route route = routeRepository.findByExternalIdAndDataSource(routeIdExternal, DATA_SOURCE).orElseThrow(IllegalStateException::new);
 
-                    Route route = routeRepository.findByExternalIdAndDataSource(routeIdExternal, DATA_SOURCE)
-                            .orElseThrow(IllegalStateException::new);
-                    RouteList routeList = mapJson(jsonRouteList, route, driver);
+                    RouteList routeList = routeListRepository.findByRouteListIdExternalAndAndDataSourceId(jsonRouteList.getRouteListIdExternal(), DATA_SOURCE)
+                            .map(rl -> fillRouteList(rl, jsonRouteList, route, driver))
+                            .orElseGet(() -> {
+                                RouteList rl = RouteList.builder()
+                                        .routeListIdExternal(jsonRouteList.getRouteListIdExternal())
+                                        .creationDate(jsonRouteList.getRouteListDate())
+                                        .dataSourceId(DataSource.LOGIST_1C)
+                                        .build();
+                                return fillRouteList(rl, jsonRouteList, route, driver);
+                            });
                     routeListRepository.save(routeList);
                     counter.incrementAndGet();
                 } catch (IllegalStateException e) {
+                    logger.error("Error: {}", e);
                     logger.error("Unable to insert RouteList [{}] because route[{}] wasn't found in routes table", jsonRouteList.getRouteListIdExternal(), routeIdExternal);
-                    e.printStackTrace();
                 }
 
 
@@ -74,17 +81,14 @@ public class RouteListUpdater {
         logger.info("INSERT OR UPDATE INTO route_lists completed, affected records size = [{}]", counter.get());
     }
 
-    private RouteList mapJson(JsonRouteList jsonRouteList, Route route, User driver) {
-        return RouteList.builder()
-                .routeListIdExternal(jsonRouteList.getRouteListIdExternal())
-                .departureDate(jsonRouteList.getDepartureDate())
-                .dataSourceId(DATA_SOURCE)
-                .forwarderId(jsonRouteList.getForwarderId())
-                .creationDate(jsonRouteList.getRouteListDate())
-                .routeListNumber(jsonRouteList.getRouteListNumber())
-                .routeId(route)
-                .driverId(driver)
-                .status(routeListStatusRepository.findByRouteListStatusId(jsonRouteList.getStatus()).get())
-                .build();
+    private RouteList fillRouteList(RouteList rl, JsonRouteList jsonRouteList, Route route, User driver) {
+        rl.setDepartureDate(jsonRouteList.getDepartureDate());
+        rl.setForwarderId(jsonRouteList.getForwarderId());
+        rl.setRouteListNumber(jsonRouteList.getRouteListNumber());
+        rl.setRouteId(route);
+        rl.setDriverId(driver);
+        rl.setStatus((routeListStatusRepository.findByRouteListStatusId(jsonRouteList.getStatus())
+                .orElseThrow(() -> new IllegalStateException("Can't find route list status in repo " + jsonRouteList.getStatus()))));
+        return rl;
     }
 }

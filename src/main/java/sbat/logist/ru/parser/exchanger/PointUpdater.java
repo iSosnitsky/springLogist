@@ -27,8 +27,14 @@ public class PointUpdater {
         logger.info("START update jsonPoints table from JSON object:[updatePointsArray]");
         jsonPoints.forEach(jsonPoint -> {
             final Point dbPoint = pointRepository.findByPointIdExternalAndDataSource(jsonPoint.getPointId(), DATA_SOURCE)
-                    .map(foundPoint -> mapJson(jsonPoint))
-                    .orElseGet(() -> mapJson(jsonPoint));
+                    .map(foundPoint -> fillPoint(foundPoint, jsonPoint))
+                    .orElseGet(() -> {
+                        Point p = Point.builder()
+                                .pointIdExternal(jsonPoint.getPointId())
+                                .dataSource(DATA_SOURCE)
+                                .build();
+                        return fillPoint(p, jsonPoint);
+                    });
             pointRepository.save(dbPoint);
             counter.incrementAndGet();
         });
@@ -36,15 +42,13 @@ public class PointUpdater {
         logger.info("INSERT OR UPDATE ON DUPLICATE INTO [points] completed, affected records size = [{}]", counter.get());
     }
 
-    private Point mapJson(JsonPoint jsonPoint) {
-        return Point.builder()
-                .pointIdExternal(jsonPoint.getPointId())
-                .dataSource(DATA_SOURCE)
-                .pointName(jsonPoint.getPointName())
-                .address(jsonPoint.getPointAddress())
-                .email(jsonPoint.getPointEmails())
-                .pointTypeId(PointType.valueOf(jsonPoint.getPointType()))
-                .responsiblePersonId(jsonPoint.getResponsiblePersonId())
-                .build();
+    private Point fillPoint(Point point, JsonPoint jsonPoint) {
+        point.setPointName(jsonPoint.getPointName());
+        point.setAddress(jsonPoint.getPointAddress());
+        point.setEmail(jsonPoint.getPointEmails());
+        point.setPointTypeId(PointType.valueOf(jsonPoint.getPointType()));
+        point.setResponsiblePersonId(jsonPoint.getResponsiblePersonId());
+
+        return point;
     }
 }

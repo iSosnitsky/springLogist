@@ -62,8 +62,7 @@ public class RequestUpdater {
         request.setDocumentDate(jsonRequest.getDocumentDate());
         request.setFirma(jsonRequest.getFirma());
         request.setStorage(jsonRequest.getStorage());
-        request.setDestinationPointId(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getAddressId(), DATA_SOURCE)
-                .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "destinationPointId", jsonRequest.getAddressId(), "points"))));
+        request.setDestinationPointId(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getAddressId(), DATA_SOURCE).orElse(null));
         request.setContactName(jsonRequest.getContactName());
         request.setContactPhone(jsonRequest.getContactPhone());
         request.setDeliveryOption(jsonRequest.getDeliveryOption());

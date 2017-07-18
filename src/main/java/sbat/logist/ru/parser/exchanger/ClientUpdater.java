@@ -28,8 +28,14 @@ public class ClientUpdater {
         logger.info("START update jsonClients table from JSON object:[updateClientsArray]");
         jsonClients.forEach(jsonClient -> {
             final Client client = clientRepository.findByClientIDExternalAndDataSource(jsonClient.getClientId(), DATA_SOURCE)
-                    .map(foundClient -> mapJson(jsonClient))
-                    .orElseGet(() -> mapJson(jsonClient));
+                    .map(foundClient -> fillClient(foundClient, jsonClient))
+                    .orElseGet(() -> {
+                        Client c = Client.builder()
+                                .clientIDExternal(jsonClient.getClientId())
+                                .dataSource(DATA_SOURCE)
+                                .build();
+                        return fillClient(c, jsonClient);
+                    });
             clientRepository.save(client);
             counter.incrementAndGet();
         });
@@ -37,12 +43,9 @@ public class ClientUpdater {
         logger.info("INSERT OR UPDATE for clients completed, affected records size = [{}]", counter.get());
     }
 
-    private Client mapJson(JsonClient jsonClient) {
-        return Client.builder()
-                .clientIDExternal(jsonClient.getClientId())
-                .dataSource(DATA_SOURCE)
-                .clientName(jsonClient.getClientName())
-                .inn(jsonClient.getClientInn())
-                .build();
+    private Client fillClient(Client client, JsonClient jsonClient) {
+        client.setClientName(jsonClient.getClientName());
+        client.setInn(jsonClient.getClientInn());
+        return client;
     }
 }
