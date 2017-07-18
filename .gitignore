@@ -12,3 +12,5 @@
 target/
 *.iml
 src/main/resources/static/built
+src/test/resources/application.yml
+src/main/resources/application.yml

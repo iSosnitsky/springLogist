@@ -6,6 +6,7 @@ import sbat.logist.ru.transport.domain.Route;
 
 import java.util.Optional;
 
+
 public interface RouteRepository extends PagingAndSortingRepository<Route, Integer> {
     Optional<Route> findByExternalIdAndRouteName(String externalId, String routeName);
     Optional<Route> findByExternalIdAndDataSource(String externalId, DataSource dataSource);

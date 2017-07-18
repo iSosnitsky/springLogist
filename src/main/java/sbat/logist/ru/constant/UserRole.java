@@ -8,7 +8,8 @@ public enum UserRole {
     DISPATCHER("Диспетчер"),
     MARKET_AGENT("Торговый представитель"),
     TEMP_REMOVED("Временно удален"),
-    W_DISPATCHER("Диспетчер склада");
+    W_DISPATCHER("Диспетчер склада"),
+    DRIVER("Водитель");
 
     @Getter
     private final String rusRoleName;

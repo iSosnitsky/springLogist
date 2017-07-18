@@ -48,7 +48,7 @@ public class RequestStatusUpdater {
                 }
 
             } catch (IllegalStateException e){
-                logger.warn("Unable to update request [{}], because it's not present in table [requests], or because there is no such status as [{}]",jsonStatus.getRequestId(),jsonStatus.getStatus());
+                logger.warn("Unable to update request status [{}], because it's not present in table [requests], or because there is no such status as [{}]",jsonStatus.getRequestId(),jsonStatus.getStatus());
             }
         });
         logger.info("ASSIGN statuses in requests completed, affected records size = [{}]", counter.get());

@@ -45,15 +45,21 @@ public class AssignRouteListsToRequests {
                 final RouteList routeList = routeListRepository.findByRouteListIdExternalAndAndDataSourceId(jsonRouteList.getRouteListIdExternal(), DATA_SOURCE).orElseThrow(IllegalStateException::new);
                 final Point warehousePoint = pointRepository.findByPointIdExternalAndDataSource(jsonRouteList.getPointDepartureId(), DATA_SOURCE).orElseThrow(IllegalStateException::new);
                 jsonRouteList.getInvoices().forEach(invoice -> {
+                    try{
+
+
                     final Request request = requestRepository.findByExternalIdAndDataSource(invoice, DATA_SOURCE).orElseThrow(IllegalStateException::new);
 
                     request.setRouteListId(routeList);
                     request.setWarehousePoint(warehousePoint);
                     requestRepository.save(request);
                     counter.incrementAndGet();
+                    } catch (IllegalStateException e) {
+                        logger.warn("Unable to assign routeList [{}] to request [{}], because it's not present in table [requests]", jsonRouteList.getRouteListIdExternal(), invoice);
+                    }
                 });
             } catch (IllegalStateException e) {
-                logger.warn("something real bad happened when assigning RouteLists to Requests. I's just sleep deprived as hell writing this. Just in case, routeListId was [{}]", jsonRouteList.getRouteListIdExternal());
+                logger.warn("Unable to assign routeList [{}] to requests. Either it's not present in [routeLists] table, or warehousePoint (pointDepartureId) [{}] is not present in [points] table ", jsonRouteList.getRouteListIdExternal(), jsonRouteList.getPointDepartureId());
             }
         });
         logger.info("UPDATE requests assign routeLists completed, affected records size = [{}]", counter.get());
