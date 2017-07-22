@@ -103,6 +103,7 @@ public class RouteUpdater {
         // если у нас новое направление(directionIDExternal нет в БД) и routeName - дублируется => нужно присвоить новый routeName
         return routeRepository.findByExternalIdAndRouteName(directionIDExternal, directionName)
                 .map(route -> {
+                    //Мы ищем по ExternalId и directionName. Каким образом ExternalId не будет равен в результатах поиска?
                     if (!route.getExternalId().equals(directionIDExternal) && route.getRouteName().equals(directionName)) {
                         return getUniqueDirectionName(directionName);
                     } else {
