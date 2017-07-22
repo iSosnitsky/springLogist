@@ -48,42 +48,50 @@ public class UserFromTraderUpdater {
         map.get(true).stream()
                 .filter(trader -> !userRepository.findUserByLogin(trader.getTraderLogin()).isPresent())
                 .forEach(trader -> {
-                    final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
-                    final String passAndSalt = md5DigestAsHex((md5DigestAsHex(trader.getTraderPassword().getBytes()) + salt).getBytes());
-                    final User user = User.builder()
-                            .userIDExternal(trader.getTraderId())
-                            .dataSource(DataSource.LOGIST_1C)
-                            .login(trader.getTraderLogin())
-                            .salt(salt)
-                            .passAndSalt(passAndSalt)
-                            .userRole(UserRole.MARKET_AGENT)
-                            .userName(trader.getTraderName())
-                            .phoneNumber(trader.getTraderPhone())
-                            .email(trader.getTraderEmail())
-                            .position(trader.getTraderOffice())
-                            .build();
-                    userRepository.save(user);
-                    counter.incrementAndGet();
+                    try {
+                        final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
+                        final String passAndSalt = md5DigestAsHex((md5DigestAsHex(trader.getTraderPassword().getBytes()) + salt).getBytes());
+                        final User user = User.builder()
+                                .userIDExternal(trader.getTraderId())
+                                .dataSource(DataSource.LOGIST_1C)
+                                .login(trader.getTraderLogin())
+                                .salt(salt)
+                                .passAndSalt(passAndSalt)
+                                .userRole(UserRole.MARKET_AGENT)
+                                .userName(trader.getTraderName())
+                                .phoneNumber(trader.getTraderPhone())
+                                .email(trader.getTraderEmail())
+                                .position(trader.getTraderOffice())
+                                .build();
+                        userRepository.save(user);
+                        counter.incrementAndGet();
+                    } catch (Exception e) {
+                        logger.warn(e.getMessage());
+                    }
                 });
         map.get(false).forEach(trader -> {
-                    final String uniqueLogin = generateUniqueLogin();
-                    final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
-                    final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
-                    final User user = userRepository.findByUserIDExternalAndDataSource(trader
-                    .getTraderId(),DataSource.LOGIST_1C).orElseGet(() -> User.builder()
-                            .userIDExternal(trader.getTraderId())
-                            .dataSource(DataSource.LOGIST_1C)
-                            .login(uniqueLogin)
-                            .salt(salt)
-                            .passAndSalt(passAndSalt)
-                            .userRole(UserRole.MARKET_AGENT)
-                            .userName(trader.getTraderName())
-                            .phoneNumber(trader.getTraderPhone())
-                            .email(trader.getTraderEmail())
-                            .position(trader.getTraderOffice())
-                            .build());
-                    userRepository.save(user);
-                    counter.incrementAndGet();
+                    try {
+                        final String uniqueLogin = generateUniqueLogin();
+                        final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
+                        final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
+                        final User user = userRepository.findByUserIDExternalAndDataSource(trader
+                                .getTraderId(), DataSource.LOGIST_1C).orElseGet(() -> User.builder()
+                                .userIDExternal(trader.getTraderId())
+                                .dataSource(DataSource.LOGIST_1C)
+                                .login(uniqueLogin)
+                                .salt(salt)
+                                .passAndSalt(passAndSalt)
+                                .userRole(UserRole.MARKET_AGENT)
+                                .userName(trader.getTraderName())
+                                .phoneNumber(trader.getTraderPhone())
+                                .email(trader.getTraderEmail())
+                                .position(trader.getTraderOffice())
+                                .build());
+                        userRepository.save(user);
+                        counter.incrementAndGet();
+                    } catch (Exception e) {
+                        logger.warn(e.getMessage());
+                    }
                 }
         );
 

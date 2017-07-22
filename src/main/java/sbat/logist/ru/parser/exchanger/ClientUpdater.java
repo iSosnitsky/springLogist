@@ -36,8 +36,13 @@ public class ClientUpdater {
                                 .build();
                         return fillClient(c, jsonClient);
                     });
+            try{
             clientRepository.save(client);
             counter.incrementAndGet();
+            //SQLException
+            } catch (Exception e) {
+                logger.warn(e.getMessage());
+            }
         });
 
         logger.info("INSERT OR UPDATE for clients completed, affected records size = [{}]", counter.get());

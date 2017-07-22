@@ -4,7 +4,6 @@ import lombok.Data;
 import sbat.logist.ru.constant.DataSource;
 
 import javax.persistence.*;
-import java.sql.Time;
 
 @Data
 @Entity
@@ -30,11 +29,12 @@ public class Route {
     @Column(name = "ROUTENAME", nullable = false)
     private String routeName;
 
-    @Column(name = "FIRSTPOINTARRIVALTIME", nullable = false)
-    private Time time;
+//    @Column(name = "FIRSTPOINTARRIVALTIME", nullable = false)
+//    private Time time;
 
-    @Column(name = "DAYSOFWEEK", nullable = false)
-    private String daysOfWeek;
+//    @Type(type="org.hibernate.type.setType")
+//    @Column(name = "DAYSOFWEEK")
+//    private String daysOfWeek;
 
     @Column(name = "TARIFFID")
     private Integer tariffId;

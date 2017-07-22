@@ -58,43 +58,53 @@ public class UserFromClientUpdater {
         map.get(true).stream()
                 .filter(client -> !userRepository.findUserByLogin(client.getClientId()).isPresent())
                 .forEach(client -> {
-                    final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
-                    final String passAndSalt = md5DigestAsHex((md5DigestAsHex(client.getClientPassword().getBytes()) + salt).getBytes());
-                    final Optional<Client> optional = clientRepository.findByClientIDExternal(client.getClientId());
-                    if (optional.isPresent()) {
-                        final User user = User.builder()
-                                .userIDExternal(client.getClientId() + CLIENT_USER_SUFFIX)
-                                .dataSource(DataSource.LOGIST_1C)
-                                .login(client.getClientId())
-                                .salt(salt)
-                                .passAndSalt(passAndSalt)
-                                .userRole(UserRole.CLIENT_MANAGER)
-                                .userName(client.getClientName())
-                                .client(optional.get())
-                                .build();
-                        userRepository.save(user);
-                        counter.incrementAndGet();
+                    try {
+                        final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
+                        final String passAndSalt = md5DigestAsHex((md5DigestAsHex(client.getClientPassword().getBytes()) + salt).getBytes());
+                        final Optional<Client> optional = clientRepository.findByClientIDExternal(client.getClientId());
+                        if (optional.isPresent()) {
+                            final User user = User.builder()
+                                    .userIDExternal(client.getClientId() + CLIENT_USER_SUFFIX)
+                                    .dataSource(DataSource.LOGIST_1C)
+                                    .login(client.getClientId())
+                                    .salt(salt)
+                                    .passAndSalt(passAndSalt)
+                                    .userRole(UserRole.CLIENT_MANAGER)
+                                    .userName(client.getClientName())
+                                    .client(optional.get())
+                                    .build();
+                            userRepository.save(user);
+                            counter.incrementAndGet();
+                        }
+                        //SQLException
+                    } catch (Exception e) {
+                        logger.warn(e.getMessage());
                     }
                 });
         map.get(false)
                 .forEach(client -> {
-                            final String uniqueLogin = generateUniqueLogin();
-                            final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
-                            final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
-                            final Optional<Client> optional = clientRepository.findByClientIDExternal(client.getClientId());
-                            if (optional.isPresent()) {
-                                final User user = User.builder()
-                                        .userIDExternal(client.getClientId() + CLIENT_USER_SUFFIX)
-                                        .dataSource(DataSource.LOGIST_1C)
-                                        .login(uniqueLogin)
-                                        .salt(salt)
-                                        .passAndSalt(passAndSalt)
-                                        .userRole(UserRole.MARKET_AGENT)
-                                        .userName(client.getClientName())
-                                        .client(optional.get())
-                                        .build();
-                                userRepository.save(user);
-                                counter.incrementAndGet();
+                            try {
+                                final String uniqueLogin = generateUniqueLogin();
+                                final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
+                                final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
+                                final Optional<Client> optional = clientRepository.findByClientIDExternal(client.getClientId());
+                                if (optional.isPresent()) {
+                                    final User user = User.builder()
+                                            .userIDExternal(client.getClientId() + CLIENT_USER_SUFFIX)
+                                            .dataSource(DataSource.LOGIST_1C)
+                                            .login(uniqueLogin)
+                                            .salt(salt)
+                                            .passAndSalt(passAndSalt)
+                                            .userRole(UserRole.MARKET_AGENT)
+                                            .userName(client.getClientName())
+                                            .client(optional.get())
+                                            .build();
+                                    userRepository.save(user);
+                                    counter.incrementAndGet();
+                                }
+
+                            } catch (Exception e) {
+                                logger.warn(e.getMessage());
                             }
                         }
                 );

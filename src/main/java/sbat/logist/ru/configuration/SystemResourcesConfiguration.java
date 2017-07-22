@@ -61,4 +61,9 @@ public class SystemResourcesConfiguration {
     public Path jsonDataDirPath() {
         return jsonDataDirPath;
     }
+
+//    @Bean
+//    public ResourceProcessor<User> resourceProcessor() {
+//        Re
+//    }
 }

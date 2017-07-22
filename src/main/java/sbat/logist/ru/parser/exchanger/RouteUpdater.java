@@ -55,7 +55,7 @@ public class RouteUpdater {
 
                     routeRepository.save(routeToInsert);
                     counter.incrementAndGet();
-                } catch (IllegalStateException e) {
+                } catch (Exception e) {
                     logger.error("can't insert route:", e);
                 }
             }
@@ -119,6 +119,7 @@ public class RouteUpdater {
      *
      * @param duplicatedRouteName
      */
+    //TODO: Doesn't work. Logger shits with errors regarding duplicate routeNames on production server
     private String getUniqueDirectionName(final String duplicatedRouteName) {
         int count = 0;
         do {
