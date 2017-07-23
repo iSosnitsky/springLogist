@@ -56,6 +56,8 @@ public class UserFromClientUpdater {
         final AtomicInteger counter = new AtomicInteger(0);
 
         map.get(true).stream()
+                //Doesn't really check if there's no user w/ external ID = clientID+prefix
+                //TODO: So fix this please
                 .filter(client -> !userRepository.findUserByLogin(client.getClientId()).isPresent())
                 .forEach(client -> {
                     try {
@@ -78,7 +80,7 @@ public class UserFromClientUpdater {
                         }
                         //SQLException
                     } catch (Exception e) {
-                        logger.warn(e.getMessage());
+                        logger.error("Exception thrown inserting user from client:\n {}\n Exception: \n {}",client.toString(), e.getMessage());
                     }
                 });
         map.get(false)
@@ -95,7 +97,7 @@ public class UserFromClientUpdater {
                                             .login(uniqueLogin)
                                             .salt(salt)
                                             .passAndSalt(passAndSalt)
-                                            .userRole(UserRole.MARKET_AGENT)
+                                            .userRole(UserRole.CLIENT_MANAGER)
                                             .userName(client.getClientName())
                                             .client(optional.get())
                                             .build();
@@ -104,7 +106,7 @@ public class UserFromClientUpdater {
                                 }
 
                             } catch (Exception e) {
-                                logger.warn(e.getMessage());
+                                logger.error("Exception thrown inserting user from client:\n {}\n Exception: \n {}",client.toString(), e.getMessage());
                             }
                         }
                 );
