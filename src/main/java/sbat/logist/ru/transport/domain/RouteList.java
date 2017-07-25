@@ -51,7 +51,7 @@ public class RouteList {
 
 
     //TODO: Переписать после водителей
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="DRIVERID")
     private User driverId;
 
@@ -61,11 +61,11 @@ public class RouteList {
     @Column(name="LICENSEPLATE")
     private String licensePlate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="STATUS")
     private RouteListStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ROUTEID")
     private Route routeId;
 }

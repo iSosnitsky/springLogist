@@ -13,11 +13,11 @@ public class Driver {
     @Column(name="ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="VEHICLE_ID")
     private Vehicle vehicle;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="TRANSPORT_COMPANY_ID")
     private TransportCompany transportCompany;
 

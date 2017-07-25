@@ -38,15 +38,15 @@ public class Request {
     private Date requestDate;
 
     //TODO: доделать джойны
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENTID")
     private Client clientId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="DESTINATIONPOINTID")
     private Point destinationPointId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MARKETAGENTUSERID")
     private User marketAgentUserId;
 
@@ -98,7 +98,7 @@ public class Request {
     @Column(name = "LASTSTATUSUPDATED")
     private Date lastStatusUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LASTMODIFIEDBY")
     private User lastModifiedBy;
 
@@ -110,27 +110,27 @@ public class Request {
     private String commentForStatus;
 
     @JsonView(WebMvcProperties.View.class)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "ROUTELISTID")
     private RouteList routeListId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LASTVISITEDROUTEPOINTID")
     private Point lastVisitedRoutePointId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WAREHOUSEPOINTID")
     private Point warehousePoint;
 
-    @ManyToOne
-    @JoinColumn(name = "TRANSPORTCOMPANYID")
-    private TransportCompany transportCompany;
-
-    @ManyToOne
-    @JoinColumn(name="VEHICLEID")
-    private Vehicle vehicle;
-
-    @ManyToOne
-    @JoinColumn(name="DRIVERID")
-    private Driver driver;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "TRANSPORTCOMPANYID")
+//    private TransportCompany transportCompany;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="VEHICLEID")
+//    private Vehicle vehicle;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="DRIVERID")
+//    private Driver driver;
 }

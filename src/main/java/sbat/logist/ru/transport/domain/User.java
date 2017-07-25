@@ -62,11 +62,11 @@ public class User {
     @Column(name = "POSITION")
     private String position;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POINTID")
     private Point point;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENTID")
     private Client client;
 }

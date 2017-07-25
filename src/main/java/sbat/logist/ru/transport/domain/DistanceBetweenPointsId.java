@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -13,11 +14,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Embeddable
 public class DistanceBetweenPointsId implements Serializable {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "POINTIDFIRST")
     private Point pointFirst;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "POINTIDSECOND")
     private Point pointSecond;

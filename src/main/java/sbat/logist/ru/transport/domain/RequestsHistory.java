@@ -20,7 +20,7 @@ public class RequestsHistory {
     @Column(name="AUTOTIMEMARK")
     private Date autoTimeMark;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REQUESTID")
     private Request requestId;
 
@@ -36,15 +36,15 @@ public class RequestsHistory {
     @Column(name="REQUESTDATE")
     private Date requestDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENTID")
     private Client clientId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DESTINATIONPOINTID")
     private Point destinationPointId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MARKETAGENTUSERID")
     private User marketAgentUserId;
 
@@ -93,26 +93,26 @@ public class RequestsHistory {
     @Column(name="LASTSTATUSUPDATED")
     private Date lastStatusUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LASTMODIFIEDBY")
     private User lastModifiedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "REQUESTSTATUSID")
+    @Column(name="REQUESTSTATUSID")
+    @Enumerated(EnumType.STRING)
     private RequestStatus requestStatusId;
 
     @Column(name="COMMENTFORSTATUS")
     private String commentForStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WAREHOUSEPOINTID")
     private Point warehousePointId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROUTELISTID")
     private RouteList routeListId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LASTVISITEDROUTEPOINTID")
     private Point lastVisitedRoutePointId;
 
