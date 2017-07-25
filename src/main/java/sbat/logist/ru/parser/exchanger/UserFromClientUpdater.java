@@ -64,7 +64,8 @@ public class UserFromClientUpdater {
                         final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
                         final String passAndSalt = md5DigestAsHex((md5DigestAsHex(client.getClientPassword().getBytes()) + salt).getBytes());
                         final Optional<Client> optional = clientRepository.findByClientIDExternal(client.getClientId());
-                        if (optional.isPresent()) {
+                        final Optional<User> userOptional = userRepository.findByUserIDExternalAndDataSource(client.getClientId() + CLIENT_USER_SUFFIX, DataSource.LOGIST_1C);
+                        if (optional.isPresent() && !userOptional.isPresent()) {
                             final User user = User.builder()
                                     .userIDExternal(client.getClientId() + CLIENT_USER_SUFFIX)
                                     .dataSource(DataSource.LOGIST_1C)
@@ -90,7 +91,8 @@ public class UserFromClientUpdater {
                                 final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
                                 final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
                                 final Optional<Client> optional = clientRepository.findByClientIDExternal(client.getClientId());
-                                if (optional.isPresent()) {
+                                final Optional<User> userOptional = userRepository.findByUserIDExternalAndDataSource(client.getClientId() + CLIENT_USER_SUFFIX, DataSource.LOGIST_1C);
+                                if (optional.isPresent() && !userOptional.isPresent()) {
                                     final User user = User.builder()
                                             .userIDExternal(client.getClientId() + CLIENT_USER_SUFFIX)
                                             .dataSource(DataSource.LOGIST_1C)

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sbat.logist.ru.configuration.SystemResourcesConfiguration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,9 +44,14 @@ public class FileChangeListenerService implements Watchable {
         });
     }
 
+
     @Override
     public void onFileModify(Path filePath) {
-        logger.info("file modified: {}", filePath);
+
+        if(!filePath.toString().endsWith(TEMP_FILE_EXTENSION)){
+            logger.info("file modified: {}", filePath);
+        }
+
     }
 
     @Override

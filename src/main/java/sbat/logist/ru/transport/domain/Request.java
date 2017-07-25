@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.springframework.boot.autoconfigure.web.WebMvcProperties;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.constant.RequestStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -101,8 +102,8 @@ public class Request {
     @JoinColumn(name = "LASTMODIFIEDBY")
     private User lastModifiedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "REQUESTSTATUSID")
+    @Enumerated(EnumType.STRING)
+    @Column(name="REQUESTSTATUSID")
     private RequestStatus requestStatusId;
 
     @Column(name = "COMMENTFORSTATUS")

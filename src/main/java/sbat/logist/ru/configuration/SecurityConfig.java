@@ -20,8 +20,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/css/**", "/index").permitAll()
-                .antMatchers("/login-jquery").hasAuthority(UserRole.CLIENT_MANAGER.name())
+                .antMatchers("/index").hasRole(UserRole.ADMIN.name())
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/login-jquery").permitAll()
+                .antMatchers("/api").hasRole((UserRole.ADMIN.name()))
                 .and()
             .formLogin()
 				.loginPage("/login").failureUrl("/login-error");

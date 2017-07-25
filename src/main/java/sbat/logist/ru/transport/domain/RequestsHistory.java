@@ -2,6 +2,7 @@ package sbat.logist.ru.transport.domain;
 
 import lombok.Data;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.constant.RequestStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

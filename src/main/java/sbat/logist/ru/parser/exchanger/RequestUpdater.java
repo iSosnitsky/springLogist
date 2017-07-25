@@ -5,9 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.constant.RequestStatus;
 import sbat.logist.ru.parser.json.JsonRequest;
 import sbat.logist.ru.transport.domain.Request;
-import sbat.logist.ru.transport.repository.*;
+import sbat.logist.ru.transport.repository.ClientRepository;
+import sbat.logist.ru.transport.repository.PointRepository;
+import sbat.logist.ru.transport.repository.RequestRepository;
+import sbat.logist.ru.transport.repository.UserRepository;
 
 import java.util.Calendar;
 import java.util.List;
@@ -22,15 +26,13 @@ public class RequestUpdater {
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
     private final PointRepository pointRepository;
-    private final RequestStatusRepository requestStatusRepository;
 
     @Autowired
-    public RequestUpdater(RequestRepository requestRepository, UserRepository userRepository, ClientRepository clientRepository, PointRepository pointRepository, RequestStatusRepository requestStatusRepository) {
+    public RequestUpdater(RequestRepository requestRepository, UserRepository userRepository, ClientRepository clientRepository, PointRepository pointRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.pointRepository = pointRepository;
-        this.requestStatusRepository = requestStatusRepository;
     }
 
     public void execute(List<JsonRequest> requests) {
@@ -95,7 +97,7 @@ public class RequestUpdater {
                         .orElseThrow(() -> new IllegalStateException(String.format("Failed to create request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "marketAgentUserId", jsonRequest.getTraderId(), "users"))))
                 .deliveryDate(jsonRequest.getDeliveryDate())
                 .lastStatusUpdated(new java.sql.Date(Calendar.getInstance().getTime().getTime()))
-                .requestStatusId(requestStatusRepository.findByRequestStatusId("CREATED").orElseThrow(() -> new IllegalStateException("No status 'created' is present in data table")))
+                .requestStatusId(RequestStatus.CREATED)
                 .commentForStatus("Заявка добавлена из 1С")
                 .lastModifiedBy(userRepository.findOne(Long.parseLong("1")))
                 .build();

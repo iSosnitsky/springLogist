@@ -5,11 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.constant.RequestStatus;
 import sbat.logist.ru.parser.json.JsonStatus;
 import sbat.logist.ru.transport.domain.Request;
-import sbat.logist.ru.transport.domain.RequestStatus;
 import sbat.logist.ru.transport.repository.RequestRepository;
-import sbat.logist.ru.transport.repository.RequestStatusRepository;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,12 +19,10 @@ public class RequestStatusUpdater {
     private static final DataSource DATA_SOURCE = DataSource.LOGIST_1C;
 
     private final RequestRepository requestRepository;
-    private final RequestStatusRepository requestStatusRepository;
 
     @Autowired
-    public RequestStatusUpdater(RequestRepository requestRepository, RequestStatusRepository requestStatusRepository) {
+    public RequestStatusUpdater(RequestRepository requestRepository) {
         this.requestRepository = requestRepository;
-        this.requestStatusRepository = requestStatusRepository;
     }
 
     public void execute(List<JsonStatus> jsonStatuses){
@@ -34,8 +31,7 @@ public class RequestStatusUpdater {
         jsonStatuses.forEach(jsonStatus -> {
             try{
                 final Request request = requestRepository.findByExternalIdAndDataSource(jsonStatus.getRequestId(),DATA_SOURCE).orElseThrow(IllegalStateException::new);
-                final RequestStatus requestStatus = requestStatusRepository.findByRequestStatusId(jsonStatus.getStatus()).orElseThrow(IllegalStateException::new);
-                request.setRequestStatusId(requestStatus);
+                request.setRequestStatusId(RequestStatus.valueOf(jsonStatus.getStatus()));
                 request.setCommentForStatus(jsonStatus.getComment());
                 request.setLastStatusUpdated(jsonStatus.getTimeOutStatus());
                 request.setBoxQuantity(jsonStatus.getNumBoxes());
@@ -43,8 +39,8 @@ public class RequestStatusUpdater {
                     requestRepository.save(request);
                     counter.incrementAndGet();
                 } catch (Exception e){
-                    logger.error("unable to save request[{}]",request.getExternalId());
-                    logger.error(request.toString());
+                    logger.error("unable to save request:\n{}",request.toString());
+//                    logger.error(request.toString());
                 }
 
             } catch (IllegalStateException e){
