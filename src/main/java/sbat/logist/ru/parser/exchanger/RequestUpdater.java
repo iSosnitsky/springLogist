@@ -89,7 +89,7 @@ public class RequestUpdater {
                 .firma(jsonRequest.getFirma())
                 .storage(jsonRequest.getStorage())
                 .destinationPointId(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getAddressId(), DATA_SOURCE)
-                        .orElseThrow(() -> new IllegalStateException(String.format("Failed to create request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "destinationPointId", jsonRequest.getAddressId(), "points"))))
+                        .orElse(null))
                 .contactName(jsonRequest.getContactName())
                 .contactPhone(jsonRequest.getContactPhone())
                 .deliveryOption(jsonRequest.getDeliveryOption())
