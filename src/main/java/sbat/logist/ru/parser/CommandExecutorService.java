@@ -10,7 +10,6 @@ import sbat.logist.ru.parser.command.JsonStringToObjectCommand;
 import sbat.logist.ru.parser.command.TransactionResult;
 import sbat.logist.ru.parser.json.Data1c;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 @Service
@@ -95,6 +94,7 @@ public class CommandExecutorService {
 
         try {
             databaseUpdaterService.updateBackup(data1c);
+            transactionResult.setStatus(TransactionResult.OK_STATUS);
         } catch (Exception e) {
             logger.warn("Error ocurred while updating database: ", e);
             deleteIncomingFile(filePath);
@@ -102,7 +102,6 @@ public class CommandExecutorService {
             writeDbFileResponse(transactionResult);
             return;
         }
-
 
         // write response into response directory
         writeDbFileResponse(transactionResult);

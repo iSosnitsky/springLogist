@@ -26,8 +26,7 @@ public class WriteDbWorkResponseCommand implements Command<TransactionResult, Bo
         logger.info("Start write result data into response directory");
         Path responsePath = responseDir.resolve(transactionResult.getServer() + RESPONSE_FILE_EXTENSION);
         String resultString = transactionResult.toString();
-        try {
-            PrintWriter out = new PrintWriter(responsePath.toFile());
+        try (PrintWriter out = new PrintWriter(responsePath.toFile())) {
             out.println(resultString);
             logger.info("Response data were successfully written");
         } catch (FileNotFoundException e) {
