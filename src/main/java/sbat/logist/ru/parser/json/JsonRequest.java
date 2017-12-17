@@ -27,4 +27,5 @@ public class JsonRequest {
     private String traderId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     private Date deliveryDate;
+    private String warehousePointId;
 }

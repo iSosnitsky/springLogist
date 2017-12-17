@@ -29,4 +29,7 @@ public class PackageData {
 
     private List<JsonRouteList> updateRouteLists;
     private List<JsonRouteList> deleteRouteLists;
+
+    private List<JsonCar> updateCars;
+    private List<JsonCar> deleteCars;
 }

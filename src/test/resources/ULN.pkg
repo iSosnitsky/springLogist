@@ -1,7 +1,7 @@
 ﻿{
 "dataFrom1C": {
 "server": "ULN",
-"packageNumber": 7499,
+"packageNumber": 7522,
 "created": "2017-07-16T23:50:13",
 "packageData": {
 "updatePoints": [
@@ -13,6 +13,15 @@
 "deleteDirections": [
 ],
 "updateTrader": [
+{
+"traderId": "Улн086",
+"traderName": "Абрамова Сети",
+"traderEMail": "abramova_a@ulianovsk.sbat.ru",
+"traderPhone": "+7 917 600-46-91",
+"traderOffice": "Торговый представитель",
+"traderLogin": "",
+"traderPassword": ""
+}
 ],
 "deleteTrader": [
 ],

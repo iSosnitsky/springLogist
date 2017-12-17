@@ -20,6 +20,10 @@ public class JsonStringToObjectCommandTest {
         final String execute = command.execute(path);
         final String fixedString = fixJsonStringCommand.execute(execute);
         final Optional<Data1c> execute1 = cmd.execute(fixedString);
+        if (execute1.isPresent()){
+            System.out.println(execute1.toString());
+        }
+
         Assert.assertTrue(execute1.isPresent());
     }
 

@@ -84,7 +84,7 @@ public class RouteUpdater {
                 });
     }
 
-    private String generateRouteName(String pointArrivalIdExternal, String pointDepartureIdExternal) {
+    private String generateRouteName  (String pointArrivalIdExternal, String pointDepartureIdExternal) throws IllegalStateException {
         // check points that they are exist.
         final Point pointArrival = pointRepository.findByPointIdExternalAndDataSource(pointArrivalIdExternal, DATA_SOURCE)
                 .orElseThrow(() -> {
@@ -130,3 +130,4 @@ public class RouteUpdater {
         return generatedDirectionName;
     }
 }
+

@@ -1,5 +1,6 @@
 package sbat.logist.ru.transport.repository;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import sbat.logist.ru.Application;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.parser.WatcherService;
 
+@Ignore("Please ignore")
 @SpringBootTest
 @Import(Application.class)
 @RunWith(SpringRunner.class)

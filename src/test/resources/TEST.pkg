@@ -1,0 +1,64 @@
+{
+"dataFrom1C": {
+"server": "TEST",
+"packageNumber": 11,
+"created": "2017-07-16T23:40:15",
+"packageData": {
+"updatePoints": [
+],
+"deletePoints": [
+],
+"updateDirections": [
+],
+"deleteDirections": [
+],
+"updateTrader": [
+],
+"deleteTrader": [
+],
+"updateClients": [
+],
+"deleteClients": [
+],
+"updateAddress": [
+],
+"deleteAddress": [
+],
+"updateRequests": [
+{
+"requestId": "6X6LHMOS1", 
+"requestNumber": "I03-8437841", 
+"requestDate": "20170706", 
+"invoiceNumber": "", 
+"invoiceDate": "", 
+"documentNumber": "", 
+"documentDate": "", 
+"firma": "СБ логистик", 
+"storage": "Москва 4 этаж", 
+"clientId": "extClId1", 
+"addressId": "wle", 
+"contactName": "не указано", 
+"contactPhone": "", 
+"deliveryOption": "Доставка торговым представителем", 
+"traderId": "125", 
+"deliveryDate": "20170706",
+"warehousePointId": ""
+}
+],
+"deleteRequests": [
+
+],
+"updateStatus": [
+],
+"deleteStatus": [
+],
+"updateRouteLists": [
+],
+"deleteRouteLists": [
+],
+"updateCars": [
+
+]
+}
+}
+}

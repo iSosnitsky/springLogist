@@ -10,21 +10,29 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import sbat.logist.ru.Application;
 import sbat.logist.ru.constant.DataSource;
-import sbat.logist.ru.transport.domain.Client;
+import sbat.logist.ru.transport.domain.Point;
 
 import java.util.Optional;
 
-@Ignore("Please ignore")
+
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Import(Application.class)
-public class ClientRepositoryTest {
+public class PointRepositoryTest {
     @Autowired
-    private ClientRepository clientRepository;
+    private PointRepository pointRepository;
+
 
     @Test
-    public void test() {
-        Optional<Client> clientOptional = clientRepository.findByClientIDExternalAndDataSource("120682", DataSource.LOGIST_1C);
-        Assert.assertTrue(clientOptional.isPresent());
+    public void test(){
+
+        Optional<Point> warehousePoint = pointRepository.findByPointIdExternalAndDataSource("wle",DataSource.LOGIST_1C);
+
+        if (warehousePoint.isPresent()){
+            System.out.println(warehousePoint.toString());
+        }
+        Assert.assertTrue(warehousePoint.isPresent());
     }
+
 }

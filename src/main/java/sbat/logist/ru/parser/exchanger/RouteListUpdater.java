@@ -68,7 +68,7 @@ public class RouteListUpdater {
                     routeListRepository.save(routeList);
                     counter.incrementAndGet();
                 } catch (IllegalStateException e) {
-                    logger.error("Error: {}", e);
+//                    logger.error("Error: {}", e);
                     logger.error("Unable to insert RouteList [{}] because route[{}] wasn't found in routes table", jsonRouteList.getRouteListIdExternal(), routeIdExternal);
                 }
 

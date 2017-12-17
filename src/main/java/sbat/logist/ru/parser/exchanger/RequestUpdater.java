@@ -71,6 +71,7 @@ public class RequestUpdater {
         request.setMarketAgentUserId(userRepository.findByUserIDExternalAndDataSource(jsonRequest.getTraderId(), DATA_SOURCE)
                 .orElseThrow(() -> new IllegalStateException(String.format("Failed to update request : %s has %s = %s that is not contained in %s table.", jsonRequest.getRequestId(), "marketAgentUserId", jsonRequest.getTraderId(), "users"))));
         request.setDeliveryDate(jsonRequest.getDeliveryDate());
+        request.setWarehousePoint(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getWarehousePointId(), DATA_SOURCE).orElse(null));
         return request;
     }
 
@@ -100,6 +101,7 @@ public class RequestUpdater {
                 .requestStatusId(RequestStatus.CREATED)
                 .commentForStatus("Заявка добавлена из 1С")
                 .lastModifiedBy(userRepository.findOne(Long.parseLong("1")))
+                .warehousePoint(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getWarehousePointId(),DATA_SOURCE).orElse(null))
                 .build();
     }
 

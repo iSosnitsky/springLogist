@@ -15,6 +15,7 @@ public class TransportUpdater {
     private final ClientUpdater clientUpdater;
     private final UserFromTraderUpdater userFromTraderUpdater;
     private final UserFromClientUpdater userFromClientUpdater;
+    private final VehicleUpdater vehicleUpdater;
     private final RouteListUpdater routeListUpdater;
     private final AssignRouteListsToRequests assignRouteListsToRequests;
     private final RequestStatusUpdater requestStatusUpdater;
@@ -29,6 +30,7 @@ public class TransportUpdater {
             ClientUpdater clientUpdater,
             UserFromTraderUpdater userFromTraderUpdater,
             UserFromClientUpdater userFromClientUpdater,
+            VehicleUpdater vehicleUpdater,
             RouteListUpdater routeListUpdater,
             AssignRouteListsToRequests assignRouteListsToRequests,
             RequestStatusUpdater requestStatusUpdater,
@@ -42,6 +44,7 @@ public class TransportUpdater {
         this.clientUpdater = clientUpdater;
         this.userFromTraderUpdater = userFromTraderUpdater;
         this.userFromClientUpdater = userFromClientUpdater;
+        this.vehicleUpdater = vehicleUpdater;
         this.routeListUpdater = routeListUpdater;
         this.assignRouteListsToRequests = assignRouteListsToRequests;
         this.requestStatusUpdater = requestStatusUpdater;
@@ -60,6 +63,9 @@ public class TransportUpdater {
         clientUpdater.execute(packageData.getUpdateClients());
         userFromTraderUpdater.execute(packageData.getUpdateTrader());
         userFromClientUpdater.execute(packageData.getUpdateClients());
+        if (packageData.getUpdateCars()!=null){
+            vehicleUpdater.execute(packageData.getUpdateCars());
+        }
         routeListUpdater.execute(packageData.getUpdateRouteLists());
         requestUpdater.execute(packageData.getUpdateRequests());
         requestStatusUpdater.execute(packageData.getUpdateStatus());

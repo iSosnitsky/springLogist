@@ -1,11 +1,14 @@
 package sbat.logist.ru.transport.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.VehicleLoadingType;
 import sbat.logist.ru.constant.VehicleType;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity
 @Data
 @Table(name="VEHICLES")
@@ -14,6 +17,13 @@ public class Vehicle {
     @Column(name="ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="VEHICLE_ID_EXTERNAL")
+    private String vehicleIdExternal;
+
+    @Column(name="DATA_SOURCE_ID")
+    @Enumerated(EnumType.STRING)
+    private DataSource dataSource;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="TRANSPORT_COMPANY_ID")
@@ -39,4 +49,7 @@ public class Vehicle {
 
     @Column(name="TYPE")
     private VehicleType type;
+
+    @Column(name="WIALON_ID")
+    private String wialonId;
 }

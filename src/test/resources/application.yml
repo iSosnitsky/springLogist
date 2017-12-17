@@ -1,13 +1,13 @@
 spring:
   firstDatasource:
-    username: anton
-    url: jdbc:mysql://localhost:8889/transmaster_transport_db?useSSL=false&serverTimezone=UTC
-    password: Fgsfds12
+    username: root
+    url: jdbc:mysql://localhost:3306/transmaster_transport_db?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   secondDatasource:
-    username: anton
-    url: jdbc:mysql://localhost:8889/backup_db?useSSL=false&serverTimezone=UTC
-    password: Fgsfds12
+    username: root
+    url: jdbc:mysql://localhost:3306/backup_db?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   data:
     rest:
@@ -21,7 +21,8 @@ spring:
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
 #    show-sql: true
 parser:
-  json-data-dir: /Users/Roman/Desktop/exchange/data
-  logs-dir: /Users/Roman/Desktop/exchange/log
-  backup-dir: /Users/Roman/Desktop/exchange/backup
-  response-dir: /Users/Roman/Desktop/exchange/response
+  json-data-dir: /Users/Roman/Desktop
+  backup-dir: /Users/Roman/Desktop/backup
+  response-dir: /Users/Roman/Desktop/response
+logging:
+  path: /Users/Roman/Desktop/logs
