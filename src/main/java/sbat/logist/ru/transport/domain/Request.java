@@ -122,6 +122,8 @@ public class Request {
     @JoinColumn(name = "WAREHOUSEPOINTID")
     private Point warehousePoint;
 
+
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "TRANSPORTCOMPANYID")
 //    private TransportCompany transportCompany;

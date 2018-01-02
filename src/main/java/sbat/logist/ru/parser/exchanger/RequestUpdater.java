@@ -42,7 +42,16 @@ public class RequestUpdater {
             try {
                 Request foundRequest = requestRepository.findByExternalIdAndDataSource(jsonRequest.getRequestId(), DATA_SOURCE)
                         .map(request -> updateRequest(request, jsonRequest))
-                        .orElseGet(() -> mapJsonToRequest(jsonRequest));
+                        .orElseGet(() -> {
+                            Request request = Request.builder()
+                                    .dataSource(DATA_SOURCE)
+                                    .externalId(jsonRequest.getRequestId())
+                                    .requestStatusId(RequestStatus.CREATED)
+                                    .lastModifiedBy(userRepository.findOne(Long.parseLong("1")))
+                                    .commentForStatus("Заявка добавлена из 1С")
+                                    .build();
+                            return updateRequest(request, jsonRequest);
+                        });
                 requestRepository.save(foundRequest);
                 counter.incrementAndGet();
             } catch (IllegalStateException e) {
