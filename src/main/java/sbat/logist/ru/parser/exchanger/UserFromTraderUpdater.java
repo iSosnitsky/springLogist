@@ -51,18 +51,20 @@ public class UserFromTraderUpdater {
                     try {
                         final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
                         final String passAndSalt = md5DigestAsHex((md5DigestAsHex(trader.getTraderPassword().getBytes()) + salt).getBytes());
-                        final User user = User.builder()
-                                .userIDExternal(trader.getTraderId())
-                                .dataSource(DataSource.LOGIST_1C)
-                                .login(trader.getTraderLogin())
-                                .salt(salt)
-                                .passAndSalt(passAndSalt)
-                                .userRole(UserRole.MARKET_AGENT)
-                                .userName(trader.getTraderName())
-                                .phoneNumber(trader.getTraderPhone())
-                                .email(trader.getTraderEmail())
-                                .position(trader.getTraderOffice())
-                                .build();
+                        final User user = userRepository.findByUserIDExternalAndDataSource(trader.getTraderId(), DataSource.LOGIST_1C)
+                                .map(user1 -> updateUser(user1, trader, passAndSalt))
+                                .orElseGet(() -> User.builder()
+                                        .userIDExternal(trader.getTraderId())
+                                        .dataSource(DataSource.LOGIST_1C)
+                                        .login(trader.getTraderLogin())
+                                        .salt(salt)
+                                        .passAndSalt(passAndSalt)
+                                        .userRole(UserRole.MARKET_AGENT)
+                                        .userName(trader.getTraderName())
+                                        .phoneNumber(trader.getTraderPhone())
+                                        .email(trader.getTraderEmail())
+                                        .position(trader.getTraderOffice())
+                                        .build());
                         userRepository.save(user);
                         counter.incrementAndGet();
                     } catch (Exception e) {
@@ -72,21 +74,23 @@ public class UserFromTraderUpdater {
         map.get(false).forEach(trader -> {
                     try {
                         final String uniqueLogin = generateUniqueLogin();
+                        trader.setTraderLogin(uniqueLogin);
                         final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
                         final String passAndSalt = md5DigestAsHex((md5DigestAsHex(generatePassword().getBytes()) + salt).getBytes());
                         final User user = userRepository.findByUserIDExternalAndDataSource(trader
-                                .getTraderId(), DataSource.LOGIST_1C).orElseGet(() -> User.builder()
-                                .userIDExternal(trader.getTraderId())
-                                .dataSource(DataSource.LOGIST_1C)
-                                .login(uniqueLogin)
-                                .salt(salt)
-                                .passAndSalt(passAndSalt)
-                                .userRole(UserRole.MARKET_AGENT)
-                                .userName(trader.getTraderName())
-                                .phoneNumber(trader.getTraderPhone())
-                                .email(trader.getTraderEmail())
-                                .position(trader.getTraderOffice())
-                                .build());
+                                .getTraderId(), DataSource.LOGIST_1C)
+                                .orElseGet(() -> User.builder()
+                                        .userIDExternal(trader.getTraderId())
+                                        .dataSource(DataSource.LOGIST_1C)
+                                        .login(uniqueLogin)
+                                        .salt(salt)
+                                        .passAndSalt(passAndSalt)
+                                        .userRole(UserRole.MARKET_AGENT)
+                                        .userName(trader.getTraderName())
+                                        .phoneNumber(trader.getTraderPhone())
+                                        .email(trader.getTraderEmail())
+                                        .position(trader.getTraderOffice())
+                                        .build());
                         userRepository.save(user);
                         counter.incrementAndGet();
                     } catch (Exception e) {
@@ -96,6 +100,20 @@ public class UserFromTraderUpdater {
         );
 
         logger.info("INSERT OR UPDATE INTO users completed, affected records size = [{}]", counter.get());
+    }
+
+    private User updateUser(User user, JsonTrader trader, String passAndSalt) {
+        user.setLogin(trader.getTraderLogin());
+        final String salt = randomStringGenerator.generate(GENERATED_LENGTH);
+        user.setUserRole(UserRole.MARKET_AGENT);
+        user.setSalt(salt);
+        user.setPassAndSalt(passAndSalt);
+        user.setPhoneNumber(trader.getTraderPhone());
+        user.setUserName(trader.getTraderName());
+        user.setEmail(trader.getTraderEmail());
+        user.setPosition(trader.getTraderOffice());
+
+        return user;
     }
 
     private String generateUniqueLogin() {

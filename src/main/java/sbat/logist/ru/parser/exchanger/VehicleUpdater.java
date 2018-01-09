@@ -25,7 +25,7 @@ public class VehicleUpdater {
     }
 
     public void execute(List<JsonCar> jsonCars){
-        logger.info("START assign statuses in requests table from JSON object:[updateStatus]");
+        logger.info("START update cars in vehicles table from JSON object:[cars]");
         AtomicInteger counter = new AtomicInteger(0);
         jsonCars.forEach(jsonCar -> {
             try{
