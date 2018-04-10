@@ -4,6 +4,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.transport.domain.Client;
 import sbat.logist.ru.transport.domain.User;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     List<User> findUsersByUserName(@Param("kek") String userName);
     Optional<User> findUserByLogin(String login);
     Optional<User> findByUserIDExternalAndDataSource(String requestIdExternal, DataSource dataSource);
+    Optional<User> findByClient(Client client);
+
+
+    User findByUserID(long l);
 }

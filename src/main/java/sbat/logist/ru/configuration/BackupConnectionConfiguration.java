@@ -2,8 +2,9 @@ package sbat.logist.ru.configuration;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ import javax.sql.DataSource;
         entityManagerFactoryRef = "backupEntityManagerFactory",
         transactionManagerRef = "backupTransactionManager",
         basePackages = {"sbat.logist.ru.backup"})
-@ConfigurationProperties(prefix = "spring.secondDatasource")
+@ConfigurationProperties(prefix = "spring.second-datasource")
 public class BackupConnectionConfiguration {
     private String username;
     private String url;

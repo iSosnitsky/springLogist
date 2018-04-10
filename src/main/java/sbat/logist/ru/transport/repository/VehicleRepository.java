@@ -12,4 +12,6 @@ import java.util.Optional;
 
 public interface VehicleRepository extends PagingAndSortingRepository<Vehicle, Long> {
     Optional<Vehicle> findByVehicleIdExternalAndDataSource(String vehicleIdExternal, DataSource dataSource);
+
+    Optional<Vehicle> findByLicenseNumber(String licenseNumber);
 }

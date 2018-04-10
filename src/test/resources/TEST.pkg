@@ -1,7 +1,7 @@
 {
 "dataFrom1C": {
 "server": "TEST",
-"packageNumber": 11,
+"packageNumber": 13,
 "created": "2017-07-16T23:40:15",
 "packageData": {
 "updatePoints": [
@@ -26,7 +26,7 @@
 ],
 "updateRequests": [
 {
-"requestId": "6X6LHMOS1", 
+"requestId": "6X6LHMOS2", 
 "requestNumber": "I03-8437841", 
 "requestDate": "20170706", 
 "invoiceNumber": "", 
@@ -42,7 +42,7 @@
 "deliveryOption": "Доставка торговым представителем", 
 "traderId": "125", 
 "deliveryDate": "20170706",
-"warehousePointId": ""
+"warehousePointId": "wle"
 }
 ],
 "deleteRequests": [

@@ -47,7 +47,7 @@ public class RequestUpdater {
                                     .dataSource(DATA_SOURCE)
                                     .externalId(jsonRequest.getRequestId())
                                     .requestStatusId(RequestStatus.CREATED)
-                                    .lastModifiedBy(userRepository.findOne(Long.parseLong("1")))
+                                    .lastModifiedBy(userRepository.findByUserID(Long.parseLong("1")))
                                     .commentForStatus("Заявка добавлена из 1С")
                                     .build();
                             return updateRequest(request, jsonRequest);
@@ -109,7 +109,7 @@ public class RequestUpdater {
                 .lastStatusUpdated(new java.sql.Date(Calendar.getInstance().getTime().getTime()))
                 .requestStatusId(RequestStatus.CREATED)
                 .commentForStatus("Заявка добавлена из 1С")
-                .lastModifiedBy(userRepository.findOne(Long.parseLong("1")))
+                .lastModifiedBy(userRepository.findByUserID(Long.parseLong("1")))
                 .warehousePoint(pointRepository.findByPointIdExternalAndDataSource(jsonRequest.getWarehousePointId(),DATA_SOURCE).orElse(null))
                 .build();
     }

@@ -1,6 +1,7 @@
 package sbat.logist.ru.transport.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.transport.domain.Request;
 import sbat.logist.ru.transport.domain.RouteList;
@@ -12,4 +13,5 @@ public interface RequestRepository extends PagingAndSortingRepository<Request, I
     Optional<Request> findByExternalIdAndDataSource(String externalId, DataSource dataSource);
     Optional<Request> findByExternalId(String externalId);
     List<Request> findByRouteListId(RouteList routeList);
+    List<Request> findTop3ByExternalIdContaining(@Param("exId") String externalId);
 }

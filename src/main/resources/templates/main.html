@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<title>Логистика</title>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/media/Custom_CSS/jquery-ui-1.11.4.custom/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/Selectize/css/selectize.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="/media/DataTables-1.10.12/css/dataTables.jqueryui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/Buttons-1.2.2/css/buttons.jqueryui.min.css"/>
+    <!--    <link rel="stylesheet" type="text/css" href="/media/Editor-1.5.4/css/editor.jqueryui.min.css"/>-->
+    <link rel="stylesheet" type="text/css" href="/media/Editor-1.6.3/css/editor.jqueryui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/FieldType-Selectize/editor.selectize.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/Select-1.2.0/css/select.jqueryui.min.css"/>
+    <link rel="stylesheet" type="text/css"
+    href="/media/FixedColumns-3.2.2/css/fixedColumns.jqueryui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/font-awesome/css/font-awesome.min.css"/>
+    <!--    <link rel="stylesheet" type="text/css" href="/media/Bootstrap-3.3.2/css/bootstrap.min.css"/>-->
+
+    <link rel="stylesheet" type="text/css" href="/media/Custom_CSS/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/Custom_CSS/media.css"/>
+
+    <script src="/media/jQuery-2.1.4/jquery-2.1.4.min.js"></script>
+    <script src="/media/jQueryUI-1.11.4/jquery-ui.min.js"></script>
+    <script src="/media/jquery-mask/dist/jquery.mask.min.js"></script>
+    <script src="/media/Selectize/js/standalone/selectize.min.js"></script>
+    <script src="/media/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="/media/DataTables-1.10.12/js/dataTables.jqueryui.min.js"></script>
+    <script src="/media/Buttons-1.1.0/js/dataTables.buttons.js"></script>
+    <script src="/media/Buttons-1.1.0/js/buttons.jqueryui.js"></script>
+    <!--<script src="/media/Editor-1.5.4/js/dataTables.editor.min.js"></script>-->
+    <!--    <script src="/media/Editor-1.5.4/js/editor.jqueryui.min.js"></script>-->
+    <script src="/media/Editor-1.6.3/js/dataTables.editor.min.js"></script>
+    <script src="/media/Editor-1.6.3/js/editor.jqueryui.min.js"></script>
+    <script src="/media/FieldType-Mask/editor.mask.min.js"></script>
+    <script src="/media/FieldType-Selectize/editor.selectize.min.js"></script>
+    <script src="/media/Select-1.2.0/js/dataTables.select.min.js"></script>
+    <script src="/media/ColReorder-1.3.2/js/dataTables.colReorder.min.js"></script>
+    <script src="/media/FixedHeader-3.1.2/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/media/FixedColumns-3.2.2/js/dataTables.fixedColumns.min.js"></script>
+    <script src="/js/jquery.spring-friendly.js"/>
+
+    <!--    <script src="/media/Bootstrap-3.3.2/js/bootstrap.min.js"></script>-->
+
+    <!--dateTimePicker-->
+    <link rel="stylesheet" type="text/css" href="/media/dateTimePicker/jquery-ui-timepicker-addon.css"/>
+    <script type="text/javascript" src="/media/dateTimePicker/jquery-ui-timepicker-addon.js"></script>
+
+    <!--    <link rel="stylesheet" type="text/css" href="/media/dateTimePicker/jquery.datetimepicker_not_legal.css"/>-->
+    <!--    <script type="text/javascript" src="/media/dateTimePicker/jquery.datetimepicker_not_legal.js"></script>-->
+
+
+    <!--jqueryCookiePlugin-->
+    <script src="/media/jqueryCookie-1.4.1/jquery.cookie.js"></script>
+    <!--custom js-->
+    <script type="text/javascript" language="javascript" src="/js/main.js"></script>
+    <!--    <script type="text/javascript" language="javascript" src="content/js/requestHistoryDialog.js"></script>-->
+    <!--<script type="text/javascript" language="javascript" src="content/js/statusChangeDialog.js"></script>-->
+    <!--<script type="text/javascript" language="javascript" src="content/js/columnSelectDialog.js"></script>-->
+
+</head>
+<body sec:authorize="isAuthenticated()==true">
+
+<div class="container">
+
+    <div id="menu"
+         style="z-index:1; display: inline-block; float: right; height: 41px;  margin-left: -10px;margin-top: 16px;position:absolute;top:5px;z-index:999;right:10px;">
+        <div id="buttonsContainer" style="text-align: right;padding: 2px;">
+
+            <!--            <div style="color: #0070a3;font-size: 1.1em;font-weight: bold;display: inline-block;margin-right: 15px;">-->
+            <!--                <a style="color:#18446b;" target="_blank" href="/media/Other/clientInstruction1.1.pdf">Инструкция</a>-->
+            <!--            </div>-->
+            <div id="userRoleContainer" style="display: none">
+
+
+                <span id="data-role" data-role=""> ADMIN </span>
+
+            </div>
+
+            <div class="dropdown">
+                <i class="fa fa-user" style="font-size: 16px"></i>
+                Fgsfds
+
+                <i
+                        class="fa fa-caret-down"></i>
+                <!--                <button class="dropbtn">Меню <i class="fa fa-caret-square-o-down" aria-hidden="true"></i></button>-->
+                <div class="dropdown-content">
+                    <table>
+
+                        <tr>
+                            <td><i class="fa fa-th-list" aria-hidden="true"></i></td>
+                            <td><a href="/?routeLists=0" target="_blank">Маршуртные листы</a></td>
+                        </tr>
+                        <!--                        <tr>-->
+                        <!--                            <td><i class="fa fa-map-o" aria-hidden="true"></i></td>-->
+                        <!--                            <td><a href="/?map=0" target="_blank">Карта присутствия</a></td>-->
+                        <!--                        </tr>-->
+                        <tr>
+                            <td>
+                                <i class="fa fa-truck" aria-hidden="true"></i>
+                                <!--                                <img src="content/css/sEye.png">-->
+                            </td>
+                            <td><a href="/?vMap=0" target="_blank">Карта ТС</a></td>
+                        </tr>
+                        <!--                        <tr>-->
+                        <!--                            <td><i class="fa fa-building" aria-hidden="true"></i></td>-->
+                        <!--                            <td><a href="/?TCPage=0" target="_blank">Транспортная компания</a></td>-->
+                        <!--                        </tr>-->
+                        <tr>
+                            <td><i class="fa fa-sign-out" aria-hidden="true"></i></td>
+                            <td><a id="logout" href="#">Выйти</a></td>
+                        </tr>
+                    </table>
+                    <!--                    <a href="/admin_page/" target="_blank">Админ. страница <i class="fa fa-cogs" aria-hidden="true"></i></a>-->
+                    <!--                    <a href="/?routeLists=0" target="_blank">Маршуртные листы <i class="fa fa-th-list" aria-hidden="true"></i></a>-->
+                    <!--                    <a href="/?map=0" target="_blank">Карта складов <i class="fa fa-map-marker" aria-hidden="true"></i></a>-->
+                    <!--                    <a href="/?vMap=0" target="_blank">Карта ТС <i class="fa fa-truck" aria-hidden="true"></i></a>-->
+                    <!--                    <a id="logout" href="#">Выйти <i class="fa fa-sign-out" aria-hidden="true"></i></a>-->
+                </div>
+            </div>
+            <!--            <button id="logout">Выйти</button>-->
+        </div>
+    </div>
+
+    <div id="requestForm">
+        <fieldset class="request">
+            <legend>Данные</legend>
+            <div data-editor-template="clientID"></div>
+            <div data-editor-template="marketAgentUserId"></div>
+            <div data-editor-template="invoiceNumber"></div>
+            <div data-editor-template="documentNumber"></div>
+            <div data-editor-template="firma"></div>
+            <div data-editor-template="storage"></div>
+            <div data-editor-template="warehousePointId"></div>
+            <div data-editor-template="boxQty"></div>
+            <div id="deliveryDate" data-editor-template="deliveryDate"></div>
+            <!--            <div data-editor-template="transportCompanyId"></div>-->
+            <!--            <div data-editor-template="vehicleId"></div>-->
+            <!--            <div data-editor-template="driverId"></div>-->
+        </fieldset>
+        <fieldset>
+            <legend>Маршрутный лист</legend>
+            <div data-editor-template="routeListID"></div>
+
+        </fieldset>
+        <fieldset>
+            <legend>Транспорт</legend>
+            <div data-editor-template="transportCompanyId"></div>
+            <div data-editor-template="vehicleId"></div>
+            <div data-editor-template="driverId"></div>
+        </fieldset>
+    </div>
+
+    <table id="user-grid" cellpadding="0" cellspacing="0" border="0" class="display" width="100%">
+
+        <thead>
+        <tr>
+            <th class="col1">ID заявки</th>
+            <th class="col2">Номер внутренней заявки</th>
+            <th class="col3">Дата внутренней заявки</th>
+            <th class="col4">Номер накладной</th>
+            <th class="col5">Дата накладной</th>
+            <th class="col6">Номер документа</th>
+            <th class="col7">Дата документа</th>
+            <th class="col8">Фирма</th>
+            <th class="col9">Зона склада</th>
+            <th class="col10">Комментарий</th>
+            <th class="col11">Количество коробок</th>
+            <th class="col12">Статус выполнения заявки</th>
+            <th class="col13">Клиент, Номер</th>
+            <th class="col14">Клиент, ИНН</th>
+            <th class="col15">Клиент, Имя</th>
+            <th class="col16">Торговый представитель</th>
+            <th class="col17">Пункт доставки</th>
+            <th class="col18">Склад отправки</th>
+            <th class="col19">Текущее подразделение</th>
+            <th class="col20">Следующий пункт маршрута</th>
+            <th class="col21">Маршрут</th>
+            <th class="col22">Водитель</th>
+            <th class="col23">Номер ТС</th>
+            <th class="col24">Количество паллет</th>
+            <th class="col25">Маршрутный лист</th>
+            <th class="col26">Время прибытия в следующий пункт</th>
+        </tr>
+        </thead>
+
+        <!--search containers-->
+        <tfoot>
+        <tr>
+            <th class="col1">ID заявки</th>
+            <th class="col2">Номер внутренней заявки</th>
+            <th class="col3">Дата внутренней заявки</th>
+            <th class="col4">Номер накладной</th>
+            <th class="col5">Дата накладной</th>
+            <th class="col6">Номер документа</th>
+            <th class="col7">Дата документа</th>
+            <th class="col8">Фирма</th>
+            <th class="col9">Зона склада</th>
+            <th class="col10">Комментарий</th>
+            <th class="col11">Количество коробок</th>
+            <th class="col12">Статус выполнения заявки</th>
+            <th class="col13">Клиент, Номер</th>
+            <th class="col14">Клиент, ИНН</th>
+            <th class="col15">Клиент, Имя</th>
+            <th class="col16">Торговый представитель</th>
+            <th class="col17">Пункт доставки</th>
+            <th class="col18">Склад отправки</th>
+            <th class="col19">Текущее подразделение</th>
+            <th class="col20">Следующий пункт маршрута</th>
+            <th class="col21">Маршрут</th>
+            <th class="col22">Водитель</th>
+            <th class="col23">Номер ТС</th>
+            <th class="col24">Количество паллет</th>
+            <th class="col25">Маршрутный лист</th>
+            <th class="col26">Время прибытия в следующий пункт</th>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+</body>
+
+<style>
+    #user-grid_wrapper .dt-buttons {
+        /*position:fixed;*/
+        /*Just who did this?*/
+        /*top:15px;*/
+        padding-bottom: 10px;
+        z-index: 9999;
+        width: 80%;
+    }
+
+    #user-grid_wrapper {
+        margin-top: 17px;
+    }
+</style>
+</html>

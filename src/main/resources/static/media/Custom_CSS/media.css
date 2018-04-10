@@ -1,0 +1,33 @@
+@media (max-width: 1200px) {
+    .ui-button-text-only .ui-button-text {
+        padding: 1px 4px !important;
+        font-size: 11px !important;
+        vertical-align: middle !important;
+    }
+
+    #user-grid_wrapper .dt-buttons {
+        top: 5px !important;
+    }
+
+    .ui-buttonset a {
+        float: left;
+        display: inline-block;
+        margin-top: 4px !important;
+    }
+
+    #user-grid_wrapper .dt-buttons {
+        width: 56% !important;
+    }
+}
+
+@media (max-width: 585px) {
+    #menu {
+        margin-top: 28px !important;
+    }
+}
+
+@media (max-width: 620px) {
+    #user-grid_wrapper {
+        margin-top: 90px !important;
+    }
+}

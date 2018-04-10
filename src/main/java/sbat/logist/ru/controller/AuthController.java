@@ -22,6 +22,9 @@ public class AuthController {
 		return "index";
 	}
 
+	@RequestMapping("/main")
+	public String main(){return "main";}
+
 	@RequestMapping("/user/index")
 	public String userIndex() {
 		return "user/index";
