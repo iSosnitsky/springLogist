@@ -7,12 +7,12 @@
 
 @font-face {
     font-family: "Gerbera Light";
-    src: url("../../../common_files/media/Gerbera-Light.otf") format("opentype");
+    src: url("../Gerbera-Light.otf") format("opentype");
 }
 
 @font-face {
     font-family: "Gerbera Medium";
-    src: url("../../../common_files/media/Gerbera-Medium.otf") format("opentype");
+    src: url("../Gerbera-Medium.otf") format("opentype");
 }
 body{
     font-family: "Gerbera Light",Arial,"Helvetica Neue", Helvetica, Tahoma,Arial,sans-serif;

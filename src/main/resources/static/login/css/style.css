@@ -1,0 +1,91 @@
+/*Синий*/
+/*rgba(26, 43, 109, 1)*/
+/*Акцент*/
+/*#D41317*/
+
+@font-face {
+    font-family: "Gerbera Light";
+    src: url("../media/Gerbera-Light.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Gerbera Medium";
+    src: url("../media/Gerbera-Medium.otf") format("opentype");
+}
+
+h2 {
+    text-align: center;
+    font-size: 24px;
+}
+
+hr {
+    margin-bottom: 30px;
+}
+
+div.container {
+    width: 100%;
+    height: 100%;
+    margin: 50px auto;
+    font-family: "Gerbera Light",Arial,"Helvetica Neue", Helvetica, Tahoma,  serif;
+    position: relative;
+    text-align: center;
+}
+
+div.main {
+    width: 320px;
+    margin-top: 80px;
+    text-align: left;
+    padding: 50px 65px 45px;
+    background-color: #fff;
+    border: solid thin rgba(26, 43, 109, 1);
+    /*border-top: 30px solid rgb(142,169,201);*/
+    border-radius: 2px;
+    font-size: 13px;
+    display: inline-block;
+    color: rgba(26, 43, 109, 1);
+    box-shadow:  0px 0px 3px rgba(26, 43, 109, 0.11);
+}
+
+input[type=text], [type=password] {
+    border: none;
+    border-bottom: 2px solid rgba(26, 43, 109, 1);
+    width: 97.7%;
+    height: 30px;
+    padding-left: 5px;
+    margin-bottom: 20px;
+    margin-top: 8px;
+    color: #1c3655;
+    font-size: 12px;
+}
+
+label {
+    color: #1c3655;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#loginButton {
+    font-family: "Gerbera Light",Arial,"Helvetica Neue", Helvetica, Tahoma,  serif;
+    float: right;
+    width: 30%;
+    background: rgba(26, 43, 109, 1);
+    color: white;
+    border-radius: 2px;
+    border: none;
+    font-size: 16px;
+    padding: 8px;
+    /*font-weight: bold;*/
+    cursor: pointer;
+
+}
+
+#loginButton:hover {
+    color: #D41317;
+    background: rgba(26, 43, 109, 0.2);
+}
+
+/*class toggled dynamically with javascript*/
+.login_error {
+    border: 2px solid #D41317 !important;
+}
+

@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Login page</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
-	</head>
+<head>
+    <meta charset="UTF-8">
+    <title>Логин</title>
+    <link rel="stylesheet" href="login/css/style.css"/>
+    <!--custom js-->
+    <!--<script type="text/javascript" src="content/js/login.js"></script>-->
+</head>
     <body>
-        <h1>Login page</h1>
-        <p>Example user: user / password</p>
-        <p th:if="${loginError}" class="error">Wrong user or password</p>
-        <form th:action="@{/login}" method="post">
-            <label for="username">Username</label>:
-            <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-            <label for="password">Password</label>:
-            <input type="password" id="password" name="password" /> <br />
-            <input type="submit" value="Log in" />
-        </form>
-        <p><a href="/index" th:href="@{/index}">Back to home page</a></p>
+    <div class="container">
+        <div class="main">
+            <p th:if="${loginError}" class="error">Wrong user or password</p>
+            <form class="form" method="post" th:action="@{/login}">
+                <label for="username">Логин :</label>
+                <input type="text" placeholder="Введите логин" name="username" autofocus="autofocus" id="username">
+
+                <label for="passwordInput">Пароль :</label>
+                <input type="password" placeholder="Введите пароль" name="password" id="passwordInput">
+
+                <div id="loginErrorContainer"></div>
+
+                <input type="submit" name="login" id="loginButton" value="Войти">
+            </form>
+        </div>
+    </div>
+        <!--<p><a href="/index" th:href="@{/index}">Back to home page</a></p>-->
     </body>
 </html>
+

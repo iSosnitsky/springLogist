@@ -2,6 +2,7 @@ package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.RequestStatus;
@@ -9,6 +10,7 @@ import sbat.logist.ru.constant.RequestStatus;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -43,7 +45,7 @@ public class Request {
     private Date requestDate;
 
     @JsonView(DataTablesOutput.View.class)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "CLIENTID")
     private Client clientId;
 
@@ -72,7 +74,6 @@ public class Request {
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "DOCUMENTDATE")
     private Date documentDate;
-
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "FIRMA")
@@ -165,4 +166,16 @@ public class Request {
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name="DRIVERID")
 //    private Driver driver;
+
+    @PostPersist
+    private void postPersist(){
+        //Здесь можно сделать что-нибудь с этой сущностью после её сохранения (INSERT) в бд
+        //Например засунуть её копию и все связанные поля в matViewBigSelect
+
+    }
+
+    @PrePersist
+    private void prePersist(){
+        //Здесь можно сделать что-нибудь с этой сущностью перед её сохранением (INSERT) в бд
+    }
 }

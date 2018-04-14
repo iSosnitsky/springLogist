@@ -1,0 +1,49 @@
+/*Синий*/
+/*rgba(26, 43, 109, 1)*/
+/*Акцент*/
+/*#D41317*/
+/*Светло-синий:*/
+/*rgba(227, 231, 240, 1)*/
+
+@font-face {
+    font-family: "Gerbera Light";
+    src: url("media/Gerbera-Light.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Gerbera Medium";
+    src: url("media/Gerbera-Medium.otf") format("opentype");
+}
+
+body{
+    font-family: "Gerbera Light", serif;
+}
+
+table.dataTable thead{
+    background-color: rgba(26, 43, 109, 1);
+    color: #fff;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.dataTables_wrapper{
+    margin-top: 20px;
+}
+
+#routeListsTable tbody tr td{
+    border: none;
+
+}
+
+#routeListsTable_filter{
+    width: auto;
+    float: right;
+}
+
+div.selectize-dropdown {
+    z-index: 99999;
+}
+
+.modal{
+    z-index: 3 !important;
+}

@@ -39,7 +39,6 @@
     <script src="/media/ColReorder-1.3.2/js/dataTables.colReorder.min.js"></script>
     <script src="/media/FixedHeader-3.1.2/js/dataTables.fixedHeader.min.js"></script>
     <script src="/media/FixedColumns-3.2.2/js/dataTables.fixedColumns.min.js"></script>
-    <script src="/js/jquery.spring-friendly.js"/>
 
     <!--    <script src="/media/Bootstrap-3.3.2/js/bootstrap.min.js"></script>-->
 
@@ -54,13 +53,13 @@
     <!--jqueryCookiePlugin-->
     <script src="/media/jqueryCookie-1.4.1/jquery.cookie.js"></script>
     <!--custom js-->
-    <script type="text/javascript" language="javascript" src="/js/main.js"></script>
+    <script type="text/javascript" language="javascript" src="/main/main.js"></script>
     <!--    <script type="text/javascript" language="javascript" src="content/js/requestHistoryDialog.js"></script>-->
     <!--<script type="text/javascript" language="javascript" src="content/js/statusChangeDialog.js"></script>-->
     <!--<script type="text/javascript" language="javascript" src="content/js/columnSelectDialog.js"></script>-->
 
 </head>
-<body sec:authorize="isAuthenticated()==true">
+<body>
 
 <div class="container">
 
@@ -71,16 +70,22 @@
             <!--            <div style="color: #0070a3;font-size: 1.1em;font-weight: bold;display: inline-block;margin-right: 15px;">-->
             <!--                <a style="color:#18446b;" target="_blank" href="/media/Other/clientInstruction1.1.pdf">Инструкция</a>-->
             <!--            </div>-->
-            <div id="userRoleContainer" style="display: none">
-
-
-                <span id="data-role" data-role=""> ADMIN </span>
-
+            <div id="userRoleContainer" sec:authorize="hasAuthority('ADMIN')" style="display: none">
+                <span id="data-role" data-role='ADMIN' sec:authentication="role"></span>
+            </div>
+            <div id="userRoleContainer" sec:authorize="hasAuthority('DISPATCHER')" style="display: none">
+                <span id="data-role" data-role='DISPATCHER' sec:authentication="role"></span>
+            </div>
+            <div id="userRoleContainer" sec:authorize="hasAuthority('MARKET_AGENT')" style="display: none">
+                <span id="data-role" data-role='MARKET_AGENT' sec:authentication="role"></span>
             </div>
 
             <div class="dropdown">
                 <i class="fa fa-user" style="font-size: 16px"></i>
-                Fgsfds
+                <span sec:authentication="name"></span>
+                <span sec:authentication="role">
+                </span>
+
 
                 <i
                         class="fa fa-caret-down"></i>

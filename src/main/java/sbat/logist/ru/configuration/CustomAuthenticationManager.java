@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.DigestUtils;
+import sbat.logist.ru.configuration.logist.user.LogistAuthToken;
 import sbat.logist.ru.constant.UserRole;
 import sbat.logist.ru.transport.domain.Client;
 import sbat.logist.ru.transport.domain.User;
@@ -57,7 +57,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
                 .orElseThrow(() -> new DisabledException("Account is disabled"));
 
         if (user.getPassAndSalt().equals(encodedPasswordWithOldSalt)) {
-            return new UsernamePasswordAuthenticationToken(user.getLogin(), authentication.getCredentials(), Collections.singletonList(new SimpleGrantedAuthority(user.getUserRole().name())));
+            return new LogistAuthToken(user, authentication.getCredentials(), Collections.singletonList(new SimpleGrantedAuthority(user.getUserRole().name())));
         } else {
             throw new BadCredentialsException("Invalid username or password");
         }

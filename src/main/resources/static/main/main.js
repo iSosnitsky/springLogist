@@ -997,7 +997,12 @@ $(document).ready(function () {
         ],
         ajax: {
             contentType: 'application/json',
+            processing: true,
+            type: "post",
             url: "/data/matViewBigSelect", // json datasource
+            data: function(d) {
+                return JSON.stringify(d);
+            }
             // type: "get",  // method  , by default get
 
             // data: {"status": "getRequestsForUser"},
@@ -1015,7 +1020,7 @@ $(document).ready(function () {
             // }
         },
         columns: [
-            {"data": "requestIdExternal"},
+            {"data": "requestIDExternal"},
             {"data": "requestNumber"},
             {"data": "requestDate"},
             {"data": "invoiceNumber"},
@@ -1027,8 +1032,8 @@ $(document).ready(function () {
             {"data": "commentForStatus"},
             {"data": "boxQty"},
             {"data": "requestStatusRusName"},
-            {"data": "clientIdExternal"},
-            {"data": "inn"},
+            {"data": "clientIDExternal"},
+            {"data": "INN"},
             {"data": "clientName"},
             {"data": "marketAgentUserName"},
             {"data": "deliveryPointName"},

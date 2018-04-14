@@ -1,6 +1,8 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 
 import javax.persistence.*;
@@ -20,13 +22,16 @@ public class Route {
     private Integer id;
 
     @Column(name = "DIRECTIONIDEXTERNAL", nullable = false)
+    @JsonView(DataTablesOutput.View.class)
     private String externalId;
 
     @Column(name = "DATASOURCEID", nullable = false)
+    @JsonView(DataTablesOutput.View.class)
     @Enumerated(EnumType.STRING)
     private DataSource dataSource;
 
     @Column(name = "ROUTENAME", nullable = false)
+    @JsonView(DataTablesOutput.View.class)
     private String routeName;
 
 //    @Column(name = "FIRSTPOINTARRIVALTIME", nullable = false)
@@ -37,5 +42,6 @@ public class Route {
 //    private String daysOfWeek;
 
     @Column(name = "TARIFFID")
+    @JsonView(DataTablesOutput.View.class)
     private Integer tariffId;
 }

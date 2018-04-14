@@ -22,6 +22,11 @@ public class AuthController {
 		return "index";
 	}
 
+	@RequestMapping("/adminPage")
+	public String adminPage() {
+		return "admin_page";
+	}
+
 	@RequestMapping("/main")
 	public String main(){return "main";}
 

@@ -3,18 +3,21 @@ package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import sbat.logist.ru.constant.RequestStatus;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Data
 @Table(name = "mat_view_big_select")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "refreshMaterializedView", procedureName = "refreshMaterializedView")
 })
@@ -22,7 +25,7 @@ public class MatViewBigSelect {
     @JsonView(DataTablesOutput.View.class)
     @Id
     @Column(name = "REQUESTID")
-    private Long requestID;
+    private Integer requestID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="REQUESTIDEXTERNAL")
@@ -69,8 +72,9 @@ public class MatViewBigSelect {
     private Integer boxQty;
 
     @JsonView(DataTablesOutput.View.class)
+    @Enumerated(EnumType.STRING)
     @Column(name="REQUESTSTATUSID")
-    private String requestStatusID;
+    private RequestStatus requestStatusID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="COMMENTFORSTATUS")
@@ -78,7 +82,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="CLIENTID")
-    private Integer clientID;
+    private Long clientID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="CLIENTIDEXTERNAL")
@@ -94,7 +98,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="MARKETAGENTUSERID")
-    private Integer marketAgentUserID;
+    private Long marketAgentUserID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="MARKETAGENTUSERNAME")
@@ -102,7 +106,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="DRIVERUSERID")
-    private Integer driverUserID;
+    private Long driverUserID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="DRIVERUSERNAME")
@@ -110,7 +114,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="DELIVERYPOINTID")
-    private Integer deliveryPointID;
+    private Long deliveryPointID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="DELIVERYPOINTNAME")
@@ -118,7 +122,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "WAREHOUSEPOINTID")
-    private Integer warehousePointID;
+    private Long warehousePointID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="WAREHOUSEPOINTNAME")
@@ -126,7 +130,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="LASTVISITEDPOINTID")
-    private Integer lastVisitedPointID;
+    private Long lastVisitedPointID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="LASTVISITEDPOINTNAME")
@@ -134,7 +138,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="NEXTPOINTID")
-    private Integer nextPointID;
+    private Long nextPointID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="NEXTPOINTNAME")
@@ -154,7 +158,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="ROUTELISTID")
-    private Integer routeListID;
+    private Long routeListID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="ROUTEID")

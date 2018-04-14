@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     @RestResource(path = "nameStartsWith", rel = "nameStartsWith")
-    List<User> findUsersByUserName(@Param("kek") String userName);
+    List<User> findUsersByUserNameStartingWith(@Param("kek") String userName);
     Optional<User> findUserByLogin(String login);
     Optional<User> findByUserIDExternalAndDataSource(String requestIdExternal, DataSource dataSource);
     Optional<User> findByClient(Client client);

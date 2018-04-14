@@ -14,4 +14,5 @@ public interface RequestRepository extends PagingAndSortingRepository<Request, I
     Optional<Request> findByExternalId(String externalId);
     List<Request> findByRouteListId(RouteList routeList);
     List<Request> findTop3ByExternalIdContaining(@Param("exId") String externalId);
+    List<Request> findByDataSource(@Param("dataSource") DataSource dataSource);
 }

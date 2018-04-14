@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.transport.domain.converter.DataSourceConverter;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -38,7 +39,6 @@ public class RouteList {
     @Column(name="DATASOURCEID", nullable = false)
     @JsonView(DataTablesOutput.View.class)
     private DataSource dataSourceId;
-
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="ROUTELISTNUMBER", nullable = false)
@@ -76,8 +76,40 @@ public class RouteList {
     @JsonView(DataTablesOutput.View.class)
     private RouteListStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ROUTEID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name="routeID")
     @JsonView(DataTablesOutput.View.class)
     private Route routeId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="transport_company_id")
+    @JsonView(DataTablesOutput.View.class)
+    private TransportCompany transportCompany;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="driver_id_internal")
+    @JsonView(DataTablesOutput.View.class)
+    private Driver driver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="vehicle_id")
+//    @JsonView(DataTablesOutput.View.class)
+    private Vehicle vehicle1;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="vehicle_2_id")
+//    @JsonView(DataTablesOutput.View.class)
+    private Vehicle vehicle2;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="vehicle_3_id")
+//    @JsonView(DataTablesOutput.View.class)
+    private Vehicle vehicle3;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name="FREIGHT_ID")
+    @JsonView(DataTablesOutput.View.class)
+    private Freight freight;
+
 }
