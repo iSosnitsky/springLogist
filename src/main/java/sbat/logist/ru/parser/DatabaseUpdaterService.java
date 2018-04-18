@@ -34,7 +34,7 @@ public class DatabaseUpdaterService {
         Integer packageNumber = dataFrom1C.getPackageNumber();
         logger.info("packageNumber = {}", packageNumber);
         logger.info("dateCreated = {}", dataFrom1C.getCreated());
-        exchangeUpdater.excecute(data1c);
+//        exchangeUpdater.excecute(data1c);
         transportUpdater.updateMain(data1c);
     }
 }

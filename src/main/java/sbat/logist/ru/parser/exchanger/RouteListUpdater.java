@@ -56,7 +56,7 @@ public class RouteListUpdater {
                     Route route = routeRepository.findByExternalIdAndDataSource(routeIdExternal, DATA_SOURCE).orElseThrow(IllegalStateException::new);
 
                     RouteList routeList = routeListRepository.findByRouteListIdExternalAndAndDataSourceId(jsonRouteList.getRouteListIdExternal(), DATA_SOURCE)
-                            .map(rl -> fillRouteList(rl, jsonRouteList, route, driver))
+//                            .map(rl -> fillRouteList(rl, jsonRouteList, route, driver))
                             .orElseGet(() -> {
                                 RouteList rl = RouteList.builder()
                                         .routeListIdExternal(jsonRouteList.getRouteListIdExternal())

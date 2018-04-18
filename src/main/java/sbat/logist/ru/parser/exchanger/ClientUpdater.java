@@ -28,7 +28,7 @@ public class ClientUpdater {
         logger.info("START update jsonClients table from JSON object:[updateClientsArray]");
         jsonClients.forEach(jsonClient -> {
             final Client client = clientRepository.findByClientIDExternalAndDataSource(jsonClient.getClientId(), DATA_SOURCE)
-                    .map(foundClient -> fillClient(foundClient, jsonClient))
+//                    .map(foundClient -> fillClient(foundClient, jsonClient))
                     .orElseGet(() -> {
                         Client c = Client.builder()
                                 .clientIDExternal(jsonClient.getClientId())

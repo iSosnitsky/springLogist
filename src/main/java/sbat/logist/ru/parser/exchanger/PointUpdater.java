@@ -27,7 +27,7 @@ public class PointUpdater {
         logger.info("START update jsonPoints table from JSON object:[updatePointsArray]");
         jsonPoints.forEach(jsonPoint -> {
             final Point dbPoint = pointRepository.findByPointIdExternalAndDataSource(jsonPoint.getPointId(), DATA_SOURCE)
-                    .map(foundPoint -> fillPoint(foundPoint, jsonPoint))
+//                    .map(foundPoint -> fillPoint(foundPoint, jsonPoint))
                     .orElseGet(() -> {
                         Point p = Point.builder()
                                 .pointIdExternal(jsonPoint.getPointId())
@@ -44,8 +44,8 @@ public class PointUpdater {
 
     private Point fillPoint(Point point, JsonPoint jsonPoint) {
         point.setPointName(jsonPoint.getPointName());
-        point.setAddress(jsonPoint.getPointAddress());
-        point.setEmail(jsonPoint.getPointEmails());
+        point.setAddress(jsonPoint.getPointAddress()!=null ? jsonPoint.getPointAddress() : "Нет адреса");
+        point.setEmail(jsonPoint.getPointEmail());
         point.setPointTypeId(PointType.valueOf(jsonPoint.getPointType()));
         point.setResponsiblePersonId(jsonPoint.getResponsiblePersonId());
 

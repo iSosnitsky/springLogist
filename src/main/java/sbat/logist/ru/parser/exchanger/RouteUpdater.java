@@ -69,12 +69,12 @@ public class RouteUpdater {
      */
     private Route getRouteToInsert(String externalId, String name, Supplier<String> nameSupplier) {
         return routeRepository.findByExternalIdAndDataSource(externalId, DATA_SOURCE)
-                .map(r -> {
-                    if (!r.getRouteName().equals(name)) {
-                        r.setRouteName(nameSupplier.get());
-                    }
-                    return r;
-                })
+//                .map(r -> {
+//                    if (!r.getRouteName().equals(name)) {
+//                        r.setRouteName(nameSupplier.get());
+//                    }
+//                    return r;
+//                })
                 .orElseGet(() -> {
                     final Route route = new Route();
                     route.setExternalId(externalId);

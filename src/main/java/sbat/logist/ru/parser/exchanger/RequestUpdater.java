@@ -41,7 +41,6 @@ public class RequestUpdater {
         requests.forEach(jsonRequest -> {
             try {
                 Request foundRequest = requestRepository.findByExternalIdAndDataSource(jsonRequest.getRequestId(), DATA_SOURCE)
-                        .map(request -> updateRequest(request, jsonRequest))
                         .orElseGet(() -> {
                             Request request = Request.builder()
                                     .dataSource(DATA_SOURCE)
