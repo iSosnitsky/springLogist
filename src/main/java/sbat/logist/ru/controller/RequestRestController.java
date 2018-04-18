@@ -28,31 +28,6 @@ public class RequestRestController {
     private RouteListDTRepository routeListDTRepository;
 
 
-//    @JsonView(DataTablesOutput.View.class)
-//    @RequestMapping(value = "/data/requests", method = RequestMethod.GET)
-//    public DataTablesOutput<Request> getRequests() {
-//        return requestDTReqpository.findAll(new DataTablesInput());
-//    }
-//
-//
-//    @JsonView(DataTablesOutput.View.class)
-//    @RequestMapping(value = "/data/routeLists", method = RequestMethod.GET)
-//    public DataTablesOutput<RouteList> getRouteLists() {
-//        return routeListDTRepository.findAll(new DataTablesInput());
-//    }
-
-//    @JsonView(DataTablesOutput.View.class)
-//    @RequestMapping(value = "/data/matViewBigSelect", method = RequestMethod.POST)
-//    public DataTablesOutput<MatViewBigSelect> postMatViewBigSelect(@Valid DataTablesInput input){
-//        return matViewBigSelectRepository.findAll(input);
-//    }
-
-//    @CrossOrigin(origins = "http://localhost:*")
-//    @JsonView(DataTablesOutput.View.class)
-//    @RequestMapping(value = "/data/matViewBigSelect", method = RequestMethod.GET)
-//    public DataTablesOutput<MatViewBigSelect> getMatViewBigSelect(@Valid DataTablesInput input){
-//        return matViewBigSelectRepository.findAll(input);
-//    }
 
     @CrossOrigin(origins = "http://localhost:*")
     @JsonView(DataTablesOutput.View.class)
@@ -81,9 +56,4 @@ public class RequestRestController {
     public DataTablesOutput<RouteList> testRouteLists(){
         return routeListDTRepository.findAll(new DataTablesInput());
     }
-//    @JsonView(DataTablesOutput.View.class)
-//    @RequestMapping(value = "/data/matViewBigSelect", method = RequestMethod.GET)
-//    public DataTablesOutput<MatViewBigSelect> getMatViewBigSelect(@Valid DataTablesInput input, Specification<MatViewBigSelect> specification){
-//        return matViewBigSelectRepository.findAll(input);
-//    }
 }

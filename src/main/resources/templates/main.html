@@ -83,7 +83,7 @@
             <div class="dropdown">
                 <i class="fa fa-user" style="font-size: 16px"></i>
                 <span sec:authentication="name"></span>
-                <span sec:authentication="role">
+                <span sec:authentication="roleRusName">
                 </span>
 
 
@@ -92,26 +92,29 @@
                 <!--                <button class="dropbtn">Меню <i class="fa fa-caret-square-o-down" aria-hidden="true"></i></button>-->
                 <div class="dropdown-content">
                     <table>
-
+                        <tr sec:authorize="hasAuthority('ADMIN')">
+                            <td><i class="fa fa-cogs" aria-hidden="true"></i></td>
+                            <td><a href="/admin_page/" target="_blank">Админ. страница</a></td>
+                        </tr>
+                        <tr>
                         <tr>
                             <td><i class="fa fa-th-list" aria-hidden="true"></i></td>
                             <td><a href="/?routeLists=0" target="_blank">Маршуртные листы</a></td>
                         </tr>
-                        <!--                        <tr>-->
-                        <!--                            <td><i class="fa fa-map-o" aria-hidden="true"></i></td>-->
-                        <!--                            <td><a href="/?map=0" target="_blank">Карта присутствия</a></td>-->
-                        <!--                        </tr>-->
+                        <tr sec:authorize="hasAnyAuthority('DISPATCHER','ADMIN')">
+                            <td><i class="fa fa-map-o" aria-hidden="true"></i></td>
+                            <td><a href="/?map=0" target="_blank">Карта присутствия</a></td>
+                        </tr>
                         <tr>
                             <td>
                                 <i class="fa fa-truck" aria-hidden="true"></i>
-                                <!--                                <img src="content/css/sEye.png">-->
                             </td>
                             <td><a href="/?vMap=0" target="_blank">Карта ТС</a></td>
                         </tr>
-                        <!--                        <tr>-->
-                        <!--                            <td><i class="fa fa-building" aria-hidden="true"></i></td>-->
-                        <!--                            <td><a href="/?TCPage=0" target="_blank">Транспортная компания</a></td>-->
-                        <!--                        </tr>-->
+                        <tr sec:authorize="hasRole('TRANSPORT_COMPANY')">
+                            <td><i class="fa fa-building" aria-hidden="true"></i></td><td><a href="/?TCPage=0" target="_blank">Транспортная компания</a>
+                        </td>
+                        </tr>
                         <tr>
                             <td><i class="fa fa-sign-out" aria-hidden="true"></i></td>
                             <td><a id="logout" href="#">Выйти</a></td>

@@ -18,6 +18,7 @@ public class LogistAuthToken extends AbstractAuthenticationToken {
     private Object credentials;
     private String role;
     private String name;
+    private String roleRusName;
     private User user;
 
     // ~ Constructors
@@ -53,6 +54,7 @@ public class LogistAuthToken extends AbstractAuthenticationToken {
         this.credentials = credentials;
         this.name = user.getUserName();
         this.role = user.getUserRole().name();
+        this.roleRusName = user.getUserRole().getRusRoleName();
         this.user = user;
         super.setAuthenticated(true); // must use super, as we override
     }
@@ -79,6 +81,10 @@ public class LogistAuthToken extends AbstractAuthenticationToken {
     @Override
     public String getName() {
         return name;
+    }
+
+    public String getRoleRusName() {
+        return roleRusName;
     }
 
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {

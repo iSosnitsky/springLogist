@@ -55,11 +55,11 @@ $(document).ready(function () {
 
 
     var requestEditor = new $.fn.dataTable.Editor({
-        ajax: "content/getData.php",
+        ajax: "api/requests/_id_",
         template: '#requestForm',
         table: "#user-grid",
         name: 'Создать новую заявку',
-        idSrc: 'requestIDExternal',
+        idSrc: 'requestID',
         fields: [
             {
                 label: 'Клиент (ИНН)',
@@ -851,26 +851,22 @@ $(document).ready(function () {
             }
 
             //link to map page
-            if (role=="TRANSPORT_COMPANY"){
-                $('.dropdown-content table tr:first').before('<tr>'+
-                    '<td><i class="fa fa-building" aria-hidden="true"></i></td>'+
-                    '<td><a href="/?TCPage=0" target="_blank">Транспортная компания</a></td>'+
-                    '</tr>');
-            }
+            // if (role=="TRANSPORT_COMPANY"){
+            //     $('.dropdown-content table tr:first').before('<tr>'+
+            //         '<td><i class="fa fa-building" aria-hidden="true"></i></td>'+
+            //         '<td><a href="/?TCPage=0" target="_blank">Транспортная компания</a></td>'+
+            //         '</tr>');
+            // }
 
-            if (role=="ADMIN"||role=="MARKET_AGENT"){
-                $('.dropdown-content table tr:first').before('<tr>'+
-                    '<td><i class="fa fa-map-o" aria-hidden="true"></i></td>'+
-                    '<td><a href="/?map=0" target="_blank">Карта присутствия</a></td>'+
-                    '</tr>');
-            }
+            // if (role=="ADMIN"||role=="MARKET_AGENT"){
+            //     $('.dropdown-content table tr:first').before('<tr>'+
+            //         '<td><i class="fa fa-map-o" aria-hidden="true"></i></td>'+
+            //         '<td><a href="/?map=0" target="_blank">Карта присутствия</a></td>'+
+            //         '</tr>');
+            // }
             //Button-link to admin page
             if (role == "DISPATCHER" || role == "ADMIN") {
 
-                $('.dropdown-content table tr:first').before('<tr>\n' +
-                    '                            <td><i class="fa fa-cogs" aria-hidden="true"></i></td>\n' +
-                    '                            <td><a href="/admin_page/" target="_blank">Админ. страница</a></td>\n' +
-                    '                        </tr>');
 
                 // dataTable.button().add(7, {
                 //     text: 'Админ. Страница',
@@ -944,7 +940,7 @@ $(document).ready(function () {
                 enabled: false,
                 action: function (e, dt, node, config) {
                     var url =
-                        "?clientId=" +
+                        "/main/?clientId=" +
                         dataTable.row($('#user-grid .selected')).data().clientIDExternal +
                         "&invoiceNumber=" +
                         dataTable.row($('#user-grid .selected')).data().invoiceNumber;
