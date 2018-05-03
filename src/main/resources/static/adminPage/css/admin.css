@@ -1,0 +1,191 @@
+div.selectize-dropdown {
+    z-index: 99999;
+}
+
+#routesChart {
+    min-width: 310px;
+    height: 400px;
+    margin: 0 auto
+}
+
+.nav-sidebar{
+    width: inherit;
+    float: left;
+    /*position: fixed;*/
+}
+/*html {*/
+    /*height: 100%;*/
+/*}*/
+
+/*body {*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*min-height: 100%;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+/*}*/
+
+/*body > div {*/
+    /*flex-grow: 1;*/
+    /*flex-shrink: 1;*/
+    /*flex-basis: auto;*/
+/*}*/
+
+
+#routeTable {
+    width: 100% !important;
+}
+#routeTypeSelect {
+    width: 30% !important;
+}
+#usersTable {
+    width: 100% !important;
+
+}
+
+#clientsTable {
+    width: 100% !important;
+}
+
+#transportCompaniesTable {
+    width: 100% !important;
+}
+
+#vehiclesTable {
+    width: 100% !important;
+}
+
+#driversTable {
+    width: 100% !important;
+}
+
+/*#tabs {*/
+    /*height: 100%;*/
+    /*display: flex;*/
+    /*justify-content: flex-start;*/
+    /*align-items: flex-start;*/
+/*}*/
+
+
+#requestsAssignment
+{
+    width: 40%;
+    min-width: 400px;
+
+}
+
+.c-tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.c-tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 15%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+/* Tooltip text */
+.c-tooltip .tooltiptext {
+
+    visibility: hidden;
+    width: 400px;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    background-color: rgba(0,0,0,0.85);
+    color: #fff;
+    text-align: left;
+    padding: 10px;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 99999;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.c-tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+/*.dt-button .ui-button .ui-state-default .ui-button-text-only{*/
+    /*border: thin #cecece !important;*/
+/*}*/
+
+#transactionWidget{
+    right: 0;
+    padding: 7px;
+    position: fixed;
+    top:0;
+    background-color: #fff;
+    z-index: 3;
+    border-bottom: solid thin #cecece;
+    border-left: solid thin #cecece;
+
+}
+
+
+#routeChangeSet td{
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+
+/*.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 10em; }*/
+/*.ui-tabs-vertical .ui-tabs-nav li { table-layout:fixed; clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }*/
+/*.ui-tabs-vertical .ui-tabs-nav li a { display:block; }*/
+/*.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; }*/
+/*.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: left; flex-grow: 999}*/
+
+@font-face {
+    font-family: "Gerbera Light";
+    src: url("../../../common_files/media/Gerbera-Light.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Gerbera Medium";
+    src: url("../../../common_files/media/Gerbera-Medium.otf") format("opentype");
+}
+
+body {
+    font-family: "Gerbera Light",Arial,"Helvetica Neue", Helvetica, Tahoma,Arial,sans-serif;
+    font-size: 13px;
+    color: rgba(26, 43, 109, 1);
+}
+
+#routeTypeSelect {
+    padding: 6px 6px;
+    width: 30%;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+#startRouteTimeInput {
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d0d0d0;
+}
+
+.btn-default {
+    font-family: "Gerbera Medium", serif;
+    color: #fff;
+    font-size: 14px;
+    /*font-weight: bold;*/
+    background-color: inherit;
+    color: rgba(26, 43, 109, 1);
+    border: none;
+    /*border-color: #ccc;*/
+}
+
+.btn-default:hover{
+    color: #D41317;
+}

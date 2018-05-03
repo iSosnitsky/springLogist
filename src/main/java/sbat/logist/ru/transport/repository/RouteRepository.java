@@ -1,9 +1,11 @@
 package sbat.logist.ru.transport.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.transport.domain.Route;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -11,4 +13,5 @@ public interface RouteRepository extends PagingAndSortingRepository<Route, Integ
     Optional<Route> findByExternalIdAndRouteName(String externalId, String routeName);
     Optional<Route> findByExternalIdAndDataSource(String externalId, DataSource dataSource);
     Optional<Route> findByRouteName(String routeName);
+    List<Route> findByRouteNameContaining(@Param("routeName") String routeName);
 }

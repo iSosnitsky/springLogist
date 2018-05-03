@@ -1,3 +1,5 @@
+var dataTable;
+
 $(document).ready(function () {
     var role_type = "role-type";
     $('button').addClass('ui-state-active ui-state focus');
@@ -288,18 +290,17 @@ $(document).ready(function () {
 
     requestEditor.field('clientID')
         .input()
-        .on('keyup', function (e, d) {
+        .on('input', function (e, d) {
             var clientINNPart = $(this).val();
-            $.get("api/clients",
-                {status: "getClientsByINN", format: "json", inn: clientINNPart},
+            $.get("api/clients/search/findTop15ByClientNameContaining?name="+clientINNPart,
                 function (clientsData) {
                     var selectizeOptions = [];
-                    // console.log(clientsData);
-                    clientsData = JSON.parse(clientsData);
-                    clientsData.forEach(function (entry) {
+                    console.log(clientsData);
+                    // clientsData = JSON.parse(clientsData);
+                    clientsData._embedded.clients.forEach(function (entry) {
                         var selectizeOption = {
-                            "label": "ИНН: " + entry.INN + ", имя: " + entry.clientName,
-                            "value": entry.clientID
+                            "label": "ИНН: " + entry.inn + ", имя: " + entry.clientName,
+                            "value": entry.clientIDExternal
                         };
                         selectizeOptions.push(selectizeOption);
                     });
@@ -321,97 +322,95 @@ $(document).ready(function () {
 //     }).replace(',','').replace('/','.').replace('/','.'));
 // }
 
-    // requestEditor.field('warehousePointId').input().on('keyup', function (e, d) {
-    //     let pointNamePart = $(this).val();
-    //     $.post("content/getData.php",
-    //         {status: "getPointsByName", format: "json", name: pointNamePart},
-    //         function (wareHouseData) {
-    //             let options = [];
-    //
-    //             let selectizePointsOptions = [];
-    //             wareHouseData = JSON.parse(wareHouseData);
-    //             wareHouseData.forEach(function (entry) {
-    //                 let option = "<option value=" + entry.pointID + ">" + entry.pointName + "</option>";
-    //                 options.push(option);
-    //                 let selectizeOption = {"label": entry.pointName, "value": entry.pointID};
-    //                 selectizePointsOptions.push(selectizeOption);
-    //             });
-    //
-    //             let selectize = requestEditor.field('warehousePointId').inst();
-    //             selectize.clear();
-    //             selectize.clearOptions();
-    //             selectize.load(function (callback) {
-    //                 callback(selectizePointsOptions);
-    //             });
-    //         }
-    //     );
-    // });
+    requestEditor.field('warehousePointId').input().on('keyup', function (e, d) {
+        let pointNamePart = $(this).val();
+        $.post("api/points/search/findTop10ByPointNameContainingAndPointTypeId?name=",
+            {status: "getPointsByName", format: "json", name: pointNamePart},
+            function (wareHouseData) {
+                let options = [];
 
-    // requestEditor.field('marketAgentUserId').input().on('keyup', function (e, d) {
-    //     const marketAgentName = $(this).val();
-    //     if (marketAgentName !== '') {
-    //         $.post("content/getData.php",
-    //             {status: "getMarketAgentsByName", format: "json", name: marketAgentName},
-    //             function (marketAgentData) {
-    //                 let options = [];
-    //
-    //                 // console.log(marketAgentData);
-    //                 let selectizePointsOptions = [];
-    //                 marketAgentData = JSON.parse(marketAgentData);
-    //                 marketAgentData.forEach(function (entry) {
-    //                     let option = "<option value=" + entry.userID + ">" + entry.userName + "</option>";
-    //                     options.push(option);
-    //                     let selectizeOption = {"label": entry.userName, "value": entry.userID};
-    //                     selectizePointsOptions.push(selectizeOption);
-    //                 });
-    //
-    //                 let selectize = requestEditor.field('marketAgentUserId').inst();
-    //                 selectize.clear();
-    //                 selectize.clearOptions();
-    //                 selectize.load(function (callback) {
-    //                     callback(selectizePointsOptions);
-    //                 });
-    //             }
-    //         );
-    //     }
-    //
-    // });
+                let selectizePointsOptions = [];
+                wareHouseData = JSON.parse(wareHouseData);
+                wareHouseData.forEach(function (entry) {
+                    let option = "<option value=" + entry.pointID + ">" + entry.pointName + "</option>";
+                    options.push(option);
+                    let selectizeOption = {"label": entry.pointName, "value": entry.pointID};
+                    selectizePointsOptions.push(selectizeOption);
+                });
+
+                let selectize = requestEditor.field('warehousePointId').inst();
+                selectize.clear();
+                selectize.clearOptions();
+                selectize.load(function (callback) {
+                    callback(selectizePointsOptions);
+                });
+            }
+        );
+    });
+
+    requestEditor.field('marketAgentUserId').input().on('keyup', function (e, d) {
+        const marketAgentName = $(this).val();
+        if (marketAgentName !== '') {
+            $.get("api/users/search/findTop10ByUserNameContaining?name="+marketAgentName,
+                function (marketAgentData) {
+                    let options = [];
+
+                    // console.log(marketAgentData);
+                    let selectizePointsOptions = [];
+                    // marketAgentData = JSON.parse(marketAgentData);
+                    marketAgentData._embedded.users.forEach(function (entry) {
+                        let option = "<option value=" + entry.userIDExternal + ">" + entry.userName + "</option>";
+                        options.push(option);
+                        let selectizeOption = {"label": entry.userName, "value": entry.userIDExternal};
+                        selectizePointsOptions.push(selectizeOption);
+                    });
+
+                    let selectize = requestEditor.field('marketAgentUserId').inst();
+                    selectize.clear();
+                    selectize.clearOptions();
+                    selectize.load(function (callback) {
+                        callback(selectizePointsOptions);
+                    });
+                }
+            );
+        }
+
+    });
 
 
-    // requestEditor.field('routeListID').input().on('keyup', function (e, d) {
-    //     let routeListNumber = $(this).val();
-    //     $.post("content/getData.php",
-    //         {status: "getRouteListsByNumber", format: "json", number: routeListNumber},
-    //         function (routeListData) {
-    //             loadRouteLists(routeListData)
-    //             // let options = [];
-    //             //
-    //             // let selectizeRouteListsOptions = [];
-    //             // // console.log(routeListData);
-    //             // // console.log(routeListData);
-    //             // routeListData = JSON.parse(routeListData);
-    //             // routeListData.forEach(function (entry) {
-    //             //     let option = "<option value=" + entry.routeListID + ">" + entry.routeListNumber + "</option>";
-    //             //     options.push(option);
-    //             //     let selectizeOption = {"label": entry.routeListNumber, "value": entry.routeListId};
-    //             //     selectizeRouteListsOptions.push(selectizeOption);
-    //             // });
-    //             //
-    //             // let selectize = requestEditor.field('routeListID').inst();
-    //             // selectize.clear();
-    //             // selectize.clearOptions();
-    //             // selectize.load(function (callback) {
-    //             //     callback(selectizeRouteListsOptions);
-    //             // });
-    //         }
-    //     );
-    // });
+    requestEditor.field('routeListID').input().on('keyup', function (e, d) {
+        let routeListNumber = $(this).val();
+        $.get("api/routeLists/search/findTop5ByRouteListNumberContaining?routeListNumber="+routeListNumber,
+            function (routeListData) {
+                loadRouteLists(routeListData)
+                // let options = [];
+                //
+                // let selectizeRouteListsOptions = [];
+                // // console.log(routeListData);
+                // // console.log(routeListData);
+                // routeListData = JSON.parse(routeListData);
+                // routeListData.forEach(function (entry) {
+                //     let option = "<option value=" + entry.routeListID + ">" + entry.routeListNumber + "</option>";
+                //     options.push(option);
+                //     let selectizeOption = {"label": entry.routeListNumber, "value": entry.routeListId};
+                //     selectizeRouteListsOptions.push(selectizeOption);
+                // });
+                //
+                // let selectize = requestEditor.field('routeListID').inst();
+                // selectize.clear();
+                // selectize.clearOptions();
+                // selectize.load(function (callback) {
+                //     callback(selectizeRouteListsOptions);
+                // });
+            }
+        );
+    });
 
     function loadRouteLists(routeListData) {
         let selectizeRouteListsOptions = [];
-        routeListData = JSON.parse(routeListData);
-        routeListData.forEach(function (entry) {
-            let selectizeOption = {"label": entry.routeListNumber, "value": entry.routeListId};
+        // routeListData = JSON.parse(routeListData);
+        routeListData._embedded.routeLists.forEach(function (entry) {
+            let selectizeOption = {"label": entry.routeListNumber, "value": entry.routeListIdExternal};
             selectizeRouteListsOptions.push(selectizeOption);
         });
 
@@ -707,7 +706,7 @@ $(document).ready(function () {
 
 // --------DATATABLE INIT--------------
 //noinspection JSJQueryEfficiency
-    var dataTable = $('#user-grid').DataTable({
+    dataTable = $('#user-grid').DataTable({
 
         processing: true,
         serverSide: true,

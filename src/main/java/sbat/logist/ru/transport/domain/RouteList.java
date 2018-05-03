@@ -1,5 +1,6 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,10 @@ import sbat.logist.ru.transport.domain.converter.DataSourceConverter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -24,12 +29,13 @@ import java.sql.Date;
         @Index(columnList = "STATUS"),
         @Index(columnList = "DRIVERID")
 })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RouteList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ROUTELISTID")
     @JsonView(DataTablesOutput.View.class)
-    private Long routeListId;
+    private Integer routeListId;
 
     @Column(name="ROUTELISTIDEXTERNAL")
     @JsonView(DataTablesOutput.View.class)
@@ -107,9 +113,42 @@ public class RouteList {
     private Vehicle vehicle3;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="FREIGHT_ID")
     @JsonView(DataTablesOutput.View.class)
     private Freight freight;
+
+
+
+    public Route getRouteId() {
+        return routeId;
+    }
+
+    public TransportCompany getTransportCompany() {
+        return transportCompany;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public Vehicle getVehicle1() {
+        return vehicle1;
+    }
+
+    public Vehicle getVehicle2() {
+        return vehicle2;
+    }
+
+    public Vehicle getVehicle3() {
+        return vehicle3;
+    }
+
+    public Freight getFreight() {
+        return freight;
+    }
+
+    @OneToMany(mappedBy = "routeListId", fetch = FetchType.LAZY)
+    private List<Request> requests = new ArrayList<>(0);
 
 }

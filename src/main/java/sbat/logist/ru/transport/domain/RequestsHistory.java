@@ -1,6 +1,8 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.RequestStatus;
 
@@ -27,7 +29,9 @@ public class RequestsHistory {
     @Column(name="REQUESTIDEXTERNAL")
     private String requestIdExternal;
 
-    @Column(name="DATASOURSEID")
+    @Column(name="DATASOURCEID")
+    @JsonView(DataTablesOutput.View.class)
+    @Enumerated(EnumType.STRING)
     private DataSource dataSourceId;
 
     @Column(name="REQUESTNUMBER")

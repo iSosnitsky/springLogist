@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthController {
@@ -25,12 +24,12 @@ public class AuthController {
 
 	@RequestMapping("/index")
 	public String index() {
-		return "index";
+		return "redirect:/login";
 	}
 
 	@RequestMapping("/adminPage")
 	public String adminPage() {
-		return "admin_page";
+		return "adminPage";
 	}
 
 	@RequestMapping("/main")

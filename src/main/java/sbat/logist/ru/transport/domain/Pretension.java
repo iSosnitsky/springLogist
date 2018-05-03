@@ -1,6 +1,5 @@
 package sbat.logist.ru.transport.domain;
 
-import com.sun.istack.internal.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

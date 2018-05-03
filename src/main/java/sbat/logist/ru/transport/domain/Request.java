@@ -2,14 +2,19 @@ package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.RequestStatus;
+import sbat.logist.ru.constant.UserRole;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Data
@@ -19,7 +24,8 @@ import java.util.Optional;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
+@DynamicInsert(true)
+@DynamicUpdate(true)
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -153,6 +159,9 @@ public class Request {
     @JoinColumn(name = "WAREHOUSEPOINTID")
     private Point warehousePoint;
 
+    @OneToMany(mappedBy = "requestId")
+    private List<RequestsHistory> requestHistory = new ArrayList<>();
+
 
 
 //    @ManyToOne(fetch = FetchType.LAZY)
@@ -171,6 +180,7 @@ public class Request {
     private void postPersist(){
         //Здесь можно сделать что-нибудь с этой сущностью после её сохранения (INSERT) в бд
         //Например засунуть её копию и все связанные поля в matViewBigSelect
+        sbat.logist.ru.constant.UserRole.class.getDeclaringClass().getEnumConstants();
 
     }
 

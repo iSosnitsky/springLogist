@@ -158,7 +158,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="ROUTELISTID")
-    private Long routeListID;
+    private Integer routeListID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="ROUTEID")

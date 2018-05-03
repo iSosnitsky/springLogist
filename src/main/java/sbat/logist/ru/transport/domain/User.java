@@ -77,13 +77,13 @@ public class User {
 
 
     //TODO: make lazy
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POINTID")
     @JsonView(DataTablesOutput.View.class)
     private Point point;
 
     //TODO: make lazy
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENTID")
     @JsonView(DataTablesOutput.View.class)
     private Client client;

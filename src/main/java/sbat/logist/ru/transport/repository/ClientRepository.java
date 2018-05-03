@@ -1,5 +1,6 @@
 package sbat.logist.ru.transport.repository;
 
+import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import sbat.logist.ru.constant.DataSource;
@@ -9,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface ClientRepository extends PagingAndSortingRepository<Client, Long> {
+public interface ClientRepository extends DataTablesRepository<Client, Long> {
     Optional<Client> findByClientIDExternalAndDataSource(String clientIdExternal, DataSource dataSource);
     Optional<Client> findByClientIDExternal(@Param("clientIdExternal") String clientIdExternal);
-    List<Client> findByInnContainingOrClientNameContaining(@Param("inn") String inn, @Param("name") String name);
+    List<Client> findTop15ByClientNameContaining(@Param("name") String name);
 
 }

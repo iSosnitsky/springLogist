@@ -63,4 +63,7 @@ public class TransportCompany {
     @Column(name="CHIEF_ACC_FULLNAME")
     @JsonView(DataTablesOutput.View.class)
     private String chiefAccFullname;
+
+    @Column(name="DELETED")
+    private short deleted;
 }
