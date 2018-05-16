@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="media/Select-1.1.0/css/select.bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="adminPage/css/admin.css"/>
 
+    <script src="media/md5.js"></script>
     <script src="media/jQuery-2.1.4/jquery-2.1.4.min.js"></script>
     <script src="media/Bootstrap-3.3.2/js/bootstrap.min.js"></script>
     <script src="media/jquery-mask/dist/jquery.mask.min.js"></script>
@@ -36,6 +37,19 @@
     <script src="media/Buttons-1.1.0/js/dataTables.buttons.flash.min.js"></script>
 
     <!--custom-->
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var userRoles = {};
+        var userRoleOptions = [];
+        let urkey;
+        let urvalue;
+        /*[# th:each="option : ${T(sbat.logist.ru.constant.UserRole).values()}"]*/
+        userRoleOptions.push({value:/*[[${option}]]*/, label:/*[[${option.rusRoleName}]]*/});
+        urkey = /*[[${option}]]*/;
+        urvalue = /*[[${option.rusRoleName}]]*/;
+        userRoles[urkey]=urvalue;
+        /*[/]*/
+    </script>
     <script src="adminPage/js/route-point.js"></script>
     <script src="adminPage/js/user.js"></script>
     <script src="adminPage/js/client.js"></script>
@@ -45,30 +59,6 @@
     <script src="adminPage/js/route.js"></script>
     <script src="adminPage/js/requests-assignment.js"></script>
     <script src="adminPage/js/transactions.js"></script>
-    <script type="text/javascript" th:inline="javascript">
-        /*<![CDATA[*/
-
-
-        var username = /*[[${session.user.name}]]*/ 'Sebastian';
-
-
-        /*]]>*/
-        let userRoleSelectizeOptions = [
-            [[$.]]
-        ];
-        userRolesData = JSON.parse(userRolesData);
-        userRolesData.forEach(function (entry) {
-            var selectizeOption = {"label": entry.userRoleRusName, "value": entry.userRoleID};
-            userRoleSelectizeOptions.push(selectizeOption);
-        });
-        var userRoleSelectize = usersEditor.field('userRoleRusName').inst();
-
-        userRoleSelectize.clear();
-        userRoleSelectize.clearOptions();
-        userRoleSelectize.load(function (callback) {
-            callback(userRoleSelectizeOptions);
-        });
-    </script>
 
 </head>
 <body>

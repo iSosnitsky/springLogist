@@ -85,6 +85,21 @@ public class RequestRestController {
 
     }
 
+    @RequestMapping(value = "/data/updateSeveralRequests", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
+    public DataTablesOutput<MatViewBigSelect> updateSeveralRequests(){
+
+        LogistAuthToken authentication = (LogistAuthToken)SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("fsgfsd");
+        switch (authentication.getRole()){
+            case "MARKET_AGENT": return matViewBigSelectRepository.findAll(new DataTablesInput(), RequestForUser.requestsForMarketAgent(authentication.getUser()));
+            case "CLIENT_MANAGER": return matViewBigSelectRepository.findAll(new DataTablesInput(), RequestForUser.requestsForClient(authentication.getUser().getClient()));
+            default: return matViewBigSelectRepository.findAll(new DataTablesInput());
+
+        }
+
+
+    }
+
 
 
 

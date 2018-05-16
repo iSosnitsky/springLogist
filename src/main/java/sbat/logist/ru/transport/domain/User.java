@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.UserRole;
@@ -75,6 +76,9 @@ public class User {
     @JsonView(DataTablesOutput.View.class)
     private String position;
 
+    @Formula("CONCAT('','dummy')")
+    @JsonView(DataTablesOutput.View.class)
+    private String password = "dummy";
 
     //TODO: make lazy
     @ManyToOne(fetch = FetchType.LAZY)
@@ -87,4 +91,9 @@ public class User {
     @JoinColumn(name = "CLIENTID")
     @JsonView(DataTablesOutput.View.class)
     private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="TRANSPORT_COMPANY_ID")
+    @JsonView(DataTablesOutput.View.class)
+    private TransportCompany transportCompany;
 }

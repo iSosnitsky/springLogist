@@ -1,27 +1,55 @@
+var usersEditor;
 $(document).ready(function () {
-    $.get("data/getAllUserRoles",
-        // server returns array of pairs [{userRoleID:'ADMIN', userRoleRusName:'Администратор'}, {userRoleID:'W_DISPATCHER', userRoleRusName:'Диспетчер_склада'}]
-        function (userRolesData) {
-            var options = [];
-            var selectizeOptions = [];
-            userRolesData = JSON.parse(userRolesData);
-            userRolesData.forEach(function (entry) {
-                var option = "<option value=" + entry.userRoleID + ">" + entry.userRoleRusName + "</option>";
-                options.push(option);
-                var selectizeOption = {"label": entry.userRoleRusName, "value": entry.userRoleID};
-                selectizeOptions.push(selectizeOption);
-            });
-            var userRoleSelectize = usersEditor.field('userRoleRusName').inst();
 
-            userRoleSelectize.clear();
-            userRoleSelectize.clearOptions();
-            userRoleSelectize.load(function (callback) {
-                callback(selectizeOptions);
-            });
-        });
-
-    var usersEditor = new $.fn.dataTable.Editor({
-        ajax: 'content/getData.php',
+    usersEditor = new $.fn.dataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                contentType:'application/json',
+                url:  'api/users',
+                data: function (d) {
+                    let newdata;
+                    $ .each (d.data, function (key, value) {
+                        value.salt = calcMD5("fgsfds");
+                        data.passAndSalt = calcMD5(value.password+calcMD5("fgsfds"));
+                        newdata = JSON.stringify (value) ;
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            },
+            edit: {
+                contentType:'application/json',
+                type: 'PATCH',
+                url:  'api/users/_id_',
+                data: function (d) {
+                    let newdata;
+                    $ .each (d.data, function (key, value) {
+                        value.salt = calcMD5("fgsfds");
+                        data.passAndSalt = calcMD5(value.password+calcMD5("fgsfds"));
+                        newdata = JSON.stringify (value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                alert(response.responseText);
+                }
+            }
+            ,
+            remove: {
+                type: 'DELETE',
+                contentType:'application/json',
+                url:  'api/users/_id_'
+            }
+        },
         table: '#usersTable',
         idSrc: 'userId',
 
@@ -40,7 +68,7 @@ $(document).ready(function () {
             {label: 'Почта', name: 'email', type: 'text', visible: false},
             {label: 'Пароль', name: 'password', type: 'password'},
             {
-                label: 'Роль', name: 'userRoleRusName', type: 'selectize', options: [],
+                label: 'Роль', name: 'userRole', type: 'selectize', options: [],
                 opts: {
                     diacritics: true,
                     searchField: 'label',
@@ -83,8 +111,24 @@ $(document).ready(function () {
             }
         ]
     });
+    usersEditor.on( 'preSubmit', function (e,data, action) {
+            data = data.data;
+            console.log(data);
+            if(action=='create'){
 
-    // set current selected value to pointName and userRoleRusName
+            }
+            console.log(data);
+    } );
+
+    var userRoleSelectize = usersEditor.field('userRole').inst();
+
+    userRoleSelectize.clear();
+    userRoleSelectize.clearOptions();
+    userRoleSelectize.load(function (callback) {
+        callback(userRoleOptions);
+    });
+
+    // set current selected value to pointName and userRole
     usersEditor.on('open', function (e, mode, action) {
         usersEditor.field('pointName').disable();
         usersEditor.field('clientID').disable();
@@ -114,8 +158,6 @@ $(document).ready(function () {
                 var selectizeOptions = [];
                 clientsData = JSON.parse(clientsData);
                 clientsData.forEach(function (entry) {
-                    var option = "<option value=" + entry.clientID + ">" + "ИНН: " + entry.INN + ", имя: " + entry.clientName + "</option>";
-                    options.push(option);
                     var selectizeOption = {"label": "ИНН: " + entry.INN + ", имя: " + entry.clientName, "value": entry.clientID};
                     selectizeOptions.push(selectizeOption);
                 });
@@ -143,8 +185,6 @@ $(document).ready(function () {
                 var selectizePointsOptions = [];
                 data = JSON.parse(data);
                 data.forEach(function (entry) {
-                    var option = "<option value=" + entry.pointID + ">" + entry.pointName + "</option>";
-                    options.push(option);
                     var selectizeOption = {"label": entry.pointName, "value": entry.pointID};
                     selectizePointsOptions.push(selectizeOption);
                 });
@@ -160,7 +200,7 @@ $(document).ready(function () {
     });
 
 
-    usersEditor.field('userRoleRusName').input().on('change', function (e, d) {
+    usersEditor.field('userRole').input().on('change', function (e, d) {
         if (d && d.editorSet) return;
 
         var currentRole = $(this).val();
@@ -169,16 +209,20 @@ $(document).ready(function () {
 
     // example data for exchange with server
     //var exampleData = [{userID: 1, userName:"wefwfe", position: "efewerfw", patronymic:"ergerge", phoneNumber: "9055487552",
-    //    email: "qwe@qwe.ru", password:"lewrhbwueu23232", userRoleRusName:"Диспетчер", pointName:"point1"}];
+    //    email: "qwe@qwe.ru", password:"lewrhbwueu23232", userRole:"Диспетчер", pointName:"point1"}];
 
 
     var $usersDataTable = $("#usersTable").DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "content/getData.php", // json datasource
-                type: "post",  // method  , by default get
-                data: {"status": "getUsersData"}
+                contentType: 'application/json',
+                processing: true,
+                data: function(d) {
+                    return JSON.stringify(d);
+                },
+                url: "data/users", // json datasource
+                type: "post"  // method  , by default get
             },
             dom: 'Bfrtip',
             language: {
@@ -206,24 +250,28 @@ $(document).ready(function () {
             ],
             "paging": 10,
             "columnDefs": [
-                {"name": "userId", "data": "userId", "targets": 0, visible: false},
+                {"name": "userID", "data": "userID", "targets": 0, visible: false},
                 {"name": "userName", "data": "userName", "targets": 1},
                 {"name": "login", "data": "login", "targets": 2},
                 {"name": "position", "data": "position", "targets": 3},
                 {"name": "phoneNumber", "data": "phoneNumber", "targets": 4},
                 {"name": "email", "data": "email", "targets": 5},
-                {"name": "password", "data": "password", "targets": 6, visible: false},
-                {"name": "userRoleRusName", "data": "userRoleRusName", "targets": 7},
-                {"name": "pointName", "data": "pointName", "targets": 8},
-                {"name": "clientID", "data": "clientID", "targets": 9, visible: false},
-                {"name": "transport_company_id", "data": "transport_company_id", "targets": 10, visible: true}
+                {"name": "password", "data": "password", "targets": 6, visible: false,"defaultContent":"dummy"},
+                {"name": "userRole", "data": "userRole", "targets": 7
+                    ,"render": function ( data, type, row, meta ) {
+                        return userRoles[data];
+                    }
+                },
+                {"name": "point", "data": "point.pointName", "targets": 8, "defaultContent":""},
+                {"name": "client", "data": "client.clientName", "targets": 9, visible: false, "defaultContent":""},
+                {"name": "transportCompany", "data": "transportCompany.name", "targets": 10, visible: true,"defaultContent":""}
             ]
         }
     );
     {
         function selectCurrentUserRole() {
-            var userRoleRusName = $usersDataTable.row($('#usersTable .selected')[0]).data()['userRoleRusName'];
-            var selectizeInstance = usersEditor.field('userRoleRusName').inst();
+            var userRoleRusName = $usersDataTable.row($('#usersTable .selected')[0]).data()['userRole'];
+            var selectizeInstance = usersEditor.field('userRole').inst();
             var role = selectizeInstance.search(userRoleRusName);
             selectizeInstance.setValue(role.items[0].id, true);
             enableColumnsByRole(role.items[0].id)
