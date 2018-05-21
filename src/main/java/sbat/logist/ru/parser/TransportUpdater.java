@@ -9,13 +9,13 @@ import sbat.logist.ru.parser.json.PackageData;
 
 @Component
 public class TransportUpdater {
-    private final PointUpdater pointUpdater;
-    private final AddressUpdater addressUpdater;
-    private final RouteUpdater routeUpdater;
-    private final ClientUpdater clientUpdater;
-    private final UserFromTraderUpdater userFromTraderUpdater;
-    private final UserFromClientUpdater userFromClientUpdater;
-    private final VehicleUpdater vehicleUpdater;
+//    private final PointUpdater pointUpdater;
+//    private final AddressUpdater addressUpdater;
+//    private final RouteUpdater routeUpdater;
+//    private final ClientUpdater clientUpdater;
+//    private final UserFromTraderUpdater userFromTraderUpdater;
+//    private final UserFromClientUpdater userFromClientUpdater;
+//    private final VehicleUpdater vehicleUpdater;
     private final RouteListUpdater routeListUpdater;
     private final AssignRouteListsToRequests assignRouteListsToRequests;
     private final RequestStatusUpdater requestStatusUpdater;
@@ -24,13 +24,13 @@ public class TransportUpdater {
     private final MatViewUpdater matViewUpdater;
 
     public TransportUpdater(
-            PointUpdater pointUpdater,
-            AddressUpdater addressUpdater,
-            RouteUpdater routeUpdater,
-            ClientUpdater clientUpdater,
-            UserFromTraderUpdater userFromTraderUpdater,
-            UserFromClientUpdater userFromClientUpdater,
-            VehicleUpdater vehicleUpdater,
+//            PointUpdater pointUpdater,
+//            AddressUpdater addressUpdater,
+//            RouteUpdater routeUpdater,
+//            ClientUpdater clientUpdater,
+//            UserFromTraderUpdater userFromTraderUpdater,
+//            UserFromClientUpdater userFromClientUpdater,
+//            VehicleUpdater vehicleUpdater,
             RouteListUpdater routeListUpdater,
             AssignRouteListsToRequests assignRouteListsToRequests,
             RequestStatusUpdater requestStatusUpdater,
@@ -38,13 +38,13 @@ public class TransportUpdater {
             ClearRequestsFromRouteList clearRequestsFromRouteList,
             MatViewUpdater matViewUpdater
     ) {
-        this.pointUpdater = pointUpdater;
-        this.addressUpdater = addressUpdater;
-        this.routeUpdater = routeUpdater;
-        this.clientUpdater = clientUpdater;
-        this.userFromTraderUpdater = userFromTraderUpdater;
-        this.userFromClientUpdater = userFromClientUpdater;
-        this.vehicleUpdater = vehicleUpdater;
+//        this.pointUpdater = pointUpdater;
+//        this.addressUpdater = addressUpdater;
+//        this.routeUpdater = routeUpdater;
+//        this.clientUpdater = clientUpdater;
+//        this.userFromTraderUpdater = userFromTraderUpdater;
+//        this.userFromClientUpdater = userFromClientUpdater;
+//        this.vehicleUpdater = vehicleUpdater;
         this.routeListUpdater = routeListUpdater;
         this.assignRouteListsToRequests = assignRouteListsToRequests;
         this.requestStatusUpdater = requestStatusUpdater;
@@ -57,15 +57,15 @@ public class TransportUpdater {
     @Transactional(propagation = Propagation.REQUIRED, transactionManager = "mainTransactionManager")
     public void updateMain(Data1c data1c) {
         PackageData packageData = data1c.getDataFrom1C().getPackageData();
-        pointUpdater.execute(packageData.getUpdatePoints());
-        addressUpdater.execute(packageData.getUpdateAddress());
-        routeUpdater.execute(packageData.getUpdateDirections(), packageData.getUpdateRouteLists());
-        clientUpdater.execute(packageData.getUpdateClients());
-        userFromTraderUpdater.execute(packageData.getUpdateTrader());
-        userFromClientUpdater.execute(packageData.getUpdateClients());
-        if (packageData.getUpdateCars()!=null){
-            vehicleUpdater.execute(packageData.getUpdateCars());
-        }
+//        pointUpdater.execute(packageData.getUpdatePoints());
+//        addressUpdater.execute(packageData.getUpdateAddress());
+//        routeUpdater.execute(packageData.getUpdateDirections(), packageData.getUpdateRouteLists());
+//        clientUpdater.execute(packageData.getUpdateClients());
+//        userFromTraderUpdater.execute(packageData.getUpdateTrader());
+//        userFromClientUpdater.execute(packageData.getUpdateClients());
+//        if (packageData.getUpdateCars()!=null){
+//            vehicleUpdater.execute(packageData.getUpdateCars());
+//        }
         routeListUpdater.execute(packageData.getUpdateRouteLists());
         requestUpdater.execute(packageData.getUpdateRequests());
         requestStatusUpdater.execute(packageData.getUpdateStatus());

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
 @Builder
 @Table(name = "requests")

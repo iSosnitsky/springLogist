@@ -1,6 +1,7 @@
 package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
@@ -12,6 +13,7 @@ import sbat.logist.ru.transport.domain.converter.VehicleTypeConverter;
 import javax.persistence.*;
 
 @NoArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Entity
 @Data
 @Table(name="VEHICLES")

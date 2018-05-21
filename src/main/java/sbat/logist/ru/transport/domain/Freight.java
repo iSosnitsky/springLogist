@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Builder
 public class Freight {
     @Id

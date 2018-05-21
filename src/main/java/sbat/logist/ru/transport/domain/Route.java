@@ -1,7 +1,9 @@
 package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 
@@ -15,6 +17,8 @@ import javax.persistence.*;
         @Index(columnList = "TARIFFID"),
         @Index(columnList = "DATASOURCEID")
 })
+@AllArgsConstructor(suppressConstructorProperties = true)
+@NoArgsConstructor
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

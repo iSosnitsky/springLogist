@@ -15,7 +15,7 @@ import java.sql.Time;
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Builder
 @Table(name = "points")
 public class Point {

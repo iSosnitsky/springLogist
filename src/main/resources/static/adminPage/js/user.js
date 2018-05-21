@@ -5,13 +5,16 @@ $(document).ready(function () {
         ajax: {
             create: {
                 type: 'POST',
-                contentType:'application/json',
+                contentType:'text/uri-list',
                 url:  'api/users',
                 data: function (d) {
                     let newdata;
+
                     $ .each (d.data, function (key, value) {
-                        value.salt = calcMD5("fgsfds");
-                        data.passAndSalt = calcMD5(value.password+calcMD5("fgsfds"));
+                        value.salt = calcMD5("fgsfds").slice(0,16);
+                        value.dataSource = "ADMIN_PAGE";
+                        value.passAndSalt = calcMD5(value.password+calcMD5(value.salt));
+                        delete value["password"];
                         newdata = JSON.stringify (value) ;
                     });
                     return newdata;
@@ -30,10 +33,16 @@ $(document).ready(function () {
                 data: function (d) {
                     let newdata;
                     $ .each (d.data, function (key, value) {
-                        value.salt = calcMD5("fgsfds");
-                        data.passAndSalt = calcMD5(value.password+calcMD5("fgsfds"));
+                        if(value.password!="dummy"){
+                            value.salt = calcMD5("fgsfds").slice(0,16);
+                            value.passAndSalt = calcMD5(value.password+calcMD5(value.salt));
+                            delete value["password"];
+                        } else {
+                            delete value["password"];
+                        }
                         newdata = JSON.stringify (value);
                     });
+                    console.log(newdata);
                     return newdata;
                 },
                 success: function (response) {
@@ -51,7 +60,7 @@ $(document).ready(function () {
             }
         },
         table: '#usersTable',
-        idSrc: 'userId',
+        idSrc: 'userID',
 
         fields: [
             {label: 'ФИО', name: 'userName', type: 'text'},
@@ -151,17 +160,18 @@ $(document).ready(function () {
 
     usersEditor.field('clientID').input().on('keyup', function (e, d) {
         var clientINNPart = $(this).val();
-        $.post( "content/getData.php",
-            {status: "getClientsByINN", format: "json", inn: clientINNPart},
+        $.get( "api/clients/search/findTop15ByClientNameContaining?name="+clientINNPart,
             function (clientsData) {
-                var options = [];
                 var selectizeOptions = [];
-                clientsData = JSON.parse(clientsData);
-                clientsData.forEach(function (entry) {
-                    var selectizeOption = {"label": "ИНН: " + entry.INN + ", имя: " + entry.clientName, "value": entry.clientID};
+                console.log(clientsData);
+                clientsData._embedded.clients.forEach(function (entry) {
+                    var selectizeOption = {
+                        "label": "ИНН: " + entry.inn + ", имя: " + entry.clientName,
+                        "value": entry._links.self.href
+                    };
                     selectizeOptions.push(selectizeOption);
                 });
-                var clientSelectize = usersEditor.field('clientID').inst();
+                let clientSelectize = usersEditor.field('clientID').inst();
 
                 clientSelectize.clear();
                 clientSelectize.clearOptions();
