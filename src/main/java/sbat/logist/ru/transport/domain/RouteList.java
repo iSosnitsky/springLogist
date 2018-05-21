@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
 
 @Table(name="route_lists", indexes = {
         @Index(unique = true, columnList = "ROUTELISTIDEXTERNAL,DATASOURCEID"),

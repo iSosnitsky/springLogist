@@ -1,9 +1,7 @@
 package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 
 import javax.persistence.*;
@@ -11,8 +9,6 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name="TRANSPORT_COMPANIES")
-@AllArgsConstructor(suppressConstructorProperties = true)
-@NoArgsConstructor
 public class TransportCompany {
     @Id
     @Column(name="ID")

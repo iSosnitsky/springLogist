@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
 @Builder
 @Table(name = "pretensions")
 public class Pretension {

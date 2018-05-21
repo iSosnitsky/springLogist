@@ -23,7 +23,7 @@ import java.util.Optional;
 @Table(name = "requests")
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
 @DynamicInsert(true)
 @DynamicUpdate(true)
 public class Request {

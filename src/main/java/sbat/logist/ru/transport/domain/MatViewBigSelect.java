@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @Table(name = "mat_view_big_select")
 @NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
 @Builder
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "refreshMaterializedView", procedureName = "refreshMaterializedView")

@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "exchange_log")
 @NoArgsConstructor
 @Builder
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
 public class ExchangeLog {
     @Column(name="ENTRY_ID")
     @Id

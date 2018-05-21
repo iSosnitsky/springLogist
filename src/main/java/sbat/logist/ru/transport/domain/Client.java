@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
 @Entity
 @Table(name = "clients", indexes = {
         @Index(name = "external_id_datasource_index", columnList = "CLIENTIDEXTERNAL,DATASOURCEID", unique = true),

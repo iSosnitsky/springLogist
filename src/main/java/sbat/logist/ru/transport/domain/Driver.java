@@ -1,16 +1,12 @@
 package sbat.logist.ru.transport.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name="DRIVERS")
-@NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
 public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

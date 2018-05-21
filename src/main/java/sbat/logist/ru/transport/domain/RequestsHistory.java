@@ -1,9 +1,7 @@
 package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.RequestStatus;
@@ -14,8 +12,6 @@ import java.sql.Date;
 
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
 @Table(name="REQUESTS_HISTORY")
 public class RequestsHistory {
     @Id
