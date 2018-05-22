@@ -6,9 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.lang.Nullable;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.UserRole;
+import sbat.logist.ru.transport.repository.RequestRepository;
+import sbat.logist.ru.transport.repository.UserRepository;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Table(name = "users", indexes = {
         @Index(name = "client_id_index", columnList = "CLIENTID"),
         @Index(name = "data_source_index", columnList = "DATASOURCEID"),
@@ -33,9 +37,8 @@ public class User {
     @Column(name = "USERID")
     private Long userID;
 
-    @NotNull
     @JsonView(DataTablesOutput.View.class)
-    @Column(name = "USERIDEXTERNAL")
+    @Column(name = "USERIDEXTERNAL", nullable = false)
     private String userIDExternal;
 
     @JsonView(DataTablesOutput.View.class)
@@ -49,13 +52,11 @@ public class User {
     private String login;
 
     @NotNull
-    @JsonView(DataTablesOutput.View.class)
     @Column(name = "SALT")
     private String salt;
 
     @NotNull
     @Column(name = "PASSANDSALT")
-    @JsonView(DataTablesOutput.View.class)
     private String passAndSalt;
 
     @Column(name = "USERROLEID", nullable = false)
@@ -96,4 +97,21 @@ public class User {
     @JoinColumn(name="TRANSPORT_COMPANY_ID")
     @JsonView(DataTablesOutput.View.class)
     private TransportCompany transportCompany;
+
+    @PrePersist
+    private void prePersist(){
+        if(this.userIDExternal==null){
+            this.userIDExternal= randomAlphaNumeric(10);
+        }
+    }
+
+    private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static String randomAlphaNumeric(int count) {
+        StringBuilder builder = new StringBuilder();
+        while (count-- != 0) {
+            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+        }
+        return builder.toString();
+    }
 }

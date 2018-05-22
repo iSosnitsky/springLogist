@@ -9,15 +9,20 @@ $(document).ready(function () {
                 url:  'api/users',
                 data: function (d) {
                     let newdata;
+
                     $ .each (d.data, function (key, value) {
-                        value.salt = calcMD5("fgsfds");
-                        data.passAndSalt = calcMD5(value.password+calcMD5("fgsfds"));
+                        value.salt = calcMD5("fgsfds").slice(0,16);
+                        value.dataSource = "ADMIN_PAGE";
+                        value.passAndSalt = calcMD5(value.password+calcMD5(value.salt));
+                        delete value["password"];
                         newdata = JSON.stringify (value) ;
                     });
                     return newdata;
                 },
                 success: function (response) {
-                    alert(response.responseText);
+                    $usersDataTable.draw();
+                    usersEditor.close();
+                    // alert(response.responseText);
                 },
                 error: function (jqXHR, exception) {
                     alert(response.responseText);
@@ -30,14 +35,22 @@ $(document).ready(function () {
                 data: function (d) {
                     let newdata;
                     $ .each (d.data, function (key, value) {
-                        value.salt = calcMD5("fgsfds");
-                        data.passAndSalt = calcMD5(value.password+calcMD5("fgsfds"));
+                        if(value.password!="dummy"){
+                            value.salt = calcMD5("fgsfds").slice(0,16);
+                            value.passAndSalt = calcMD5(value.password+calcMD5(value.salt));
+                            delete value["password"];
+                        } else {
+                            delete value["password"];
+                        }
                         newdata = JSON.stringify (value);
                     });
+                    console.log(newdata);
                     return newdata;
                 },
                 success: function (response) {
-                alert(response.responseText);
+                    $usersDataTable.draw();
+                    usersEditor.close();
+                // alert(response.responseText);
                 },
                 error: function (jqXHR, exception) {
                 alert(response.responseText);
@@ -47,11 +60,14 @@ $(document).ready(function () {
             remove: {
                 type: 'DELETE',
                 contentType:'application/json',
-                url:  'api/users/_id_'
+                url:  'api/users/_id_',
+                data: function (d) {
+                    return '';
+                }
             }
         },
         table: '#usersTable',
-        idSrc: 'userId',
+        idSrc: 'userID',
 
         fields: [
             {label: 'ФИО', name: 'userName', type: 'text'},
@@ -77,7 +93,7 @@ $(document).ready(function () {
                 }
             },
             {
-                label: 'Пункт', name: 'pointName', type: 'selectize', options: [],
+                label: 'Пункт', name: 'point', type: 'selectize', options: [],
                 opts: {
                     diacritics: true,
                     searchField: 'label',
@@ -87,7 +103,7 @@ $(document).ready(function () {
             },
             {
                 label: 'ИНН Клиента',
-                name: 'clientID',
+                name: 'client',
                 type: 'selectize',
                 options: [],
                 opts: {
@@ -99,13 +115,13 @@ $(document).ready(function () {
             },
             {
                 label: 'Транспортная компания',
-                name: 'transport_company_id',
+                name: 'transportCompany',
                 type: 'selectize',
                 options: [],
                 opts: {
                     diacritics: true,
-                    searchField: 'text',
-                    labelField: 'text',
+                    searchField: 'label',
+                    labelField: 'label',
                     dropdownParent: "body"
                 }
             }
@@ -120,6 +136,13 @@ $(document).ready(function () {
             console.log(data);
     } );
 
+    usersEditor.on('postSubmit', function(e, json, data, action){
+        var rowData = $.extend( {}, json );
+
+        json.data = [ rowData ];
+        console.log(json);
+    });
+
     var userRoleSelectize = usersEditor.field('userRole').inst();
 
     userRoleSelectize.clear();
@@ -128,11 +151,11 @@ $(document).ready(function () {
         callback(userRoleOptions);
     });
 
-    // set current selected value to pointName and userRole
+    // set current selected value to point and userRole
     usersEditor.on('open', function (e, mode, action) {
-        usersEditor.field('pointName').disable();
-        usersEditor.field('clientID').disable();
-        usersEditor.field('transport_company_id').disable();
+        usersEditor.field('point').disable();
+        usersEditor.field('client').disable();
+        usersEditor.field('transportComany').disable();
         if (action === "edit") {
             selectCurrentUserRole();
         }
@@ -149,19 +172,20 @@ $(document).ready(function () {
         }
     });
 
-    usersEditor.field('clientID').input().on('keyup', function (e, d) {
+    usersEditor.field('client').input().on('keyup', function (e, d) {
         var clientINNPart = $(this).val();
-        $.post( "content/getData.php",
-            {status: "getClientsByINN", format: "json", inn: clientINNPart},
+        $.get( "api/clients/search/findTop15ByClientNameContaining?name="+clientINNPart,
             function (clientsData) {
-                var options = [];
                 var selectizeOptions = [];
-                clientsData = JSON.parse(clientsData);
-                clientsData.forEach(function (entry) {
-                    var selectizeOption = {"label": "ИНН: " + entry.INN + ", имя: " + entry.clientName, "value": entry.clientID};
+                console.log(clientsData);
+                clientsData._embedded.clients.forEach(function (entry) {
+                    var selectizeOption = {
+                        "label": "ИНН: " + entry.inn + ", имя: " + entry.clientName,
+                        "value": entry._links.self.href
+                    };
                     selectizeOptions.push(selectizeOption);
                 });
-                var clientSelectize = usersEditor.field('clientID').inst();
+                let clientSelectize = usersEditor.field('client').inst();
 
                 clientSelectize.clear();
                 clientSelectize.clearOptions();
@@ -175,21 +199,21 @@ $(document).ready(function () {
 
 
 
-    usersEditor.field('pointName').input().on('keyup', function (e, d) {
-        var pointNamePart = $(this).val();
-        $.post( "content/getData.php",
-            {status: "getPointsByName", format: "json", name: pointNamePart},
+    usersEditor.field('point').input().on('keyup', function (e, d) {
+        var pointPart = $(this).val();
+        $.get( "api/points/search/findTop10ByPointNameContaining/?pointName="+pointPart,
             function (data) {
+            console.log(data);
                 var options = [];
 
                 var selectizePointsOptions = [];
-                data = JSON.parse(data);
-                data.forEach(function (entry) {
-                    var selectizeOption = {"label": entry.pointName, "value": entry.pointID};
+                // data = JSON.parse(data);
+                data._embedded.points.forEach(function (entry) {
+                    var selectizeOption = {"label": entry.pointName, "value": entry._links.self.href};
                     selectizePointsOptions.push(selectizeOption);
                 });
 
-                var selectize2 = usersEditor.field('pointName').inst();
+                var selectize2 = usersEditor.field('point').inst();
                 selectize2.clear();
                 selectize2.clearOptions();
                 selectize2.load(function (callback) {
@@ -209,7 +233,7 @@ $(document).ready(function () {
 
     // example data for exchange with server
     //var exampleData = [{userID: 1, userName:"wefwfe", position: "efewerfw", patronymic:"ergerge", phoneNumber: "9055487552",
-    //    email: "qwe@qwe.ru", password:"lewrhbwueu23232", userRole:"Диспетчер", pointName:"point1"}];
+    //    email: "qwe@qwe.ru", password:"lewrhbwueu23232", userRole:"Диспетчер", point:"point1"}];
 
 
     var $usersDataTable = $("#usersTable").DataTable({
@@ -279,70 +303,74 @@ $(document).ready(function () {
 
         function enableColumnsByRole(currentRole) {
             if (currentRole === "CLIENT_MANAGER") {
-                usersEditor.field('pointName').disable();
-                usersEditor.field('pointName').set('');
-                usersEditor.field('clientID').enable();
-                usersEditor.field('clientID').set('');
-                usersEditor.field('transport_company_id').disable();
-                usersEditor.field('transport_company_id').set('');
+                usersEditor.field('point').disable();
+                usersEditor.field('point').set('');
+                usersEditor.field('client').enable();
+                usersEditor.field('client').set('');
+                usersEditor.field('transportCompany').disable();
+                usersEditor.field('transportCompany').set('');
             }
 
             if (currentRole === "TEMP_REMOVED") {
-                usersEditor.field('pointName').enable();
-                usersEditor.field('pointName').set('');
-                usersEditor.field('clientID').enable();
-                usersEditor.field('clientID').set('');
-                usersEditor.field('transport_company_id').disable();
-                usersEditor.field('transport_company_id').set('');
+                usersEditor.field('point').enable();
+                usersEditor.field('point').set('');
+                usersEditor.field('client').enable();
+                usersEditor.field('client').set('');
+                usersEditor.field('transportCompany').disable();
+                usersEditor.field('transportCompany').set('');
             }
 
             if (currentRole === "ADMIN" || currentRole === "MARKET_AGENT") {
-                usersEditor.field('pointName').disable();
-                usersEditor.field('pointName').set('');
-                usersEditor.field('clientID').disable();
-                usersEditor.field('clientID').set('');
-                usersEditor.field('transport_company_id').disable();
-                usersEditor.field('transport_company_id').set('');
+                usersEditor.field('point').disable();
+                usersEditor.field('point').set('');
+                usersEditor.field('client').disable();
+                usersEditor.field('client').set('');
+                usersEditor.field('transportCompany').disable();
+                usersEditor.field('transportCompany').set('');
             }
 
             if (currentRole === "DISPATCHER" || currentRole === "W_DISPATCHER") {
-                usersEditor.field('pointName').enable();
-                usersEditor.field('pointName').set('');
-                usersEditor.field('clientID').disable();
-                usersEditor.field('clientID').set('');
-                usersEditor.field('transport_company_id').disable();
-                usersEditor.field('transport_company_id').set('');
+                usersEditor.field('point').enable();
+                usersEditor.field('point').set('');
+                usersEditor.field('client').disable();
+                usersEditor.field('client').set('');
+                usersEditor.field('transportCompany').disable();
+                usersEditor.field('transportCompany').set('');
             }
 
             if (currentRole ==="TRANSPORT_COMPANY"){
-                usersEditor.field('transport_company_id').enable();
-                usersEditor.field('transport_company_id').set('');
-                usersEditor.field('clientID').disable();
-                usersEditor.field('clientID').set('');
-                usersEditor.field('pointName').disable();
-                usersEditor.field('pointName').set('');
+                usersEditor.field('transportCompany').enable();
+                usersEditor.field('transportCompany').set('');
+                usersEditor.field('client').disable();
+                usersEditor.field('client').set('');
+                usersEditor.field('point').disable();
+                usersEditor.field('point').set('');
             }
         }
     }
 
-    $.post("content/getData.php",
-        {status: "getCompanyPairs", format: "json"},
-        function (companiesData) {
-            let selectizeOptions = [];
-            // console.log(companiesData);
-            companiesData = JSON.parse(companiesData);
+    usersEditor.field('transportCompany').input().on('keyup', function (e, d) {
+        var namePart = $(this).val();
+        $.get( "api/transportCompanies/search/findTop10ByNameContaining/?companyName="+namePart,
+            function (data) {
+                console.log(data);
+                var options = [];
 
-            companiesData.forEach(function (entry) {
-                text = entry.name;
-                let selectizeOption = {text:text, value:entry.id};
-                selectizeOptions.push(selectizeOption);
-            });
+                var selectizeTransportCompaniesOptions = [];
+                // data = JSON.parse(data);
+                data._embedded.transportCompanies.forEach(function (entry) {
+                    var selectizeOption = {"label": entry.name, "value": entry._links.self.href};
+                    selectizeTransportCompaniesOptions.push(selectizeOption);
+                });
 
-            let transportCompanyInput = usersEditor.field('transport_company_id');
-            transportCompanyInput.inst().load(function (callback) {
-                callback(selectizeOptions);
-                console.log(selectizeOptions);
-            });
-        }
-    )
+                var selectize2 = usersEditor.field('transportCompany').inst();
+                selectize2.clear();
+                selectize2.clearOptions();
+                selectize2.load(function (callback) {
+                    callback(selectizeTransportCompaniesOptions);
+                });
+            }
+        );
+    })
+
 });
