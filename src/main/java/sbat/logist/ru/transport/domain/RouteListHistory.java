@@ -70,7 +70,7 @@ public class RouteListHistory {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="routeID")
     private Route routeId;
-
+// аа
      @Column (name="DUTYSTATUS")   @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 }
