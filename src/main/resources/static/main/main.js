@@ -939,7 +939,7 @@ $(document).ready(function () {
                 enabled: false,
                 action: function (e, dt, node, config) {
                     var url =
-                        "/main/?clientId=" +
+                        "requestHistory?clientId=" +
                         dataTable.row($('#user-grid .selected')).data().clientIDExternal +
                         "&invoiceNumber=" +
                         dataTable.row($('#user-grid .selected')).data().invoiceNumber;

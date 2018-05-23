@@ -1,6 +1,7 @@
 package sbat.logist.ru.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.SpecificationBuilder;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
@@ -16,14 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import sbat.logist.ru.configuration.logist.user.LogistAuthToken;
 import sbat.logist.ru.constant.UserRole;
-import sbat.logist.ru.transport.domain.MatViewBigSelect;
-import sbat.logist.ru.transport.domain.Request;
-import sbat.logist.ru.transport.domain.RouteList;
-import sbat.logist.ru.transport.domain.User;
+import sbat.logist.ru.transport.domain.*;
 import sbat.logist.ru.transport.domain.specification.RequestForUser;
 import sbat.logist.ru.transport.repository.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -41,7 +40,13 @@ public class RequestRestController {
     private RequestDTReqpository requestDTReqpository;
 
     @Autowired
+    private RequestRepository requestReqpository;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
     private UserDTRepository userDTRepository;
@@ -66,6 +71,27 @@ public class RequestRestController {
             case "CLIENT_MANAGER": return matViewBigSelectRepository.findAll(input, RequestForUser.requestsForClient(authentication.getUser().getClient()));
             default: return matViewBigSelectRepository.findAll(input);
 
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:*")
+    @RequestMapping(value="/api/requests/findFirstByClientIdExternalAndInvoiceNumber", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public Request findFirstByClientIdExternalAndInvoiceNumber(@Param("clientIdExternal") String clientIdExternal, @Param("invoiceNumber") String invoiceNumber){
+        Optional<Client> client =clientRepository.findByClientIDExternal(clientIdExternal);
+        if (client.isPresent()){
+            Optional<Request> request = requestReqpository.findFirstByClientIdAndInvoiceNumber(client.get(), invoiceNumber);
+            if (request.isPresent()) {
+                Request request1 = request.get();
+                Hibernate.initialize(request1.getMarketAgentUserId());
+                Hibernate.initialize(request1.getClientId());
+                Hibernate.initialize(request1.getDestinationPointId());
+                Hibernate.initialize(request1.getRouteListId());
+                Hibernate.initialize(request1.getWarehousePoint());
+                Hibernate.initialize(request1.getRequestHistory());
+                return request1;
+            } else return null;
+        } else {
+            return null;
         }
     }
 

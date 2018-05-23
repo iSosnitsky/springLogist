@@ -21,8 +21,8 @@ spring:
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
 #    show-sql: true
 parser:
-  json-data-dir: /Users/Airtwist/Desktop/exchange
-  backup-dir: /Users/Airtwist/Desktop/exchange
-  response-dir: /Users/Airtwist/Desktop/exchange
+  json-data-dir: /Users/Roman 1/Desktop/exchange/data
+  backup-dir: /Users/Roman 1/Desktop/exchange/backup
+  response-dir: /Users/Roman 1/Desktop/exchange/ans
 logging:
-  path: /Users/Airtwist/Desktop/exchange
+  path: /Users/Roman 1/Desktop/exchange/logs

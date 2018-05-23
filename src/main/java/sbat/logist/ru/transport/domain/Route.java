@@ -41,9 +41,9 @@ public class Route {
 //    @Column(name = "DAYSOFWEEK")
 //    private String daysOfWeek;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
 //    @Column(name = "TARIFFID")
     @JsonView(DataTablesOutput.View.class)
-    @JoinColumn(name = "TARRIFID")
-    private Tariff tariffId;
+    @JoinColumn(name = "TARIFFID")
+    private Tariff tariff;
 }

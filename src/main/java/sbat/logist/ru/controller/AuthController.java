@@ -17,6 +17,18 @@ public class AuthController {
 		return "redirect:/index";
 	}
 
+	@RequestMapping("/routeLists")
+	public String routeLists(){return "/routeLists";}
+
+	@RequestMapping("/routeList")
+	public String routeList(){return "/routeList";}
+
+	@RequestMapping("/routeListHistory")
+	public String routeListHistory(){return "/routeListHistory";}
+
+	@RequestMapping("/requestHistory")
+	public String requestHistory(){return "/requestHistory";}
+
 	@RequestMapping("/react")
 	public String react() {
     	return "redirect:/react/";
@@ -29,11 +41,11 @@ public class AuthController {
 
 	@RequestMapping("/adminPage")
 	public String adminPage() {
-		return "adminPage";
+		return "/adminPage";
 	}
 
 	@RequestMapping("/main")
-	public String main(){return "main";}
+	public String main(){return "/main";}
 
 	@RequestMapping("/user/index")
 	public String userIndex() {

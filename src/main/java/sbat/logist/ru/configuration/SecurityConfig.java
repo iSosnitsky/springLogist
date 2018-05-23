@@ -32,12 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/data/**").permitAll()
                 .antMatchers("/main").authenticated()
                 .antMatchers("/adminPage").permitAll()
+                .antMatchers("/routeLists").permitAll()
                 .antMatchers("/requestHistoryPage").permitAll()
                 .antMatchers("/api").permitAll()
                 .and()
             .formLogin()
 				.loginPage("/login")
                 .failureUrl("/login-error")
+                .defaultSuccessUrl("/main")
                 .successForwardUrl("/main");
     }
 

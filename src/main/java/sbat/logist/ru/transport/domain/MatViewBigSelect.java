@@ -1,6 +1,7 @@
 package sbat.logist.ru.transport.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="REQUESTDATE")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date requestDate;
 
     @JsonView(DataTablesOutput.View.class)
@@ -44,6 +46,7 @@ public class MatViewBigSelect {
     private String invoiceNumber;
 
     @JsonView(DataTablesOutput.View.class)
+    @JsonFormat(pattern="dd/MM/yyyy")
     @Column(name="INVOICEDATE")
     private Date invoiceDate;
 
@@ -57,6 +60,7 @@ public class MatViewBigSelect {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name="DOCUMENTDATE")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date documentDate;
 
     @JsonView(DataTablesOutput.View.class)
@@ -169,6 +173,7 @@ public class MatViewBigSelect {
     private String routeName;
 
     @JsonView(DataTablesOutput.View.class)
+    @JsonFormat(pattern="dd/MM/yyyy")
     @Column(name="ARRIVALTIMETONEXTROUTEPOINT")
     private Date arrivalTimeToNextRoutePoint;
 }

@@ -4,18 +4,15 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
 import sbat.logist.ru.constant.RequestStatus;
-import sbat.logist.ru.constant.UserRole;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @Entity
@@ -23,7 +20,7 @@ import java.util.Optional;
 @Table(name = "requests")
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @DynamicInsert(true)
 @DynamicUpdate(true)
 public class Request {
@@ -61,7 +58,7 @@ public class Request {
     private Point destinationPointId;
 
     @JsonView(DataTablesOutput.View.class)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "MARKETAGENTUSERID")
     private User marketAgentUserId;
 
@@ -160,7 +157,7 @@ public class Request {
     private Point warehousePoint;
 
     @OneToMany(mappedBy = "requestId")
-    private List<RequestsHistory> requestHistory = new ArrayList<>();
+    private List<RequestHistory> requestHistory = new ArrayList<>();
 
 
 
