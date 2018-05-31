@@ -148,12 +148,12 @@ div.selectize-dropdown {
 
 @font-face {
     font-family: "Gerbera Light";
-    src: url("media/Gerbera-Light.otf") format("opentype");
+    src: url("../../media/Gerbera-Light.otf") format("opentype");
 }
 
 @font-face {
     font-family: "Gerbera Medium";
-    src: url("media/Gerbera-Medium.otf") format("opentype");
+    src: url("../../media/Gerbera-Medium.otf") format("opentype");
 }
 
 body {

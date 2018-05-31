@@ -1,0 +1,55 @@
+{
+    "dataFrom1C": {
+        "server": "MOS",
+        // время создания файла
+        "created": "2015-11-20 12:05:30 GMT+0",
+
+        "actions": [
+            // данная запись означает, что в системе 1С появилось два новых пункта
+            {
+                "ID": "e4fgh84fg845gf4",
+                "insertPoints": [
+                    {
+                        "pointName": "склад на алексеевской",
+                        "region": "московская область",
+                        "city": "москва",
+                        "index": "141600",
+                        "email": "bla@bla.com",
+                        "phoneNumber": "+7901567892",
+                        "pointType": "WAREHOUSE"
+                    },
+                    {
+                        "pointName": "торговый представитель в твери",
+                        "region": "тверская область",
+                        "city": "тверь",
+                        "index": "123456",
+                        "email": "bla1@bla.com",
+                        "phoneNumber": "+7904567892",
+                        "pointType": "AGENCY"
+                    }
+                ]
+            },
+            // данная запись означает, из БД 1С был удален один пункт.
+            {
+                "ID": "greig5ig5i685689g",
+                "deletePoints": [
+                    {
+                        "pointName": "склад10"
+                    }
+                ]
+            },
+            // далее по образцу тажке идут данные в виде массивов для других сущностей
+            {
+                "ID": "relnrti5gun5ign",
+                "insertUsers": [
+                    {
+                        "userID": "1234",
+                        "userName": "ivanov",
+...
+}
+]
+}
+]
+}
+}
+

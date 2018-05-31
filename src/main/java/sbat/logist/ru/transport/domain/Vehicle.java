@@ -53,18 +53,22 @@ public class Vehicle {
     @Column(name="LOADING_TYPE")
     @Enumerated(EnumType.STRING)
     @JsonView(DataTablesOutput.View.class)
-    private VehicleLoadingType loadingType;
+    private VehicleLoadingType loadingType = VehicleLoadingType.BACK;
 
     @Column(name="PALLETS_QUANTITY")
     @JsonView(DataTablesOutput.View.class)
     private Integer palletsQuantity;
 
     @Column(name="TYPE")
-    @Convert(converter = VehicleTypeConverter.class)
+    @Enumerated(EnumType.STRING)
     @JsonView(DataTablesOutput.View.class)
-    private VehicleType type;
+    private VehicleType type = VehicleType.TENT;
 
     @Column(name="WIALON_ID")
     @JsonView(DataTablesOutput.View.class)
     private String wialonId;
+
+    @Column(name="IS_RENTED")
+    @JsonView(DataTablesOutput.View.class)
+    private short isRented = 0;
 }

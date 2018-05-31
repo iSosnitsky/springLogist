@@ -1,64 +1,128 @@
 $(document).ready(function () {
     let vehiclesEditor = new $.fn.dataTable.Editor({
-        ajax: 'content/getData.php',
+        ajax: {
+            create:{
+                type:'POST',
+                contentType:'application/json',
+                url: 'api/vehicles',
+                data: function (d) {
+                    let newdata;
+                    $.each(d.data, function (key, value) {
+                        newdata = JSON.stringify(value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    vehiclesTable.draw("page");
+                    vehiclesEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            },
+            edit: {
+                contentType: 'application/json',
+                type: 'PATCH',
+                url: 'api/vehicles/_id_',
+                data: function (d) {
+                    let newdata;
+                    $.each(d.data, function (key, value) {
+                        if(value.transportCompany=="") delete value.transportCompany;
+                        newdata = JSON.stringify(value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    vehiclesTable.draw("page");
+                    vehiclesEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            },
+            remove: {
+                type: 'DELETE',
+                contentType:'application/json',
+                url:  'api/vehicles/_id_',
+                data: function (d) {
+                    return '';
+                },
+
+            }
+        },
         table: '#vehiclesTable',
         idSrc: 'id',
-
         fields: [
             {
-                label: 'Номер ТК', name: 'transport_company_id', type: 'selectize',
+                label: 'Транспортная компания', name: 'transportCompany', type: 'selectize',
                 options: [], opts: {
                 diacritics: true,
-                searchField: 'text',
-                labelField: 'text',
+                searchField: 'label',
+                labelField: 'label',
                 dropdownParent: "body"
             }
             },
-            {label: 'Номер лицензии', name: 'license_number', type: 'text'},
+            {label: 'Номер лицензии', name: 'licenseNumber', type: 'text'},
             {label: 'Модель', name: 'model', type: 'text'},
-            {label: 'Грузоподъемность, кг.', name: 'carrying_capacity', type: 'text'},
+            {label: 'Грузоподъемность, кг.', name: 'carryingCapacity', type: 'text'},
             {label: 'Объем, м<sup>3</sup>', name: 'volume', type: 'text'},
             {
                 label: 'Тип погрузки',
-                name: 'loading_type',
+                name: 'loadingType',
                 type: 'selectize',
-                options: [{label: "Задняя", value: "Задняя"}, {label: "Верхняя", value: "Верхняя"}, {
+                options: [{label: "Задняя", value: "BACK"}, {label: "Верхняя", value: "TOP"}, {
                     label: "Боковая",
-                    value: "Боковая"
+                    value: "SIDE"
                 }]
             },
-            {label: 'Количество паллет', name: 'pallets_quantity', type: 'mask', mask: "#"},
+            {label: 'Количество паллет', name: 'palletsQuantity', type: 'mask', mask: "#"},
             {
                 label: 'Тип ТС',
                 name: 'type',
                 type: 'selectize',
-                options: [{label: "Тент", value: "Тент"}, {label: "Термос", value: "Термос"}, {
+                options: [{label: "Тент", value: "TENT"}, {label: "Термос", value: "THERMOS"}, {
                     label: "Рефрижератор",
-                    value: "Рефрижератор"
+                    value: "REFRIGERATOR"
                 }]
             },
-            {label: 'Wialon ID', name: 'wialon_id', type: 'text'}
+            {label: 'Wialon ID', name: 'wialonId', type: 'text'}
             ,
             {
                 label: 'Принадлежность',
-                name: 'is_rented',
+                name: 'isRented',
                 type: 'selectize',
                 options: [{label: "Наемная", value: 1}, {label: "Собственная", value: 0}]
             }
         ]
     });
 
-    vehiclesEditor.on('preSubmit', function (e, data, action) {
-        data.status = 'vehiclesEditing';
-    });
 
-    let $vehiclesTable = $("#vehiclesTable").DataTable({
+    loadingType = {
+        "TOP":"Верхняя",
+        "SIDE": "Боковая",
+        "BACK": "Задняя",
+        null:""
+    };
+    vehicleType = {
+        "TENT":"Тент",
+        "THERMOS":"Термос",
+        "REFRIGERATOR":"Рефрижератор",
+        null:""
+    };
+
+    let vehiclesTable = $("#vehiclesTable").DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "content/getData.php", // json datasource
+            contentType: 'application/json',
+            processing: true,
+            url: "data/vehicles", // json datasource
             type: "post",  // method  , by default get
-            data: {"status": "getVehiclesData"}
+            data: function(d) {
+                return JSON.stringify(d);
+            },
         },
         dom: 'Bfrtip',
         language: {
@@ -70,18 +134,15 @@ $(document).ready(function () {
         "buttons": [
             {
                 extend: "create",
-                editor: vehiclesEditor,
-                text: 'добавить запись'
+                editor: vehiclesEditor
             },
             {
                 extend: "edit",
-                editor: vehiclesEditor,
-                text: "изменить"
+                editor: vehiclesEditor
             },
             {
                 extend: "remove",
                 editor: vehiclesEditor,
-                text: 'удалить запись',
                 formMessage: function (e, dt) {
                     return "Вы уверены, что вы хотите удалить это ТС?</br> Все водители, привязанные к этому ТС, так же будут удалены."
                 }
@@ -90,37 +151,54 @@ $(document).ready(function () {
         "paging": 10,
         "columnDefs": [
             {"name": "id", "data": "id", "targets": 0},
-            {"name": "transport_company_id", "data": "transport_company_id", "targets": 1},
-            {"name": "license_number", "data": "license_number", "targets": 2},
+            {"name": "transportCompanyName", "data": "transportCompany.name", "targets": 1},
+            {"name": "licenseNumber", "data": "licenseNumber", "targets": 2},
             {"name": "model", "data": "model", "targets": 3},
-            {"name": "carrying_capacity", "data": "carrying_capacity", "targets": 4},
+            {"name": "carryingCapacity", "data": "carryingCapacity", "targets": 4},
             {"name": "volume", "data": "volume", "targets": 5},
-            {"name": "loading_type", "data": "loading_type", "targets": 6},
-            {"name": "pallets_quantity", "data": "pallets_quantity", "targets": 7},
-            {"name": "type", "data": "type", "targets": 8},
-            {"name": "wialon_id", "data": "wialon_id", "targets": 9}
-            // , {"name": "is_rented", "data": "is_rented", "targets": 10}
+            {"name": "loadingType", "data": "loadingType", "targets": 6,
+                "render": function ( data, type, row ) {
+                    return loadingType[data];
+                },
+            },
+            {"name": "palletsQuantity", "data": "palletsQuantity", "targets": 7},
+            {"name": "type", "data": "type", "targets": 8,
+                "render": function ( data, type, row ) {
+                    return vehicleType[data];
+                },
+            },
+            {"name": "wialonId", "data": "wialonId", "targets": 9},
+            {"name": "isRented", "data": "isRented", "targets": 10,
+                "render": function ( data, type, row ) {
+                    return data=="1" ? "Наемная" : "Собственная";
+                },}
         ]
     });
 
-    $.post("content/getData.php",
-        {status: "getCompanyPairs", format: "json"},
-        function (companiesData) {
-        console.log("companies data:\n");
-            console.log(companiesData);
-            let selectizeOptions = [];
-            companiesData = JSON.parse(companiesData);
-            companiesData.forEach(function (entry) {
-                let selectizeOption = {text: entry.name, value: entry.id};
-                selectizeOptions.push(selectizeOption);
-            });
 
-            let transportCompanyInput = vehiclesEditor.field('transport_company_id');
-            transportCompanyInput.inst().load(function (callback) {
-                callback(selectizeOptions);
-            });
-        }
-    );
+
+    vehiclesEditor.field('transportCompany').input().on('keyup', function (e, d) {
+        var namePart = $(this).val();
+        $.get( "api/transportCompanies/search/findTop10ByNameContaining/?companyName="+namePart,
+            function (data) {
+                console.log(data);
+                var transportCompanyOptions = [];
+                // data = JSON.parse(data);
+                data._embedded.transportCompanies.forEach(function (entry) {
+                    var selectizeOption = {"label": entry.name+"/"+entry.shortName, "value": entry._links.self.href};
+                    transportCompanyOptions.push(selectizeOption);
+                });
+
+                var selectize = vehiclesEditor.field('transportCompany').inst();
+                selectize.clear();
+                selectize.clearOptions();
+                selectize.load(function (callback) {
+                    callback(transportCompanyOptions);
+                });
+            }
+        );
+    });
+
 
 
 

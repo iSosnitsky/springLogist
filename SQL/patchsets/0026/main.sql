@@ -1,0 +1,1 @@
+ALTER TABLE vehicles ADD is_rented TINYINT(1) DEFAULT 0 NULL;

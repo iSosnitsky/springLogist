@@ -23,17 +23,14 @@ public class Pretension {
     @Column(name="PRETENSIONCOMMENT")
     private String pretensionComment;
 
-//        @ManyToOne(fetch = FetchType.LAZY)
-//        @JoinColumn(name="REQUESTIDEXTERNAL", referencedColumnName = "REQUESTIDEXTERNAL")
-//        private Request request;
-    @Column(name="REQUESTIDEXTERNAL")
+    @Column(name="REQUESTIDEXTERNAL", nullable = false)
     private String requestIdExternal;
 
-    @Column(name="PRETENSIONSTATUS")
-    private String pretensionStatus;
+    @Column(name="PRETENSIONSTATUS", nullable = false)
+    private String pretensionStatus = "OPENED";
 
-    @Column(name="PRETENSIONCATHEGORY")
-    private String pretensionCathegory;
+    @Column(name="PRETENSIONCATHEGORY", nullable = false)
+    private String pretensionCategory;
 
     @Column(name="SUM")
     private Double sum;
@@ -42,6 +39,5 @@ public class Pretension {
     private String positionNumber;
 
     @Column(name="DATEADDED")
-    private Date dateAdded;
-
+    private Date dateAdded = new Date();
 }

@@ -44,8 +44,8 @@ public class PointUpdater {
 
     private Point fillPoint(Point point, JsonPoint jsonPoint) {
         point.setPointName(jsonPoint.getPointName());
-        point.setAddress(jsonPoint.getPointAddress());
-        point.setEmail(jsonPoint.getPointEmails());
+        point.setAddress(jsonPoint.getPointAdress());
+        point.setEmail(jsonPoint.getPointEmail());
         point.setPointTypeId(PointType.valueOf(jsonPoint.getPointType()));
         point.setResponsiblePersonId(jsonPoint.getResponsiblePersonId());
 

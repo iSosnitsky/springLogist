@@ -2,6 +2,7 @@ $(document).ready(function () {
     refreshTransactionWidget();
     var dataTable = $('#transactionsTable').DataTable({
         processing: true,
+        serverSide: true,
         search: {
             caseInsensitive: true
         },
@@ -10,14 +11,18 @@ $(document).ready(function () {
             leftColumns: 1
         },
         ajax: {
-            url: "content/getData.php", // json datasource
+            contentType: 'application/json',
+            processing: true,
+            url: "data/exchangeLogs", // json datasource
             type: "post",  // method  , by default get
-            data: {"status": "getAllTransactions"}
+            data: function(d) {
+                return JSON.stringify(d);
+            },
         },
         columnDefs: [
-            {"name": "packet_id", "data": "packet_id", "targets": 0},
+            {"name": "packetId", "data": "packetId", "targets": 0},
             {"name": "server", "data": "server", "targets": 1},
-            {"name": "status", "data": "status", "targets": 2},
+            {"name": "packetStatus", "data": "packetStatus", "targets": 2},
             {"name": "date", "data": "date", "targets": 3}
         ],
         language: {
@@ -46,9 +51,8 @@ $(document).ready(function () {
 
 function refreshTransactionWidget() {
     $('#transactionWidget').find('.fa-refresh').addClass("fa-spin");
-    $.post(
-        "content/getData.php",
-        {status: "getLastTransaction", format: "json"},
+    $.get(
+        "api/exchangeLogs?page=0&size=1&sort=date,desc",
         /*Returns last recorded transaction:
         data: {
         entry_id: int,
@@ -59,8 +63,7 @@ function refreshTransactionWidget() {
         }
          */
         function (data) {
-            data=JSON.parse(data);
-            fillTransactionWidget(data);
+            fillTransactionWidget(data._embedded.exchangeLogs[0]);
             console.log(data);
         }
     );
@@ -68,9 +71,9 @@ function refreshTransactionWidget() {
 
 
 function fillTransactionWidget(lastTransactionData) {
- $('#transactionStatus').html(lastTransactionData.status==='OK' ? "<i class=\"fa fa-check\" style='color:green' aria-hidden=\"true\"></i> " + " ОК "+"<i class=\"fa fa-refresh\" onclick='refreshTransactionWidget()' aria-hidden=\"true\"></i>" : "<i class=\"fa fa-times\" style=\"color:red\" aria-hidden=\"true\"></i>"+" Ошибка "+"<i class=\"fa fa-refresh\"  ' onclick='refreshTransactionWidget()' aria-hidden=\"true\"></i>");
+ $('#transactionStatus').html(lastTransactionData.packetStatus==='OK' ? "<i class=\"fa fa-check\" style='color:green' aria-hidden=\"true\"></i> " + " ОК "+"<i class=\"fa fa-refresh\" onclick='refreshTransactionWidget()' aria-hidden=\"true\"></i>" : "<i class=\"fa fa-times\" style=\"color:red\" aria-hidden=\"true\"></i>"+" Ошибка "+"<i class=\"fa fa-refresh\"  ' onclick='refreshTransactionWidget()' aria-hidden=\"true\"></i>");
  $('#lastTransactionServer').html(lastTransactionData.server);
  $('#lastTransactionTime').html(lastTransactionData.date);
- $('#lastTransactionPacket').html(lastTransactionData.packet_id);
+ $('#lastTransactionPacket').html(lastTransactionData.packetId);
 }
 

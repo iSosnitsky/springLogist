@@ -1,12 +1,62 @@
 $(document).ready(function () {
     var transportCompaniesEditor = new $.fn.dataTable.Editor( {
-        ajax: 'content/getData.php',
+        ajax: {
+            create:{
+                type:'POST',
+                contentType:'application/json',
+                url: 'api/transportCompanies',
+                data: function (d) {
+                    let newdata;
+                    $.each(d.data, function (key, value) {
+                        newdata = JSON.stringify(value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    transportCompaniesTable.draw("page");
+                    transportCompaniesEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            },
+            edit: {
+                contentType: 'application/json',
+                type: 'PATCH',
+                url: 'api/transportCompanies/_id_',
+                data: function (d) {
+                    let newdata;
+                    $.each(d.data, function (key, value) {
+                        newdata = JSON.stringify(value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    transportCompaniesTable.draw("page");
+                    transportCompaniesEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            },
+            remove: {
+                type: 'DELETE',
+                contentType:'application/json',
+                url:  'api/transportCompanies/_id_',
+                data: function (d) {
+                    return '';
+                }
+            }
+        },
         table: '#transportCompaniesTable',
         idSrc: 'id',
 
+
         fields: [
             { label: 'Полное название', name: 'name', type: 'text'},
-            { label: 'Название', name: 'short_name', type: 'text', fieldInfo: "Не рекомендуется вводить сокращения ООО, ИП и т.д."},
+            { label: 'Название', name: 'shortName', type: 'text', fieldInfo: "Не рекомендуется вводить сокращения ООО, ИП и т.д."},
             {
                 label: 'ИНН',
                 name: 'inn',
@@ -17,7 +67,7 @@ $(document).ready(function () {
             },
             {
                 label: 'КПП',
-                name: 'KPP',
+                name: 'kpp',
                 type: 'mask',
                 mask: "000000000",
                 maskOptions: {clearIfNotMatch: true},
@@ -25,25 +75,21 @@ $(document).ready(function () {
             },
             {
                 label: 'БИК',
-                name: 'BIK',
+                name: 'bik',
                 type: 'mask',
                 mask: "000000000",
                 maskOptions: {clearIfNotMatch: true},
                 placeholder: "123456789"
             },
-            { label: 'Корр. счет',  name: 'cor_account', type: 'text'},
-            { label: 'Р/с',  name: 'cur_account', type: 'text'},
-            { label: 'Название банка',  name: 'bank_name', type: 'text'},
-            { label: 'Адрес',  name: 'legal_address', type: 'text'},
-            { label: 'Почтовый адрес',  name: 'post_address', type: 'text'},
+            { label: 'Корр. счет',  name: 'corAccount', type: 'text'},
+            { label: 'Р/с',  name: 'curAccount', type: 'text'},
+            { label: 'Название банка',  name: 'bankName', type: 'text'},
+            { label: 'Адрес',  name: 'legalAddress', type: 'text'},
+            { label: 'Почтовый адрес',  name: 'postAddress', type: 'text'},
             { label: 'keywords',  name: 'keywords', type: 'text'},
-            { label: 'ФИО Директора',  name: 'director_fullname', type: 'text'},
-            { label: 'ФИО глав.бухгалтера',  name: 'chief_acc_fullname', type: 'text'}
+            { label: 'ФИО Директора',  name: 'directorFullname', type: 'text'},
+            { label: 'ФИО глав.бухгалтера',  name: 'chiefAccFullname', type: 'text'}
         ]
-    });
-
-    transportCompaniesEditor.on('preSubmit', function (e, data, action) {
-        data.status = 'transportCompaniesEditing';
     });
 
     transportCompaniesEditor.on('postRemove', function (e, data, action) {
@@ -51,13 +97,17 @@ $(document).ready(function () {
         $("#driversTable").DataTable().columns().draw();
     });
 
-    var $transportCompaniesTable =  $("#transportCompaniesTable").DataTable({
+    var transportCompaniesTable =  $("#transportCompaniesTable").DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "content/getData.php", // json datasource
+            contentType: 'application/json',
+            processing: true,
+            url: "data/transportCompanies", // json datasource
             type: "post",  // method  , by default get
-            data: {"status": "getTransportCompaniesData"}
+            data: function(d) {
+                return JSON.stringify(d);
+            },
         },
         dom: 'Bfrtip',
         language: {
@@ -69,18 +119,15 @@ $(document).ready(function () {
         "buttons": [
             {
                 extend: "create",
-                editor: transportCompaniesEditor,
-                text: 'добавить запись'
+                editor: transportCompaniesEditor
             },
             {
                 extend: "edit",
-                editor: transportCompaniesEditor,
-                text: 'изменить запись'
+                editor: transportCompaniesEditor
             },
             {
                 extend: "remove",
                 editor: transportCompaniesEditor,
-                text: 'удалить запись',
                 formMessage: function (e, dt) {
                     return "Вы уверены, что вы хотите удалить эту компанию?</br> Все ТС и водители, привязанные к данной компании, так же будут удалены."
                 }
@@ -88,20 +135,20 @@ $(document).ready(function () {
         ],
         "paging": 10,
         "columnDefs": [
-            {"name": "id", "data": "id", "targets": 0},
+            {"name": "id", "data": "id", "targets": 0, visible: false},
             {"name": "name", "data": "name", "targets": 1},
-            {"name": "short_name", "data": "short_name", "targets": 2},
+            {"name": "shortName", "data": "shortName", "targets": 2},
             {"name": "inn", "data": "inn", "targets": 3},
-            {"name": "KPP", "data": "KPP", "targets": 4},
-            {"name": "BIK", "data": "BIK", "targets": 5},
-            {"name": "cor_account", "data": "cor_account", "targets": 6},
-            {"name": "cur_account", "data": "cur_account", "targets": 7},
-            {"name": "bank_name", "data": "bank_name", "targets": 8},
-            {"name": "legal_address", "data": "legal_address", "targets": 9},
-            {"name": "post_address", "data": "post_address", "targets": 10},
+            {"name": "kpp", "data": "kpp", "targets": 4},
+            {"name": "bik", "data": "bik", "targets": 5},
+            {"name": "corAccount", "data": "corAccount", "targets": 6},
+            {"name": "curAccount", "data": "curAccount", "targets": 7},
+            {"name": "bankName", "data": "bankName", "targets": 8},
+            {"name": "legalAddress", "data": "legalAddress", "targets": 9},
+            {"name": "postAddress", "data": "postAddress", "targets": 10},
             {"name": "keywords", "data": "keywords", "targets": 11},
-            {"name": "director_fullname", "data": "director_fullname", "targets": 12},
-            {"name": "chief_acc_fullname", "data": "chief_acc_fullname", "targets": 13}
+            {"name": "directorFullname", "data": "directorFullname", "targets": 12},
+            {"name": "chiefAccFullname", "data": "chiefAccFullname", "targets": 13}
         ]
     });
 });

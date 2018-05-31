@@ -1,0 +1,3 @@
+ALTER TABLE routes ADD volume_limit INT DEFAULT 0 NULL;
+ALTER TABLE routes ADD weight_limit INT DEFAULT 0 NULL;
+ALTER TABLE routes ADD box_limit INT DEFAULT 200 NULL;

@@ -43,6 +43,10 @@ public class RequestRestController {
     private RequestRepository requestReqpository;
 
     @Autowired
+    private ExchangeLogRepository exchangeLogRepository;
+
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -58,6 +62,14 @@ public class RequestRestController {
     public DataTablesOutput<Request> getRequests(){
         return requestDTReqpository.findAll(new DataTablesInput());
     }
+
+    @CrossOrigin(origins = "http://localhost:*")
+    @JsonView(DataTablesOutput.View.class)
+    @RequestMapping(value = "/data/exchangeLogs", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
+    public DataTablesOutput<ExchangeLog> getExchangeLogs(@Valid @RequestBody DataTablesInput input){
+        return exchangeLogRepository.findAll(input);
+    }
+
 
     @CrossOrigin(origins = "http://localhost:*")
     @JsonView(DataTablesOutput.View.class)
@@ -107,8 +119,6 @@ public class RequestRestController {
             default: return matViewBigSelectRepository.findAll(new DataTablesInput());
 
         }
-
-
     }
 
     @RequestMapping(value = "/data/updateSeveralRequests", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
@@ -122,9 +132,22 @@ public class RequestRestController {
             default: return matViewBigSelectRepository.findAll(new DataTablesInput());
 
         }
-
-
     }
+
+
+    @RequestMapping(value = "/data/updateRequest", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
+    public DataTablesOutput<MatViewBigSelect> updateRequest(){
+
+        LogistAuthToken authentication = (LogistAuthToken)SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("fsgfsd");
+        switch (authentication.getRole()){
+            case "MARKET_AGENT": return matViewBigSelectRepository.findAll(new DataTablesInput(), RequestForUser.requestsForMarketAgent(authentication.getUser()));
+            case "CLIENT_MANAGER": return matViewBigSelectRepository.findAll(new DataTablesInput(), RequestForUser.requestsForClient(authentication.getUser().getClient()));
+            default: return matViewBigSelectRepository.findAll(new DataTablesInput());
+
+        }
+    }
+
 
 
 
@@ -150,4 +173,15 @@ public class RequestRestController {
         return routeListDTRepository.findAll(new DataTablesInput());
     }
 
+
+    @CrossOrigin(origins = "http://localhost:*")
+    @RequestMapping(value="/commands/updateRequest/{requestIdExternal}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public Request updateRequest(@PathVariable String requestIdExternal){
+        Optional<Request> request =requestReqpository.findFirstByExternalId(requestIdExternal);
+        if (request.isPresent()){
+            return null;
+        } else {
+            return null;
+        }
+    }
 }

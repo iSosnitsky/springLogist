@@ -1,5 +1,6 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class ExchangeLog {
     private int packetId;
 
     @Column(name = "DATE")
+    @JsonFormat(pattern = "d/M/yyyy HH:mm")
     private Date date;
 
     @Column(name = "STATUS")

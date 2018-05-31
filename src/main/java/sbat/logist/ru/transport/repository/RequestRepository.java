@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface RequestRepository extends PagingAndSortingRepository<Request, Integer> {
     Optional<Request> findByExternalIdAndDataSource(String externalId, DataSource dataSource);
     Optional<Request> findByExternalId(String externalId);
+    Optional<Request> findFirstByExternalId(String externalId);
     List<Request> findByRouteListId(RouteList routeList);
     List<Request> findTop3ByExternalIdContaining(@Param("exId") String externalId);
     List<Request> findByDataSource(@Param("dataSource") DataSource dataSource);

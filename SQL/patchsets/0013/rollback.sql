@@ -1,0 +1,1 @@
+ALTER TABLE transmaster_transport_db.vehicles DROP wialon_id;

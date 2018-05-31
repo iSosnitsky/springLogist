@@ -1,8 +1,67 @@
 $(document).ready(function () {
     var routeEditor = new $.fn.dataTable.Editor({
-        ajax: 'content/getData.php',
+        ajax: {
+            create: {
+                type: 'POST',
+                contentType:'application/json',
+                url:  'api/routes',
+                data: function (d) {
+                    let newdata;
+                    $ .each (d.data, function (key, value) {
+                        delete value["cost"];
+                        delete value["costPerBox"];
+                        delete value["costPerHour"];
+                        delete value["costPerPoint"];
+                        newdata = JSON.stringify (value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    routeDataTable.draw();
+                    routeEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            },
+            edit: {
+                contentType:'application/json',
+                type: 'PATCH',
+                url:  'api/routes/_id_',
+                data: function (d) {
+                    let newdata;
+                    $ .each (d.data, function (key, value) {
+                        delete value["cost"];
+                        delete value["costPerBox"];
+                        delete value["costPerHour"];
+                        delete value["costPerPoint"];
+                        newdata = JSON.stringify (value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    routeDataTable.draw("page");
+                    routeEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            }
+            ,
+            remove: {
+                type: 'DELETE',
+                contentType:'application/json',
+                url:  'api/routes/_id_',
+                data: function (d) {
+                    return '';
+                }
+            }
+        },
         table: '#routeTable',
-        idSrc: 'routeID',
+        idSrc: 'id',
+
 
         language: {
             decimal: "."
@@ -11,10 +70,20 @@ $(document).ready(function () {
         fields: [
             {label: 'Название маршрута', name: 'routeName', type: 'text'},
             {
+                label: 'Тариф', name: 'tariff', type: 'selectize', options: [],
+                opts: {
+                    diacritics: true,
+                    searchField: 'label',
+                    labelField: 'label',
+                    dropdownParent: "body"
+                }
+            },
+            {
                 label: 'Стоимость за маршрут',
                 name: 'cost',
-                type: 'mask',
-                mask: '0999999999.99',
+                type: 'readonly'
+                // type: 'mask',
+                // mask: '0999999999.99',
                 // maskOptions: {
                 //     translation: {
                 //         'P': {
@@ -23,52 +92,52 @@ $(document).ready(function () {
                 //         }
                 //     }
                 // },
-                placeholder: "1000.00"
+                // placeholder: "1000.00"
             },
             {
                 label: 'Стоимость за точку',
-                name: 'cost_per_point',
-                type: 'mask',
-                mask: '0999999999P99',
-                maskOptions: {
-                    translation: {
-                        'P': {
-                            pattern: /\./,
-                            fallback: '.'
-                        }
-                    }
-                },
-                placeholder: "1000.00"
+                name: 'costPerPoint',
+                type: 'readonly',
+                // mask: '0999999999P99',
+                // maskOptions: {
+                //     translation: {
+                //         'P': {
+                //             pattern: /\./,
+                //             fallback: '.'
+                //         }
+                //     }
+                // },
+                // placeholder: "1000.00"
             },
             {
                 label: 'Стоимость за час',
-                name: 'cost_per_hour',
-                type: 'mask',
-                mask: '0999999999P99',
-                maskOptions: {
-                    translation: {
-                        'P': {
-                            pattern: /\./,
-                            fallback: '.'
-                        }
-                    }
-                },
-                placeholder: "1000.00"
+                name: 'costPerHour',
+                type: 'readonly',
+                // mask: '0999999999P99',
+                // maskOptions: {
+                //     translation: {
+                //         'P': {
+                //             pattern: /\./,
+                //             fallback: '.'
+                //         }
+                //     }
+                // },
+                // placeholder: "1000.00"
             },
             {
                 label: 'Стоимость за коробку',
-                name: 'cost_per_box',
-                type: 'mask',
-                mask: '0999999999P99',
-                maskOptions: {
-                    translation: {
-                        'P': {
-                            pattern: /\./,
-                            fallback: '.'
-                        }
-                    }
-                },
-                placeholder: "1000.00"
+                name: 'costPerBox',
+                type: 'readonly',
+                // mask: '0999999999P99',
+                // maskOptions: {
+                //     translation: {
+                //         'P': {
+                //             pattern: /\./,
+                //             fallback: '.'
+                //         }
+                //     }
+                // },
+                // placeholder: "1000.00"
             }
 
         ]
@@ -78,13 +147,17 @@ $(document).ready(function () {
         data.status = 'routeEditingOnly';
     });
 
-    var $routeDataTable = $("#routeTable").DataTable({
+    var routeDataTable = $("#routeTable").DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "content/getData.php", // json datasource
-                type: "post",  // method  , by default get
-                data: {"status": "getRoutesData"}
+                contentType: 'application/json',
+                processing: true,
+                data: function(d) {
+                    return JSON.stringify(d);
+                },
+                url: "data/routes", // json datasource
+                type: "post"  // method  , by default get
             },
             dom: 'Bfrtip',
             language: {
@@ -112,13 +185,13 @@ $(document).ready(function () {
             ],
             "paging": 10,
             "columnDefs": [
-                {"name": "routeID", "data": "routeID", "targets": 0, visible: false},
-                {"name": "routeName", "data": "routeName", "targets": 1},
-                {"name": "tariffID", "data": "tariffID", "targets": 2, visible: false},
-                {"name": "cost", "data": "cost", targets: 3},
-                {"name": "cost_per_point", "data": "cost_per_point", "targets": 4},
-                {"name": "cost_per_hour", "data": "cost_per_hour", "targets": 5},
-                {"name": "cost_per_box", "data": "cost_per_box", "targets":6},
+                {"name": "id", "data": "id", "targets": 0, visible: false,"defaultContent":""},
+                {"name": "routeName", "data": "routeName", "targets": 1,"defaultContent":""},
+                {"name": "tariff", "data": "tariff.tariffName", targets: 2,"defaultContent":""},
+                {"name": "cost", "data": "tariff.cost", targets: 3,"defaultContent":"",render: function(data){return (data) ? data+"₽" : ""}},
+                {"name": "costPerPoint", "data": "tariff.costPerPoint", "targets": 4,"defaultContent":"",render: function(data){return (data) ? data+"₽" : ""}},
+                {"name": "costPerHour", "data": "tariff.costPerHour", "targets": 5,"defaultContent":"",render: function(data){return (data) ? data+"₽" : ""}},
+                {"name": "costPerBox", "data": "tariff.costPerBox", "targets":6,"defaultContent":"",render: function(data){return (data) ? data+"₽" : ""}},
             ]
         }
     );
@@ -201,4 +274,48 @@ $(document).ready(function () {
         }
 
     });
+
+
+    routeEditor.field('tariff').input().on('keyup', function (e, d) {
+        var namePart = $(this).val();
+        $.get( "api/tariffs/search/findTop10ByTariffNameContaining/?tariffName="+namePart,
+            function (data) {
+                console.log(data);
+                var tariffOptions = [];
+                // data = JSON.parse(data);
+                data._embedded.tariffs.forEach(function (entry) {
+                    var selectizeOption = {"label": entry.tariffName, "cost":entry.cost, "costPerBox":entry.costPerBox, "costPerPoint":entry.costPerPoint, "costPerHour":entry.costPerHour, "value": entry._links.self.href};
+                    tariffOptions.push(selectizeOption);
+                });
+
+                var selectize = routeEditor.field('tariff').inst();
+                selectize.clear();
+                selectize.clearOptions();
+                selectize.load(function (callback) {
+                    callback(tariffOptions);
+                });
+            }
+        );
+    });
+
+    routeEditor.field('tariff').input().on('change', function (e, e) {
+        var selectize = routeEditor.field('tariff').inst();
+        value = $.map(selectize.items, function (value) {
+            return selectize.options[value];
+        })[0];
+        if(value!=undefined){
+        routeEditor
+            .set('cost',value.cost)
+            .set('costPerBox',value.costPerBox)
+            .set('costPerHour',value.costPerHour)
+            .set('costPerPoint',value.costPerPoint);
+        } else {
+            // routeEditor
+            //     .set('cost',"")
+            //     .set('costPerBox',"")
+            //     .set('costPerHour',"")
+            //     .set('costPerPoint',"");
+        }
+        // routeEditor.field('cost').input.val()
+    })
 });

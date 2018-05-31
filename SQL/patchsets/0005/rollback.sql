@@ -1,0 +1,1 @@
+DROP EVENT setTransitToDelivered;

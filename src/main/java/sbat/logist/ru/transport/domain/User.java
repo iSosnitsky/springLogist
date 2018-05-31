@@ -39,12 +39,12 @@ public class User {
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "USERIDEXTERNAL", nullable = false)
-    private String userIDExternal;
+    private String userIDExternal = randomAlphaNumeric(10);
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "DATASOURCEID", nullable = false)
     @Enumerated(EnumType.STRING)
-    private DataSource dataSource;
+    private DataSource dataSource = DataSource.ADMIN_PAGE;
 
     @NotNull
     @JsonView(DataTablesOutput.View.class)
@@ -94,24 +94,28 @@ public class User {
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="TRANSPORT_COMPANY_ID")
+    @JoinColumn(name = "TRANSPORT_COMPANY_ID")
     @JsonView(DataTablesOutput.View.class)
     private TransportCompany transportCompany;
 
-    @PrePersist
-    private void prePersist(){
-        if(this.userIDExternal==null){
-            this.userIDExternal= randomAlphaNumeric(10);
-        }
-    }
-
     private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     private static String randomAlphaNumeric(int count) {
         StringBuilder builder = new StringBuilder();
         while (count-- != 0) {
-            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+            int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
             builder.append(ALPHA_NUMERIC_STRING.charAt(character));
         }
         return builder.toString();
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (this.userRole.equals(UserRole.CLIENT_MANAGER) && this.client == null)
+            throw new IllegalArgumentException("Client manager must have attached client");
+        else if (this.userRole.equals(UserRole.DISPATCHER) && this.point == null)
+            throw new IllegalArgumentException("Dispatcher must have attached point");
+        else if (this.userRole.equals(UserRole.TRANSPORT_COMPANY) && this.transportCompany == null)
+            throw new IllegalArgumentException("Transport company user must have attached transportCompany");
     }
 }

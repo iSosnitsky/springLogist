@@ -1,0 +1,10 @@
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (11, 13010, 1824, 693, 700);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (2, 3297, 3124, 406, 932);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (3, 11495, 2699, 784, 240);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (4, 7230, 4129, 590, 956);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (5, 8336, 2603, 280, 698);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (6, 12761, 1984, 612, 576);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (7, 11662, 4598, 279, 291);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (8, 8193, 4227, 207, 791);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (9, 5275, 2153, 267, 427);
+insert into tariffs (tariffID, cost, cost_per_point, cost_per_hour, cost_per_box) values (10, 7335, 4674, 646, 392);

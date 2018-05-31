@@ -20,11 +20,8 @@ function showPretension(pretensionID, reqIdExt, cathegory, pretensionSum, preten
 }
 
 function loadPretensions() {
-    $.post("content/getData.php", {
-        status: 'getPretensions',
-        requestIDExternal: requestIDExternal
-    }, function (data) {
-        parsedData = JSON.parse(data);
+    $.get("api/pretensions/search/findByRequestIdExternal?requestIdExternal="+requestIDExternal, function (data) {
+        parsedData = data.embedded.pretensions
 
         $(".pretensionLink").remove();
 
@@ -308,8 +305,8 @@ $(window).on('load', function () {
         if (window.jQuery) {
             $requestHistoryDialogTable = $("#requestHistoryDialogTable");
             requestHistoryDialogTable = $requestHistoryDialogTable.DataTable({
-                "dom": 't', // show only table with no decorations
-                "paging": false, // no pagination
+                "dom": 'tp', // show only table with no decorations
+                "paging": true, // yes pagination
                 "order": [[0, "desc"]],
                 "data": requestHistoryData,
                 "columnDefs": [
@@ -340,9 +337,11 @@ $(window).on('load', function () {
                             "TRANSPORTATION":"Маршрутный лист закрыт, товар передан экспедитору на погрузку",
                             "UNKNOWN":"неизвестный статус",
                             "UPDATED":"Заявка обновлена из 1С"}},
+
                     // {"name": "routeListNumber", "data": "routeListNumber", "targets": 4, visible: false},
                     // {"name": "boxQty", "data": "boxQty", "targets": 5, visible: false}
-                ]
+                ],
+                pageLength: 10,
             });
             (function showRequestHistory(data) {
                 // data = JSON.parse(data);

@@ -26,11 +26,15 @@ public class TransportCompany {
 
     @Column(name="INN")
     @JsonView(DataTablesOutput.View.class)
-    private String Inn;
+    private String inn;
 
     @Column(name="BIK")
     @JsonView(DataTablesOutput.View.class)
-    private String Bik;
+    private String bik;
+
+    @Column(name="KPP")
+    @JsonView(DataTablesOutput.View.class)
+    private String kpp;
 
     @Column(name="COR_ACCOUNT")
     @JsonView(DataTablesOutput.View.class)

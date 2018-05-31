@@ -1,0 +1,1 @@
+DROP TABLE transmaster_transport_db.exchange_log;

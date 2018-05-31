@@ -1,0 +1,1 @@
+ALTER TABLE transmaster_transport_db.points DROP city_name;

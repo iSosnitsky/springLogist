@@ -159,19 +159,17 @@ public class Request {
     @OneToMany(mappedBy = "requestId")
     private List<RequestHistory> requestHistory = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TRANSPORTCOMPANYID")
+    private TransportCompany transportCompany;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="VEHICLEID")
+    private Vehicle vehicle;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "TRANSPORTCOMPANYID")
-//    private TransportCompany transportCompany;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="VEHICLEID")
-//    private Vehicle vehicle;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="DRIVERID")
-//    private Driver driver;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="DRIVERID")
+    private Driver driver;
 
     @PostPersist
     private void postPersist(){

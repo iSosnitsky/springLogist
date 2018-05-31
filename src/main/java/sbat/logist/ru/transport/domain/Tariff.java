@@ -19,6 +19,9 @@ public class Tariff {
     @Column(name="COST_PER_POINT")
     private Double costPerPoint;
 
+    @Column(name="tariffName")
+    private String tariffName;
+
     @Column(name="COST_PER_HOUR")
     private Double costPerHour;
 

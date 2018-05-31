@@ -1,0 +1,2 @@
+DROP TRIGGER check_users_constraints_insert;
+DROP TRIGGER check_users_constraints_update;

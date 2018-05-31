@@ -20,7 +20,7 @@ $(document).ready(function () {
                     return newdata;
                 },
                 success: function (response) {
-                    $usersDataTable.draw();
+                    usersDataTable.draw();
                     usersEditor.close();
                     // alert(response.responseText);
                 },
@@ -48,7 +48,7 @@ $(document).ready(function () {
                     return newdata;
                 },
                 success: function (response) {
-                    $usersDataTable.draw();
+                    usersDataTable.draw();
                     usersEditor.close();
                 // alert(response.responseText);
                 },
@@ -68,6 +68,7 @@ $(document).ready(function () {
         },
         table: '#usersTable',
         idSrc: 'userID',
+
 
         fields: [
             {label: 'ФИО', name: 'userName', type: 'text'},
@@ -236,7 +237,7 @@ $(document).ready(function () {
     //    email: "qwe@qwe.ru", password:"lewrhbwueu23232", userRole:"Диспетчер", point:"point1"}];
 
 
-    var $usersDataTable = $("#usersTable").DataTable({
+    var usersDataTable = $("#usersTable").DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -294,7 +295,7 @@ $(document).ready(function () {
     );
     {
         function selectCurrentUserRole() {
-            var userRoleRusName = $usersDataTable.row($('#usersTable .selected')[0]).data()['userRole'];
+            var userRoleRusName = usersDataTable.row($('#usersTable .selected')[0]).data()['userRole'];
             var selectizeInstance = usersEditor.field('userRole').inst();
             var role = selectizeInstance.search(userRoleRusName);
             selectizeInstance.setValue(role.items[0].id, true);

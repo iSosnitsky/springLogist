@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.util.generator.RandomStringGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -80,4 +81,11 @@ public class Client {
     @Column(name = "ENDCONTRACTDATE")
     @JsonView(DataTablesOutput.View.class)
     private Date endContractDate;
+
+
+    @PrePersist
+    private void checkClient(){
+        if(this.dataSource==null) this.dataSource = DataSource.ADMIN_PAGE;
+        if(this.clientIDExternal==null) this.clientIDExternal="LSS-"+RandomStringGenerator.randomAlphaNumeric(10);
+    }
 }

@@ -7,9 +7,9 @@
     <!--    <link rel="stylesheet" type="text/css" href="common_files/media/jQueryUI-1.11.4/jquery-ui.min.css"/>-->
     <link rel="stylesheet" type="text/css" href="media/Bootstrap-3.3.2/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="media/Selectize/css/selectize.min.css"/>
-    <link rel="stylesheet" type="text/css" href="media/DataTables-1.10.10/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="media/DataTables-1.10.12/css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="media/Buttons-1.1.0/css/buttons.bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="media/Editor-1.5.4/css/editor.bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="media/Editor-1.6.3/css/editor.bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="media/FieldType-Selectize/editor.selectize.min.css"/>
     <!--z-index:999-->
     <link rel="stylesheet" type="text/css" href="media/font-awesome/css/font-awesome.min.css"/>
@@ -21,12 +21,12 @@
     <script src="media/Bootstrap-3.3.2/js/bootstrap.min.js"></script>
     <script src="media/jquery-mask/dist/jquery.mask.min.js"></script>
     <script src="media/Selectize/js/standalone/selectize.min.js"></script>
-    <script src="media/DataTables-1.10.10/js/jquery.dataTables.min.js"></script>
-    <script src="media/DataTables-1.10.10/js/dataTables.bootstrap.min.js"></script>
+    <script src="media/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="media/DataTables-1.10.12/js/dataTables.bootstrap.min.js"></script>
     <script src="media/Buttons-1.1.0/js/dataTables.buttons.min.js"></script>
     <script src="media/Buttons-1.1.0/js/buttons.bootstrap.min.js"></script>
-    <script src="media/Editor-1.5.4/js/dataTables.editor.min.js"></script>
-    <script src="media/Editor-1.5.4/js/editor.bootstrap.min.js"></script>
+    <script src="media/Editor-1.6.3/js/dataTables.editor.min.js"></script>
+    <script src="media/Editor-1.6.3/js/editor.bootstrap.min.js"></script>
     <script src="media/FieldType-Mask/editor.mask.min.js"></script>
     <script src="media/FieldType-Selectize/editor.selectize.min.js"></script>
     <script src="media/Select-1.1.0/js/dataTables.select.min.js"></script>
@@ -36,7 +36,7 @@
     <script src="media/md5.js"></script>
     <script src="media/Buttons-1.1.0/js/dataTables.buttons.flash.min.js"></script>
 
-    <!--custom-->
+
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var userRoles = {};
@@ -50,15 +50,17 @@
         userRoles[urkey]=urvalue;
         /*[/]*/
     </script>
-    <!--<script src="adminPage/js/route-point.js"></script>-->
+    <script src="adminPage/js/route-point.js"></script>
+    <script src="localization/localizeEditor.js"></script>
     <script src="adminPage/js/user.js"></script>
-    <!--<script src="adminPage/js/client.js"></script>-->
-    <!--<script src="adminPage/js/driver.js"></script>-->
-    <!--<script src="adminPage/js/vehicle.js"></script>-->
-    <!--<script src="adminPage/js/transport-company.js"></script>-->
-    <!--<script src="adminPage/js/route.js"></script>-->
+    <script src="adminPage/js/client.js"></script>
+    <script src="adminPage/js/driver.js"></script>
+    <script src="adminPage/js/vehicle.js"></script>
+    <script src="adminPage/js/transport-company.js"></script>
+    <script src="adminPage/js/route.js"></script>
+    <script src="adminPage/js/tariff.js"></script>
     <!--<script src="adminPage/js/requests-assignment.js"></script>-->
-    <!--<script src="adminPage/js/transactions.js"></script>-->
+    <script src="adminPage/js/transactions.js"></script>
 
 </head>
 <body>
@@ -70,21 +72,7 @@
 </div>
 <div class="row container-fluid">
     <div class="col-2">
-        <div>
-            <table>
-                <th:block th:each="userRole : ${T(sbat.logist.ru.constant.UserRole).values()}">
-                    <tr>
-                        <td th:text="${userRole}">...</td>
-                        <td th:text="${userRole.rusRoleName}">...</td>
-                        <th:block th:each="userRoleStat : ${userRole.statusesForRole}">
-                            <td th:text="${userRoleStat}"></td>
-                        </th:block>
-                        <!--<td colspan="2" th:text="${userRole.name}">...</td>-->
-                    </tr>
-                </th:block>
-            </table>
 
-        </div>
         <ul class="nav nav-pills flex-column nav-stacked nav-sidebar" style="width: 200px; float: left">
             <li class="active"><a data-toggle="pill" href="#tabs-1"><i class="fa fa-compass" aria-hidden="true"></i> Маршруты</a></li>
             <li><a data-toggle="pill" href="#tabs-2"><i class="fa fa-users" aria-hidden="true"></i> Пользователи</a></li>
@@ -92,9 +80,9 @@
             <li><a data-toggle="pill" href="#tabs-4"><i class="fa fa-magic" aria-hidden="true"></i> Распределение<br> заявок</a></li>
             <li><a data-toggle="pill" href="#tabs-5"><i class="fa fa-exchange" aria-hidden="true"></i> Обмен с 1С</a></li>
             <!--        <li><a >Fgsfas</a></li>-->
-            <li onclick="location.href=''"><a target="_self" href="#"><i class="fa fa-table" aria-hidden="true"></i>
+            <li onclick="location.href='/main'"><a target="_self" href="#"><i class="fa fa-table" aria-hidden="true"></i>
                     На главную</a></li>
-            <li onclick="location.href='login/'"><a target="_self" href="#"><i class="fa fa-sign-out"
+            <li onclick="location.href='/login'"><a target="_self" href="#"><i class="fa fa-sign-out"
                                                                                    aria-hidden="true"></i> Выход</a>
             </li>
             <!--        <li><a onclick="" href="" id="logout">Выход</a></li>-->
@@ -109,7 +97,7 @@
                     <tr>
                         <th>routeID</th>
                         <th>Имя маршрута</th>
-                        <th>tarrifID</th>
+                        <th>Тарифф</th>
                         <th>Стоимость за маршрут</th>
                         <th>Стоимость за точку</th>
                         <th>Стоимость за час</th>
@@ -120,6 +108,24 @@
             </div>
             <div id="routesChart">
 
+
+            </div>
+            <h2>Тарифы</h2>
+            <div>
+                <table class="table table-bordered table-striped " id="tariffTable">
+                    <thead>
+                    <tr>
+                        <th>TariffId</th>
+                        <th>Именование тарифа</th>
+                        <th>Компания</th>
+                        <th>Итоговая вместительность</th>
+                        <th>Стоимость за маршрут</th>
+                        <th>Стоимость за точку</th>
+                        <th>Стоимость за час</th>
+                        <th>Стоимость за коробку</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
             <div id="routesCreation">
                 <h2>Направление</h2>
@@ -272,7 +278,7 @@
                         <th>Количество паллет</th>
                         <th>Тип</th>
                         <th>Wialon ID</th>
-<!--                        <th>Принадлежность</th>-->
+                        <th>Принадлежность</th>
                     </tr>
                     </thead>
                 </table>

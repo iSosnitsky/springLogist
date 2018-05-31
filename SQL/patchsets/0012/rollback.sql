@@ -1,0 +1,1 @@
+DROP TABLE transmaster_transport_db.delivery_route_points;
