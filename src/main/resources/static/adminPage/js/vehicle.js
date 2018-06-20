@@ -115,6 +115,7 @@ $(document).ready(function () {
     let vehiclesTable = $("#vehiclesTable").DataTable({
         processing: true,
         serverSide: true,
+        searchDelay: 800,
         ajax: {
             contentType: 'application/json',
             processing: true,

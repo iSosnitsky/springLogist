@@ -38,15 +38,21 @@ public class Route {
     @Enumerated(EnumType.STRING)
     private DataSource dataSource = DataSource.ADMIN_PAGE;
 
-    @Column(name = "ROUTENAME", nullable = false)
     @JsonView(DataTablesOutput.View.class)
+    @Column(name = "ROUTENAME", nullable = false)
     private String routeName;
 
+    @JsonView(DataTablesOutput.View.class)
     @Column(name = "FIRSTPOINTARRIVALTIME", nullable = false)
     private Time firstPointArrivalTime;
 
+    @JsonView(DataTablesOutput.View.class)
     @Column(name = "DAYSOFWEEK")
     private String daysOfWeek;
+
+    @JsonView(DataTablesOutput.View.class)
+    @Column(name = "TYPE")
+    private short type;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "route")
     List<RoutePoint> routePoints;

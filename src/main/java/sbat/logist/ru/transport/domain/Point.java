@@ -84,6 +84,15 @@ public class Point {
     @JsonView(DataTablesOutput.View.class)
     private String responsiblePersonId;
 
+    @Column(name = "x")
+    @JsonView(DataTablesOutput.View.class)
+    private Double x;
+
+    @Column(name = "y")
+    @JsonView(DataTablesOutput.View.class)
+    private Double y;
+
+
     @Column(name = "POINTTYPEID", nullable = false)
     @Enumerated(EnumType.STRING)
     @JsonView(DataTablesOutput.View.class)

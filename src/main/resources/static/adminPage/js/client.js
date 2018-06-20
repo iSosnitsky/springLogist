@@ -102,6 +102,7 @@ $(document).ready(function () {
 
     var clientsDataTable = $("#clientsTable").DataTable({
             processing: true,
+            searchDelay: 800,
             serverSide: true,
             ajax: {
                 contentType: 'application/json',
@@ -122,18 +123,15 @@ $(document).ready(function () {
             "buttons": [
                 {
                     extend: "create",
-                    editor: clientEditor,
-                    text: 'Добавить клиента'
+                    editor: clientEditor
                 },
                 {
                     extend: "edit",
-                    editor: clientEditor,
-                    text: "Изменить"
+                    editor: clientEditor
                 },
                 {
                     extend: "remove",
-                    editor: clientEditor,
-                    text: 'Удалить клиента'
+                    editor: clientEditor
                 }
             ],
             "paging": 10,

@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface PointRepository extends PagingAndSortingRepository<Point, Long> {
     Optional<Point> findByPointIdExternalAndDataSource(String pointIdExternal, DataSource dataSource);
 
-    List<Point> findTop10ByPointNameContainingAndPointTypeId(String pointName, PointType pointType);
+    List<Point> findTop10ByPointNameContainingAndPointTypeId(@Param("pointName") String pointName, @Param("pointType") PointType pointType);
 
     List<Point> findTop10ByPointNameContaining(@Param("pointName") String pointName);
 }

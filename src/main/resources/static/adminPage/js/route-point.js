@@ -48,7 +48,7 @@ $(document).ready(function () {
                                         var options = [];
                                         // data = JSON.parse(data);
                                         data._embedded.routes.forEach(function (entry) {
-                                            var option = {"label": entry.routeName, "value": entry._links.self.href, ""};
+                                            var option = {"label": entry.routeName, "value": entry._links.self.href, "daysOfWeek":entry.daysOfWeek, "type":entry.type};
                                             options.push(option);
                                         });
                                     }
@@ -92,27 +92,31 @@ $(document).ready(function () {
         });
         $("#ajaxLoaderGif").show();
         $.ajax(
-            'content/getData.php',
+            `${$routeSelectSelectize[0].selectize.items[0]}`,
             {
                 type: "PATCH",
-                status: 'updateDaysOfWeek',
-                routeID: $routeSelectSelectize[0].selectize.items[0],
-                daysOfWeek: daysOfWeek
-            },
-            function (serverData) {
-                setDaysOfWeekData(JSON.parse(serverData));
-                $("#ajaxLoaderGif").hide();
-            }
-        );
+                contentType: 'application/json',
+                data:JSON.stringify({
+                    daysOfWeek: daysOfWeek.join(",")
+                })
+            }).success(function(serverData){
+            console.log(serverData);
+            setDaysOfWeekData(serverData.daysOfWeek.split(","));
+            $("#ajaxLoaderGif").hide();
+        });
     });
 
     $("#startRouteTimeInput").mask('00:00', {clearIfNotMatch: true, placeholder: "чч:мм"});
     $("#updateStartRouteTime").button().click(function (e) {
         $("#ajaxLoaderGif").show();
-        $.post(
-            'content/getData.php',
+        $.ajax(
+            `${$routeSelectSelectize[0].selectize.items[0]}`,
             {
-                status: 'updateStartRouteTime',
+                type: 'PATCH',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    firstPointArrivalTime: $('#startRouteTimeInput').val()
+                }),
                 routeID: $routeSelectSelectize[0].selectize.items[0],
                 firstPointArrivalTime: $('#startRouteTimeInput').val()
             },
@@ -124,19 +128,19 @@ $(document).ready(function () {
     });
     $("#updateRouteType").button().click(function (e) {
         $("#ajaxLoaderGif").show();
-        $.post(
-            'content/getData.php',
+        $.ajax(
+            `${$routeSelectSelectize[0].selectize.items[0]}`,
             {
-                status: 'updateRouteType',
-                routeID: $routeSelectSelectize[0].selectize.items[0],
-                type: $('#routeTypeSelect').val()
-            },
-            function (serverData) {
-                // serverData = JSON.parse(serverData);
-                setRouteType(serverData);
-                $("#ajaxLoaderGif").hide();
+                type: "PATCH",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    type:$('#routeTypeSelect').val()
+                })
             }
-        );
+        ).success(function (data){
+            setRouteType(data.type);
+            $("#ajaxLoaderGif").hide();
+        });
     });
 
 
@@ -186,7 +190,7 @@ $(document).ready(function () {
         var routePointsEditor = new $.fn.dataTable.Editor({
             ajax: 'content/getData.php',
             table: '#routePointsTable',
-            idSrc: 'routePointID',
+            idSrc: 'id',
 
             fields: [
                 /* {
@@ -372,7 +376,7 @@ $(document).ready(function () {
                 "columnDefs": [
                     {"name": "sortOrder", "data": "sortOrder", "targets": 0},
                     {"name": "pointName", "data": "pointName", "targets": 1},
-                    {"name": "tLoading", "data": "tLoading", "targets": 2}
+                    {"name": "timeForLoadingOperations", "data": "timeForLoadingOperations", "targets": 2}
                 ]
             }
         );
@@ -500,8 +504,9 @@ $(document).ready(function () {
 
         function setRoutePointsData(routePointsData) {
             $routePointsDataTable.rows().remove();
-            routePointsData.forEach(function (entry) {
-                entry.tLoading = minutesToString(entry.tLoading);
+            console.log(routePointsData);
+            routePointsData._embedded.routePoints.forEach(function (entry) {
+                entry.timeForLoadingOperations = minutesToString(entry.timeForLoadingOperations);
             });
             $routePointsDataTable.rows.add(routePointsData).draw(false);
         }
@@ -520,14 +525,15 @@ $(document).ready(function () {
 
         // initial loading of all data
         function onRouteChanged(value) {
-            $.post(
-                "content/getData.php",
-                {status: "getAllRoutePointsDataForRouteID", routeID: value, format: "json"},
+            $.get(
+                `${value}`,
                 function (data) {
-                    data = JSON.parse(data);
-                    setDaysOfWeekData(data.daysOfWeek);
+                    console.log(data._links.routePoints);
+                    setDaysOfWeekData(data.daysOfWeek.split(","));
                     setFirstPointArrivalTime(data.firstPointArrivalTime);
-                    setRoutePointsData(data.routePoints);
+                    $.get(data._links.routePoints.href).success(function (routePointsData){
+                        setRoutePointsData(routePointsData)
+                    });
                     setRelationsBetweenRoutePointsData(data.relationsBetweenRoutePoints);
                     setRouteType(data.type);
                 }

@@ -99,6 +99,7 @@ $(document).ready(function () {
 
     var transportCompaniesTable =  $("#transportCompaniesTable").DataTable({
         processing: true,
+        searchDelay: 800,
         serverSide: true,
         ajax: {
             contentType: 'application/json',

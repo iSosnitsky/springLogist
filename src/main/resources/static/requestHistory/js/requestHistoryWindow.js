@@ -1,4 +1,5 @@
 var requestIDExternal;
+
 function showPretension(pretensionID, reqIdExt, cathegory, pretensionSum, pretensionComment, positionNumber) {
 
     $('#editPretensionSum').val(pretensionSum);
@@ -20,8 +21,8 @@ function showPretension(pretensionID, reqIdExt, cathegory, pretensionSum, preten
 }
 
 function loadPretensions() {
-    $.get("api/pretensions/search/findByRequestIdExternal?requestIdExternal="+requestIDExternal, function (data) {
-        parsedData = data.embedded.pretensions
+    $.get("api/pretensions/search/findByRequestIdExternal?requestIdExternal=" + requestIDExternal, function (data) {
+        parsedData = data._embedded.pretensions;
 
         $(".pretensionLink").remove();
 
@@ -180,9 +181,8 @@ $(document).ready(function () {
                 pretensionCommentLabel.html('Комментарий<span style="color:#c22929;">*</span>');
                 break;
             }
-                
-                
-                
+
+
         }
     });
 
@@ -227,7 +227,7 @@ $(window).on('load', function () {
 
 
     if ($_GET['clientId'] && $_GET['invoiceNumber']) {
-        $.post("/api/requests/findFirstByClientIdExternalAndInvoiceNumber?clientIdExternal="+$_GET['clientId']+"&invoiceNumber="+$_GET['invoiceNumber'],
+        $.post("/api/requests/findFirstByClientIdExternalAndInvoiceNumber?clientIdExternal=" + $_GET['clientId'] + "&invoiceNumber=" + $_GET['invoiceNumber'],
             function (data) {
                 console.log(data);
                 requestIDExternal = data.requestIdExternal;
@@ -265,15 +265,14 @@ $(window).on('load', function () {
         $('#sales-representative').html(requestData.marketAgentUserId.userName);
         $('#arrival-point').html(requestData.destinationPointId.pointName);
         $('#departure-warehouse').html(requestData.warehousePoint.pointName);
-        $('#pallet-quantity').html(requestData.routeListId.palletsQty);
+        if (requestData.routeListId) $('#pallet-quantity').html(requestData.routeListId.palletsQty);
+
         setHistoryTable(requestData.requestHistory);
-
-
 
         $('#submitPretension').click(function () {
             var that = $('#submitPretension');
             that.button('loading');
-            $.post("content/getData.php", {
+            $.ajax("api/pretensions", {
                 commentRequired: $('#pretensionComment').prop('required'),
                 status: 'addPretension',
                 pretensionCathegory: $('#pretensionCathegory').val(),
@@ -311,32 +310,18 @@ $(window).on('load', function () {
                 "data": requestHistoryData,
                 "columnDefs": [
                     {"name": "autoTimeMark", "data": "autoTimeMark", "targets": 0},
-                    {"name": "lastVisitedRoutePointId", "data": "lastVisitedRoutePointId.pointName", "targets": 1, "defaultContent":"Отсутствует"},
+                    {
+                        "name": "lastVisitedRoutePointId",
+                        "data": "lastVisitedRoutePointId.pointName",
+                        "targets": 1,
+                        "defaultContent": "Не указан"
+                    },
                     // {"name": "userNameThatChangedStatus", "data": "userNameThatChangedStatus", "targets": 2, visible: false},
-                    {"name": "requestStatusId", "data": "requestStatusId", "targets": 2,"render": {"ADJUSTMENTS_MADE":"Сделаны корректировки, распечатаны документы",
-                            "APPROVED":"Утверждена к сборке",
-                            "APPROVING":"Выгружена на утверждение торговому представителю",
-                            "ARRIVED":"Накладная прибыла в пункт",
-                            "CHECK":"На контроле",
-                            "CHECK_BOXES":"Проверка коробок в зоне отгрузки",
-                            "CHECK_PASSED":"Контроль пройден",
-                            "COLLECTING":"Выдана на сборку",
-                            "CREATED":"заявка добавлена в БД",
-                            "CREDIT_LIMIT":"Кредитный лимит",
-                            "DELETED":"заявка удалена из БД",
-                            "DELIVERED":"Доставлено",
-                            "DEPARTURE":"В транзите",
-                            "ERROR":"Ошибка. Возвращение в пункт",
-                            "PACKAGING":"Упаковано",
-                            "RASH_CREATED":"Создана расходная накладная",
-                            "READY":"Проверка в зоне отгрузки/Готова к отправке",
-                            "RESERVED":"Резерв",
-                            "ROUTE_LIST_MADE":"Маршрутны лист подобран",
-                            "SAVED":"Заявка в состоянии черновика",
-                            "STOP_LIST":"Стоп-лист",
-                            "TRANSPORTATION":"Маршрутный лист закрыт, товар передан экспедитору на погрузку",
-                            "UNKNOWN":"неизвестный статус",
-                            "UPDATED":"Заявка обновлена из 1С"}},
+                    {
+                        "name": "requestStatusId", "data": "requestStatusId", "targets": 2, "render": function (data) {
+                            return requestStatusTranslation[data];
+                        }
+                    },
 
                     // {"name": "routeListNumber", "data": "routeListNumber", "targets": 4, visible: false},
                     // {"name": "boxQty", "data": "boxQty", "targets": 5, visible: false}
@@ -380,7 +365,7 @@ $(window).on('load', function () {
         // }, function (data) {
 
 
-        if (typeof ymaps !== 'undefined'){
+        if (typeof ymaps !== 'undefined') {
             ymaps.ready(initMap);
         }
 
@@ -422,15 +407,15 @@ $(window).on('load', function () {
 
                 routePoints = [];
                 if (data.hasOwnProperty('warehousePoint')) {
-                    routePoints.push({type:'wayPoint',point:data.warehousePoint.geometry});
-                    myMap.geoObjects.add(new ymaps.Placemark(data.warehousePoint.geometry,data.warehousePoint.properties));
+                    routePoints.push({type: 'wayPoint', point: data.warehousePoint.geometry});
+                    myMap.geoObjects.add(new ymaps.Placemark(data.warehousePoint.geometry, data.warehousePoint.properties));
 
                 }
                 // if (data.hasOwnProperty('lastVisitedPoint')) {
                 //     routePoints.push({type:'viaPoint', point:data.lastVisitedPoint.geometry});
                 // myMap.geoObjects.add(new ymaps.Placemark(data.lastVisitedPoint.geometry,data.lastVisitedPoint.properties));
                 // }
-                myMap.geoObjects.add(new ymaps.Placemark(data.destinationPoint.geometry,data.destinationPoint.properties, data.destinationPoint.options));
+                myMap.geoObjects.add(new ymaps.Placemark(data.destinationPoint.geometry, data.destinationPoint.properties, data.destinationPoint.options));
                 routePoints.push({type: 'wayPoint', point: data.destinationPoint.geometry});
 
 
@@ -463,7 +448,7 @@ $(window).on('load', function () {
                     vehicleData = JSON.parse(vehicleData);
                     if (vehicleData.hasOwnProperty('vehiclePlacemark')) {
                         console.log(JSON.stringify(vehicleData.vehiclePlacemark.options));
-                        vehiclePlacemark = new ymaps.Placemark(vehicleData.vehiclePlacemark.geometry, vehicleData.vehiclePlacemark.properties,vehicleData.vehiclePlacemark.options);
+                        vehiclePlacemark = new ymaps.Placemark(vehicleData.vehiclePlacemark.geometry, vehicleData.vehiclePlacemark.properties, vehicleData.vehiclePlacemark.options);
                         myMap.geoObjects.add(vehiclePlacemark);
                         myMap.setCenter(vehicleData.vehiclePlacemark.geometry);
                     }
@@ -501,6 +486,32 @@ $(window).on('load', function () {
         // );
     }
 
+    var requestStatusTranslation = {
+        "ADJUSTMENTS_MADE": "Сделаны корректировки, распечатаны документы",
+        "APPROVED": "Утверждена к сборке",
+        "APPROVING": "Выгружена на утверждение торговому представителю",
+        "ARRIVED": "Накладная прибыла в пункт",
+        "CHECK": "На контроле",
+        "CHECK_BOXES": "Проверка коробок в зоне отгрузки",
+        "CHECK_PASSED": "Контроль пройден",
+        "COLLECTING": "Выдана на сборку",
+        "CREATED": "заявка добавлена в БД",
+        "CREDIT_LIMIT": "Кредитный лимит",
+        "DELETED": "заявка удалена из БД",
+        "DELIVERED": "Доставлено",
+        "DEPARTURE": "В транзите",
+        "ERROR": "Ошибка. Возвращение в пункт",
+        "PACKAGING": "Упаковано",
+        "RASH_CREATED": "Создана расходная накладная",
+        "READY": "Проверка в зоне отгрузки/Готова к отправке",
+        "RESERVED": "Резерв",
+        "ROUTE_LIST_MADE": "Маршрутный лист подобран",
+        "SAVED": "Заявка в состоянии черновика",
+        "STOP_LIST": "Стоп-лист",
+        "TRANSPORTATION": "Маршрутный лист закрыт, товар передан экспедитору на погрузку",
+        "UNKNOWN": "неизвестный статус",
+        "UPDATED": "Заявка обновлена из 1С"
+    };
 
 }());
 

@@ -150,6 +150,7 @@ $(document).ready(function () {
     var routeDataTable = $("#routeTable").DataTable({
             processing: true,
             serverSide: true,
+        searchDelay: 800,
             ajax: {
                 contentType: 'application/json',
                 processing: true,
@@ -169,18 +170,15 @@ $(document).ready(function () {
             "buttons": [
                 {
                     extend: "create",
-                    editor: routeEditor,
-                    text: 'добавить запись'
+                    editor: routeEditor
                 },
                 {
                     extend: "edit",
-                    editor: routeEditor,
-                    text: 'изменить запись'
+                    editor: routeEditor
                 },
                 {
                     extend: "remove",
-                    editor: routeEditor,
-                    text: 'удалить запись'
+                    editor: routeEditor
                 }
             ],
             "paging": 10,

@@ -10,7 +10,7 @@
     <body>
     <div class="container">
         <div class="main">
-            <p th:if="${loginError}" class="error">Wrong user or password</p>
+            <p th:if="${loginError}" class="error">Неправильный логин или пароль</p>
             <form class="form" method="post" th:action="@{/login}">
                 <label for="username">Логин :</label>
                 <input type="text" placeholder="Введите логин" name="username" autofocus="autofocus" id="username">

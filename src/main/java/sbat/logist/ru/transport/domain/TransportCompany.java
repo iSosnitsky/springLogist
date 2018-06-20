@@ -1,14 +1,19 @@
 package sbat.logist.ru.transport.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
 @Table(name="TRANSPORT_COMPANIES")
+@AllArgsConstructor(suppressConstructorProperties = true)
+@NoArgsConstructor
 public class TransportCompany {
     @Id
     @Column(name="ID")
@@ -67,6 +72,12 @@ public class TransportCompany {
     @Column(name="CHIEF_ACC_FULLNAME")
     @JsonView(DataTablesOutput.View.class)
     private String chiefAccFullname;
+
+    @OneToMany(mappedBy = "transportCompany")
+    private List<Vehicle> vehicles;
+
+    @OneToMany(mappedBy = "transportCompany")
+    private List<Driver> drivers;
 
     @Column(name="DELETED")
     private short deleted;

@@ -11,12 +11,10 @@ import sbat.logist.ru.transport.domain.Route;
 import sbat.logist.ru.transport.domain.RoutePoint;
 import sbat.logist.ru.transport.domain.Tariff;
 import sbat.logist.ru.transport.domain.specification.RoutePointsForRoute;
-import sbat.logist.ru.transport.repository.RoutePointRepository;
 import sbat.logist.ru.transport.repository.RouteRepository;
 import sbat.logist.ru.transport.repository.TariffRepoisitory;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -27,8 +25,8 @@ public class RouteRestController {
     @Autowired
     TariffRepoisitory tariffRepoisitory;
 
-    @Autowired
-    RoutePointRepository routePointRepository;
+//    @Autowired
+//    RoutePointRepository routePointRepository;
 
     @CrossOrigin(origins = "http://localhost:*")
     @JsonView(DataTablesOutput.View.class)
@@ -44,18 +42,18 @@ public class RouteRestController {
         return tariffRepoisitory.findAll(input);
     }
 
-    @CrossOrigin(origins = "http://localhost:*")
-    @JsonView(DataTablesOutput.View.class)
-    @RequestMapping(value = "/data/routePointsForRoute", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
-    public DataTablesOutput<RoutePoint> postRoutePointsForRoute(@Param("route") Route route){
-        return routePointRepository.findAll(new DataTablesInput(), RoutePointsForRoute.routePointsForRoute(route));
-    }
-
-    @CrossOrigin(origins = "http://localhost:*")
-    @JsonView(DataTablesOutput.View.class)
-    @RequestMapping(value = "/data/routePointsForRoute", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE)
-    public DataTablesOutput<RoutePoint> getRoutePointsForRoute(@Param("route") Route route){
-        return routePointRepository.findAll(new DataTablesInput(), RoutePointsForRoute.routePointsForRoute(route));
-    }
+//    @CrossOrigin(origins = "http://localhost:*")
+//    @JsonView(DataTablesOutput.View.class)
+//    @RequestMapping(value = "/data/routePointsForRoute", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
+//    public DataTablesOutput<RoutePoint> postRoutePointsForRoute(@Param("route") Route route){
+//        return routePointRepository.findAll(new DataTablesInput(), RoutePointsForRoute.routePointsForRoute(route));
+//    }
+//
+//    @CrossOrigin(origins = "http://localhost:*")
+//    @JsonView(DataTablesOutput.View.class)
+//    @RequestMapping(value = "/data/routePointsForRoute", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE)
+//    public DataTablesOutput<RoutePoint> getRoutePointsForRoute(@Param("route") Route route){
+//        return routePointRepository.findAll(new DataTablesInput(), RoutePointsForRoute.routePointsForRoute(route));
+//    }
 
 }

@@ -12,10 +12,7 @@ import sbat.logist.ru.transport.domain.converter.DataSourceConverter;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -151,4 +148,45 @@ public class RouteList {
     @OneToMany(mappedBy = "routeListId", fetch = FetchType.LAZY)
     private List<Request> requests = new ArrayList<>(0);
 
+
+    @ManyToMany(mappedBy = "routeLists")
+    private List<Driver> drivers = new ArrayList<>();
+    @ManyToMany(mappedBy = "routeLists")
+    private List<Vehicle> vehicles = new ArrayList<>();
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RouteList routeList = (RouteList) o;
+        return Objects.equals(routeListId, routeList.routeListId) &&
+                Objects.equals(routeListIdExternal, routeList.routeListIdExternal) &&
+                dataSourceId == routeList.dataSourceId &&
+                Objects.equals(routeListNumber, routeList.routeListNumber) &&
+                Objects.equals(creationDate, routeList.creationDate) &&
+                Objects.equals(departureDate, routeList.departureDate) &&
+                Objects.equals(palletsQty, routeList.palletsQty) &&
+                Objects.equals(forwarderId, routeList.forwarderId) &&
+                Objects.equals(driverId, routeList.driverId) &&
+                Objects.equals(driverPhoneNumber, routeList.driverPhoneNumber) &&
+                Objects.equals(licensePlate, routeList.licensePlate) &&
+                Objects.equals(status, routeList.status) &&
+                Objects.equals(routeId, routeList.routeId) &&
+                Objects.equals(transportCompany, routeList.transportCompany) &&
+                Objects.equals(driver, routeList.driver) &&
+                Objects.equals(vehicle1, routeList.vehicle1) &&
+                Objects.equals(vehicle2, routeList.vehicle2) &&
+                Objects.equals(vehicle3, routeList.vehicle3) &&
+                Objects.equals(freight, routeList.freight) &&
+                Objects.equals(requests, routeList.requests) &&
+                Objects.equals(drivers, routeList.drivers) &&
+                Objects.equals(vehicles, routeList.vehicles);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(routeListId, routeListIdExternal, dataSourceId, routeListNumber, creationDate, departureDate, palletsQty, forwarderId, driverId, driverPhoneNumber, licensePlate, status, routeId, transportCompany, driver, vehicle1, vehicle2, vehicle3, freight, requests, drivers, vehicles);
+    }
 }

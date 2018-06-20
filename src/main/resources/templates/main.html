@@ -41,6 +41,15 @@
     <script src="/media/FixedColumns-3.2.2/js/dataTables.fixedColumns.min.js"></script>
 
     <!--    <script src="/media/Bootstrap-3.3.2/js/bootstrap.min.js"></script>-->
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var userRequestStatuses = {};
+        /*[# th:each="option : ${T(sbat.logist.ru.constant.RequestStatus).values()}"]*/
+        var propertyName = /*[[${option}]]*/
+        userRequestStatuses[propertyName] = /*[[${option.rusRequestStatusName}]]*/;
+        /*[/]*/
+        console.log(userRequestStatuses);
+    </script>
 
     <!--dateTimePicker-->
     <link rel="stylesheet" type="text/css" href="/media/dateTimePicker/jquery-ui-timepicker-addon.css"/>
@@ -54,9 +63,9 @@
     <script src="/media/jqueryCookie-1.4.1/jquery.cookie.js"></script>
     <!--custom js-->
     <script type="text/javascript" language="javascript" src="/main/main.js"></script>
-    <!--    <script type="text/javascript" language="javascript" src="content/js/requestHistoryDialog.js"></script>-->
-    <!--<script type="text/javascript" language="javascript" src="content/js/statusChangeDialog.js"></script>-->
-    <!--<script type="text/javascript" language="javascript" src="content/js/columnSelectDialog.js"></script>-->
+        <!--<script type="text/javascript" language="javascript" src="content/js/requestHistoryDialog.js"></script>-->
+    <script type="text/javascript" language="javascript" src="/main/statusChangeDialog.js"></script>
+    <script type="text/javascript" language="javascript" src="/main/columnSelectDialog.js"></script>
 
 </head>
 <body>
@@ -83,8 +92,7 @@
             <div class="dropdown">
                 <i class="fa fa-user" style="font-size: 16px"></i>
                 <span sec:authentication="name"></span>
-                <span sec:authentication="roleRusName">
-                </span>
+                (<span sec:authentication="roleRusName"></span>)
 
 
                 <i
@@ -190,6 +198,7 @@
             <th class="col24">Количество паллет</th>
             <th class="col25">Маршрутный лист</th>
             <th class="col26">Время прибытия в следующий пункт</th>
+            <th class="col27">requestId</th>
         </tr>
         </thead>
 
@@ -222,6 +231,7 @@
             <th class="col24">Количество паллет</th>
             <th class="col25">Маршрутный лист</th>
             <th class="col26">Время прибытия в следующий пункт</th>
+            <th class="col26">requestId</th>
         </tr>
         </tfoot>
     </table>

@@ -5,36 +5,38 @@
     <title></title>
 
     <!--    <link rel="stylesheet" type="text/css" href="common_files/media/jQueryUI-1.11.4/jquery-ui.min.css"/>-->
-    <link rel="stylesheet" type="text/css" href="media/Bootstrap-3.3.2/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+
+    <link rel="stylesheet" type="text/css" href="media/DataTables/Bootstrap-4-4.0.0/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="media/Selectize/css/selectize.min.css"/>
-    <link rel="stylesheet" type="text/css" href="media/DataTables-1.10.12/css/dataTables.bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="media/Buttons-1.1.0/css/buttons.bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="media/Editor-1.6.3/css/editor.bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="media/DataTables/DataTables-1.10.16/css/dataTables.bootstrap4.css"/>
+    <link rel="stylesheet" type="text/css" href="media/DataTables/Buttons-1.5.1/css/buttons.bootstrap4.css"/>
+    <link rel="stylesheet" type="text/css" href="media/DataTables/Editor-1.7.3/css/editor.bootstrap4.css"/>
     <link rel="stylesheet" type="text/css" href="media/FieldType-Selectize/editor.selectize.min.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="media/datatables/datatables.css"/>-->
     <!--z-index:999-->
     <link rel="stylesheet" type="text/css" href="media/font-awesome/css/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="media/Select-1.1.0/css/select.bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="media/DataTables/Select-1.2.5/css/select.bootstrap4.css"/>
     <link rel="stylesheet" type="text/css" href="adminPage/css/admin.css"/>
 
     <script src="media/md5.js"></script>
     <script src="media/jQuery-2.1.4/jquery-2.1.4.min.js"></script>
-    <script src="media/Bootstrap-3.3.2/js/bootstrap.min.js"></script>
+    <script src="media/DataTables/Bootstrap-4-4.0.0/js/bootstrap.js"></script>
     <script src="media/jquery-mask/dist/jquery.mask.min.js"></script>
     <script src="media/Selectize/js/standalone/selectize.min.js"></script>
-    <script src="media/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
-    <script src="media/DataTables-1.10.12/js/dataTables.bootstrap.min.js"></script>
-    <script src="media/Buttons-1.1.0/js/dataTables.buttons.min.js"></script>
-    <script src="media/Buttons-1.1.0/js/buttons.bootstrap.min.js"></script>
-    <script src="media/Editor-1.6.3/js/dataTables.editor.min.js"></script>
-    <script src="media/Editor-1.6.3/js/editor.bootstrap.min.js"></script>
+    <script src="media/DataTables/DataTables-1.10.16/js/dataTables.bootstrap4.js"></script>
+    <script src="media/DataTables/datatables.js"></script>
+    <script src="media/DataTables/Buttons-1.5.1/js/buttons.bootstrap.js"></script>
+    <script src="media/DataTables/Editor-1.7.3/js/dataTables.editor.js"></script>
+    <script src="media/DataTables/Editor-1.7.3/js/editor.bootstrap4.js"></script>
     <script src="media/FieldType-Mask/editor.mask.min.js"></script>
     <script src="media/FieldType-Selectize/editor.selectize.min.js"></script>
-    <script src="media/Select-1.1.0/js/dataTables.select.min.js"></script>
+    <script src="media/DataTables/Select-1.2.5/js/dataTables.select.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
 
     <script src="media/md5.js"></script>
-    <script src="media/Buttons-1.1.0/js/dataTables.buttons.flash.min.js"></script>
+    <script src="media/DataTables/Buttons-1.5.1/js/buttons.bootstrap4.js"></script>
 
 
     <script type="text/javascript" th:inline="javascript">
@@ -64,35 +66,47 @@
 
 </head>
 <body>
-<div id="transactionWidget">
-    Обмен с 1С:<br>
-    Статус: <span id="transactionStatus"></span><br>
-    Последний пакет: №<span id="lastTransactionPacket"></span>, <span id="lastTransactionServer"></span><br> <span
-            id="lastTransactionTime"></span>(GMT)
-</div>
-<div class="row container-fluid">
-    <div class="col-2">
+<!--<div id="transactionWidget">-->
+    <!--Обмен с 1С:<br>-->
+    <!--Статус: <span id="transactionStatus"></span><br>-->
+    <!--Последний пакет: №<span id="lastTransactionPacket"></span>, <span id="lastTransactionServer"></span><br> <span-->
+            <!--id="lastTransactionTime"></span>(GMT)-->
+<!--</div>-->
 
-        <ul class="nav nav-pills flex-column nav-stacked nav-sidebar" style="width: 200px; float: left">
-            <li class="active"><a data-toggle="pill" href="#tabs-1"><i class="fa fa-compass" aria-hidden="true"></i> Маршруты</a></li>
-            <li><a data-toggle="pill" href="#tabs-2"><i class="fa fa-users" aria-hidden="true"></i> Пользователи</a></li>
-            <li><a data-toggle="pill"href="#tabs-3"><i class="fa fa-truck" aria-hidden="true"></i> ТК, ТС, <br>водители</a></li>
-            <li><a data-toggle="pill" href="#tabs-4"><i class="fa fa-magic" aria-hidden="true"></i> Распределение<br> заявок</a></li>
-            <li><a data-toggle="pill" href="#tabs-5"><i class="fa fa-exchange" aria-hidden="true"></i> Обмен с 1С</a></li>
-            <!--        <li><a >Fgsfas</a></li>-->
-            <li onclick="location.href='/main'"><a target="_self" href="#"><i class="fa fa-table" aria-hidden="true"></i>
-                    На главную</a></li>
-            <li onclick="location.href='/login'"><a target="_self" href="#"><i class="fa fa-sign-out"
-                                                                                   aria-hidden="true"></i> Выход</a>
-            </li>
-            <!--        <li><a onclick="" href="" id="logout">Выход</a></li>-->
-        </ul>
-    </div>
-    <div class="col-lg-10 tab-content" id="tab-content" style="float: right">
-        <div id="tabs-1" class="tab-pane fade in active">
+
+<div class="container-flex">
+    <nav>
+    <ul  class="nav nav-tabs nav-justified" role="tablist">
+        <!--style="width: 200px; float: left">-->
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" aria-selected="true" href="#tabs-1"><i class="fa fa-compass" aria-hidden="true"></i> Маршруты</a></li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" aria-selected="false" href="#tabs-2"><i class="fa fa-users" aria-hidden="true"></i> Пользователи</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" aria-selected="false" href="#tabs-3"><i class="fa fa-truck" aria-hidden="true"></i> ТК, ТС, водители</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" aria-selected="false" href="#tabs-4"><i class="fa fa-magic" aria-hidden="true"></i> Распределение заявок</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" aria-selected="false" href="#tabs-5"><i class="fa fa-exchange" aria-hidden="true"></i> Обмен с 1С</a>
+        </li>
+        <!--        <li><a >Fgsfas</a></li>-->
+        <li class="nav-item" onclick="location.href='/main'"><a class="nav-link" target="_self" href="#">
+            <i class="fa fa-table" aria-hidden="true"></i>
+            На главную</a>
+        </li>
+        <li class="nav-item" onclick="location.href='/login'">
+            <a class="nav-link" target="_self" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Выход</a>
+        </li>
+    </ul>
+    </nav>
+    <div class="tab-content" id="tab-content" >
+        <div id="tabs-1" class="tab-pane  in active">
             <h2>Маршруты</h2>
             <div>
-                <table class="table table-bordered table-striped " id="routeTable">
+                <table class="table  table-striped " id="routeTable">
                     <thead>
                     <tr>
                         <th>routeID</th>
@@ -112,7 +126,7 @@
             </div>
             <h2>Тарифы</h2>
             <div>
-                <table class="table table-bordered table-striped " id="tariffTable">
+                <table class="table display compact table-striped " id="tariffTable">
                     <thead>
                     <tr>
                         <th>TariffId</th>
@@ -171,7 +185,7 @@
 
                         <div>
                             <div style="width: 49%; display: inline-block">
-                                <table class="table table-bordered table-striped " id="routePointsTable">
+                                <table class="table  table-striped " id="routePointsTable">
                                     <thead>
                                     <tr>
                                         <th>Порядковый номер пункта</th>
@@ -183,7 +197,7 @@
                             </div>
 
                             <div style="width: 50%; display: inline-block">
-                                <table class="table table-bordered table-striped " id="relationsBetweenRoutePointsTable">
+                                <table class="table  table-striped " id="relationsBetweenRoutePointsTable">
                                     <thead>
                                     <tr>
                                         <th>Начальный пункт</th>
@@ -200,10 +214,10 @@
                 </div>
             </div>
         </div>
-        <div id="tabs-2" class="tab-pane fade">
+        <div id="tabs-2" class="tab-pane ">
             <h2>Пользователи</h2>
             <div id="usersCreation">
-                <table class="table table-bordered table-striped " id="usersTable">
+                <table class="table  table-striped " id="usersTable">
                     <thead>
                     <tr>
                         <th>userID</th>
@@ -223,7 +237,7 @@
             </div>
             <h2>Клиенты</h2>
             <div id="clientsCreation">
-                <table class="table table-bordered table-striped " id="clientsTable">
+                <table class="table  table-striped " id="clientsTable">
                     <thead>
                     <tr>
                         <th>clientID</th>
@@ -239,10 +253,10 @@
                 </table>
             </div>
         </div>
-        <div id="tabs-3" class="tab-pane fade">
+        <div id="tabs-3" class="tab-pane ">
             <h2>Транспортные компании</h2>
             <div id="transportCompaniesCreation">
-                <table class="table table-bordered table-striped " id="transportCompaniesTable">
+                <table class="table  table-striped " id="transportCompaniesTable">
                     <thead>
                     <tr>
                         <th>№ТК</th>
@@ -265,7 +279,7 @@
             </div>
             <h2>Транспортные средства</h2>
             <div id="vehiclesCreation">
-                <table class="table table-bordered table-striped " id="vehiclesTable">
+                <table class="table  table-striped " id="vehiclesTable">
                     <thead>
                     <tr>
                         <th>№ТС</th>
@@ -285,7 +299,7 @@
             </div>
             <h2>Водители</h2>
             <div id="driversCreation">
-                <table class="table table-bordered table-striped " id="driversTable">
+                <table class="table  table-striped " id="driversTable">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -300,7 +314,7 @@
                 </table>
             </div>
         </div>
-        <div id="tabs-4" class="tab-pane fade">
+        <div id="tabs-4" class="tab-pane ">
             <div id="requestsAssignment"><h2>Распределение заявок</h2><br>
                 <div class="c-tooltip" >Как это работает?
                     <div class="tooltiptext">Распределитель собирает все заявки, у которых указан выбранный склад как точка
@@ -320,9 +334,9 @@
                 </div>
             </div>
         </div>
-        <div id="tabs-5" class="tab-pane fade">
+        <div id="tabs-5" class="tab-pane ">
             <h2>Последние пакеты из 1С</h2><br>
-            <table  id="transactionsTable" class="table table-bordered table-striped " cellspacing="0" width="100%">
+            <table  id="transactionsTable" class="table  table-striped " cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th>Номер пакета</th>

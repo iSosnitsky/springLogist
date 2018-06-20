@@ -3,8 +3,11 @@ package sbat.logist.ru.transport.domain;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import sbat.logist.ru.transport.EntityListeners.RoutePointListener;
 
 import javax.persistence.*;
 
@@ -12,6 +15,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
+@EntityListeners(RoutePointListener.class)
 @Table(name = "route_points")
 public class RoutePoint {
 
@@ -24,17 +28,26 @@ public class RoutePoint {
     @Column(name = "SORTORDER")
     private int sortOrder;
 
-    @JsonView(DataTablesOutput.View.class)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POINTID")
     private Point point;
 
-    @JsonView(DataTablesOutput.View.class)
-    @Column(name = "ROUTEID")
-    private int route;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROUTEID")
+    private Route route;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "TIMEFORLOADINGOPERATIONS")
     private int timeForLoadingOperations;
 
+    @Transient
+    @Getter
+    @JsonView(DataTablesOutput.View.class)
+    private String pointName = "Fgsfds";
+
+    @PostLoad
+    private void postLoad(){
+        Hibernate.initialize(this.point);
+        this.pointName = this.point.getPointName();
+    }
 }

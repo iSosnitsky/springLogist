@@ -1,5 +1,6 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -14,15 +15,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Data
 @Entity
 @Builder
 @Table(name = "requests")
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
-@DynamicInsert(true)
-@DynamicUpdate(true)
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +47,7 @@ public class Request {
     private Date requestDate;
 
     @JsonView(DataTablesOutput.View.class)
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENTID")
     private Client clientId;
 
@@ -58,7 +57,7 @@ public class Request {
     private Point destinationPointId;
 
     @JsonView(DataTablesOutput.View.class)
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MARKETAGENTUSERID")
     private User marketAgentUserId;
 
@@ -103,6 +102,7 @@ public class Request {
 
     @JsonView(DataTablesOutput.View.class)
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "DELIVERYDATE")
     private Date deliveryDate;
 
@@ -124,6 +124,7 @@ public class Request {
 
     @JsonView(DataTablesOutput.View.class)
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     @Column(name = "LASTSTATUSUPDATED")
     private Date lastStatusUpdated;
 
@@ -142,6 +143,10 @@ public class Request {
     private String commentForStatus;
 
     @JsonView(DataTablesOutput.View.class)
+    @Column(name = "HOURSAMOUNT")
+    private Integer hoursAmount;
+
+    @JsonView(DataTablesOutput.View.class)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "ROUTELISTID")
     private RouteList routeListId;
@@ -158,29 +163,4 @@ public class Request {
 
     @OneToMany(mappedBy = "requestId")
     private List<RequestHistory> requestHistory = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRANSPORTCOMPANYID")
-    private TransportCompany transportCompany;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="VEHICLEID")
-    private Vehicle vehicle;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="DRIVERID")
-    private Driver driver;
-
-    @PostPersist
-    private void postPersist(){
-        //Здесь можно сделать что-нибудь с этой сущностью после её сохранения (INSERT) в бд
-        //Например засунуть её копию и все связанные поля в matViewBigSelect
-        sbat.logist.ru.constant.UserRole.class.getDeclaringClass().getEnumConstants();
-
-    }
-
-    @PrePersist
-    private void prePersist(){
-        //Здесь можно сделать что-нибудь с этой сущностью перед её сохранением (INSERT) в бд
-    }
 }

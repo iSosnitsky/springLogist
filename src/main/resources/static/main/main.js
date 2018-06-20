@@ -57,7 +57,61 @@ $(document).ready(function () {
 
 
     var requestEditor = new $.fn.dataTable.Editor({
-        ajax: "api/requests/_id_",
+        ajax: {
+            create:{
+                type:'POST',
+                contentType:'application/json',
+                url: 'api/requests',
+                data: function (d) {
+                    let newdata;
+                    $.each(d.data, function (key, value) {
+                        newdata = JSON.stringify(value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    dataTable.draw("page");
+                    requestEditor.close();
+                    // alert(response.responseText);
+                },
+            },
+            edit: {
+                contentType: 'application/json',
+                type: 'PATCH',
+                url: 'api/requests/_id_',
+                data: function (d) {
+                    let newdata;
+                    $.each(d.data, function (key, value) {
+                        newdata = JSON.stringify(value);
+                    });
+                    return newdata;
+                },
+                success: function (response) {
+                    dataTable.draw("page");
+                    requestEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            },
+            remove: {
+                type: 'DELETE',
+                contentType:'application/json',
+                url:  'api/requests/_id_',
+                data: function (d) {
+                    return '';
+                },
+                success: function (response) {
+                    dataTable.draw("page");
+                    requestEditor.close();
+                    // alert(response.responseText);
+                },
+                error: function (jqXHR, exception) {
+                    alert(response.responseText);
+                }
+            }
+        },
         template: '#requestForm',
         table: "#user-grid",
         name: 'Создать новую заявку',
@@ -65,7 +119,7 @@ $(document).ready(function () {
         fields: [
             {
                 label: 'Клиент (ИНН)',
-                name: 'clientID',
+                name: 'clientId',
                 type: 'selectize',
                 options: [],
                 opts: {
@@ -107,18 +161,18 @@ $(document).ready(function () {
             },
             {
                 label: 'Кол-во коробок',
-                name: 'boxQty',
+                name: 'boxQuantity',
                 type: 'mask',
                 mask: '099',
                 placeholder: "99"
             },
-            {
-                label: 'Утилизация',
-                name: 'Uti',
-                type: 'mask',
-                mask: '099',
-                placeholder: "99"
-            },
+            // {
+            //     label: 'Утилизация',
+            //     name: 'Uti',
+            //     type: 'mask',
+            //     mask: '099',
+            //     placeholder: "99"
+            // },
             {
                 label: 'Дата доставки',
                 name: 'deliveryDate',
@@ -129,7 +183,7 @@ $(document).ready(function () {
             },
             {
                 label: 'Пункт склада',
-                name: 'warehousePointId',
+                name: 'warehousePoint',
                 type: 'selectize',
                 options: [],
                 opts: {
@@ -142,7 +196,7 @@ $(document).ready(function () {
 
             {
                 label: 'Маршрутный лист',
-                name: 'routeListID',
+                name: 'routeListId',
                 type: 'selectize',
                 options: [],
                 opts: {
@@ -152,42 +206,42 @@ $(document).ready(function () {
                     dropdownParent: "body"
                 }
             },
-            {
-                label: 'Транспортная компания',
-                name: 'transportCompanyId',
-                type: 'selectize',
-                options: [],
-                opts: {
-                    diacritics: true,
-                    searchField: 'text',
-                    labelField: 'text',
-                    dropdownParent: "body"
-                }
-            },
-            {
-                label: 'Модель ТС',
-                name: 'vehicleId',
-                type: 'selectize',
-                options: [],
-                opts: {
-                    diacritics: true,
-                    searchField: 'text',
-                    labelField: 'text',
-                    dropdownParent: "body"
-                }
-            },
-            {
-                label: 'Водитель',
-                name: 'driverId',
-                type: 'selectize',
-                options: [],
-                opts: {
-                    diacritics: true,
-                    searchField: 'text',
-                    labelField: 'text',
-                    dropdownParent: "body"
-                }
-            }
+            // {
+            //     label: 'Транспортная компания',
+            //     name: 'transportCompanyId',
+            //     type: 'selectize',
+            //     options: [],
+            //     opts: {
+            //         diacritics: true,
+            //         searchField: 'text',
+            //         labelField: 'text',
+            //         dropdownParent: "body"
+            //     }
+            // },
+            // {
+            //     label: 'Модель ТС',
+            //     name: 'vehicleId',
+            //     type: 'selectize',
+            //     options: [],
+            //     opts: {
+            //         diacritics: true,
+            //         searchField: 'text',
+            //         labelField: 'text',
+            //         dropdownParent: "body"
+            //     }
+            // },
+            // {
+            //     label: 'Водитель',
+            //     name: 'driverId',
+            //     type: 'selectize',
+            //     options: [],
+            //     opts: {
+            //         diacritics: true,
+            //         searchField: 'text',
+            //         labelField: 'text',
+            //         dropdownParent: "body"
+            //     }
+            // }
         ],
         i18n: {
             "create": {
@@ -288,7 +342,7 @@ $(document).ready(function () {
 
     }
 
-    requestEditor.field('clientID')
+    requestEditor.field('clientId')
         .input()
         .on('input', function (e, d) {
             var clientINNPart = $(this).val();
@@ -300,11 +354,11 @@ $(document).ready(function () {
                     clientsData._embedded.clients.forEach(function (entry) {
                         var selectizeOption = {
                             "label": "ИНН: " + entry.inn + ", имя: " + entry.clientName,
-                            "value": entry.clientIDExternal
+                            "value": entry._links.self.href
                         };
                         selectizeOptions.push(selectizeOption);
                     });
-                    let clientSelectize = requestEditor.field('clientID').inst();
+                    let clientSelectize = requestEditor.field('clientId').inst();
 
                     clientSelectize.clear();
                     clientSelectize.clearOptions();
@@ -322,23 +376,18 @@ $(document).ready(function () {
 //     }).replace(',','').replace('/','.').replace('/','.'));
 // }
 
-    requestEditor.field('warehousePointId').input().on('keyup', function (e, d) {
+    requestEditor.field('warehousePoint').input().on('keyup', function (e, d) {
         let pointNamePart = $(this).val();
-        $.post("api/points/search/findTop10ByPointNameContainingAndPointTypeId?name=",
-            {status: "getPointsByName", format: "json", name: pointNamePart},
+        $.get(`api/points/search/findTop10ByPointNameContainingAndPointTypeId?pointName=${pointNamePart}&pointType=WAREHOUSE`,
             function (wareHouseData) {
-                let options = [];
 
                 let selectizePointsOptions = [];
-                wareHouseData = JSON.parse(wareHouseData);
-                wareHouseData.forEach(function (entry) {
-                    let option = "<option value=" + entry.pointID + ">" + entry.pointName + "</option>";
-                    options.push(option);
-                    let selectizeOption = {"label": entry.pointName, "value": entry.pointID};
+                wareHouseData._embedded.points.forEach(function (entry) {
+                    let selectizeOption = {"label": entry.pointName, "value": entry._links.self.href};
                     selectizePointsOptions.push(selectizeOption);
                 });
 
-                let selectize = requestEditor.field('warehousePointId').inst();
+                let selectize = requestEditor.field('warehousePoint').inst();
                 selectize.clear();
                 selectize.clearOptions();
                 selectize.load(function (callback) {
@@ -351,17 +400,13 @@ $(document).ready(function () {
     requestEditor.field('marketAgentUserId').input().on('keyup', function (e, d) {
         const marketAgentName = $(this).val();
         if (marketAgentName !== '') {
-            $.get("api/users/search/findTop10ByUserNameContaining?name="+marketAgentName,
+            $.get(`api/users/search/findTop10ByUserNameContaining?name=${marketAgentName}`,
                 function (marketAgentData) {
-                    let options = [];
-
                     // console.log(marketAgentData);
                     let selectizePointsOptions = [];
                     // marketAgentData = JSON.parse(marketAgentData);
                     marketAgentData._embedded.users.forEach(function (entry) {
-                        let option = "<option value=" + entry.userIDExternal + ">" + entry.userName + "</option>";
-                        options.push(option);
-                        let selectizeOption = {"label": entry.userName, "value": entry.userIDExternal};
+                        let selectizeOption = {"label": entry.userName, "value": entry._links.self.href};
                         selectizePointsOptions.push(selectizeOption);
                     });
 
@@ -378,9 +423,9 @@ $(document).ready(function () {
     });
 
 
-    requestEditor.field('routeListID').input().on('keyup', function (e, d) {
+    requestEditor.field('routeListId').input().on('keyup', function (e, d) {
         let routeListNumber = $(this).val();
-        $.get("api/routeLists/search/findTop5ByRouteListNumberContaining?routeListNumber="+routeListNumber,
+        $.get(`api/routeLists/search/findTop5ByRouteListNumberContaining?routeListNumber=${routeListNumber}`,
             function (routeListData) {
                 loadRouteLists(routeListData)
                 // let options = [];
@@ -410,11 +455,11 @@ $(document).ready(function () {
         let selectizeRouteListsOptions = [];
         // routeListData = JSON.parse(routeListData);
         routeListData._embedded.routeLists.forEach(function (entry) {
-            let selectizeOption = {"label": entry.routeListNumber, "value": entry.routeListIdExternal};
+            let selectizeOption = {"label": entry.routeListNumber, "value": entry._links.self.href};
             selectizeRouteListsOptions.push(selectizeOption);
         });
 
-        let selectize = requestEditor.field('routeListID').inst();
+        let selectize = requestEditor.field('routeListId').inst();
         selectize.clear();
         selectize.clearOptions();
         selectize.load(function (callback) {
@@ -430,12 +475,12 @@ $(document).ready(function () {
         // console.log(JSON.stringify(e));
         // console.log(JSON.stringify(data));
         if (action !== 'remove') {
-            let clientID = this.field('clientID');
+            let clientID = this.field('clientId');
             let marketAgentUserId = this.field('marketAgentUserId');
             let invoiceNumber = this.field('invoiceNumber');
             let documentNumber = this.field('documentNumber');
-            let warehousePointId = this.field('warehousePointId');
-            let routeListID = this.field('routeListID');
+            let warehousePointId = this.field('warehousePoint');
+            let routeListID = this.field('routeListId');
 
             if (!clientID.val()) {
                 clientID.error('Клиент должен быть указан')
@@ -460,16 +505,6 @@ $(document).ready(function () {
             // If any error was reported, cancel the submission so it can be corrected
             if (this.inError()) {
                 return false;
-            } else {
-                // console.log(JSON.stringify(data));
-                // console.log(requestEditor.field('deliveryDate').input().val().toString());
-                if (action == 'edit') {
-                    data.status = 'editRequest';
-                    data.requestIDExternal = dataTable.row($('#user-grid').find('.selected')).data().requestIDExternal;
-                } else {
-                    data.status = 'addRequest';
-                }
-                // data.status = 'addRequest';
             }
         }
 
@@ -480,28 +515,28 @@ $(document).ready(function () {
     }).on('initEdit', function () {
         // console.log(JSON.stringify());
         if (dataTable.row($('#user-grid').find('.selected')).data().routeListNumber !== null){
-            let routeList = JSON.stringify([{
-                routeListId: "dummy",
-                routeListNumber: dataTable.row($('#user-grid').find('.selected')).data().routeListNumber
-            }]);
+            // let routeList = JSON.stringify([{
+                // routeListId: "dummy",
+                // routeListNumber: dataTable.row($('#user-grid').find('.selected')).data().routeListNumber
+            // }]);
             // console.log(routeList);
-            loadRouteLists(routeList);
-            requestEditor.field('routeListID').inst().setValue("dummy");
+            // loadRouteLists(routeList);
+            // requestEditor.field('routeListId').inst().setValue("dummy");
         }
 
-        if(dataTable.row($('#user-grid').find('.selected')).data().marketAgentUserId !== null){
-            let marketAgentUser = requestEditor.field('marketAgentUserId').inst();
-
-            marketAgentUser.clear();
-            marketAgentUser.clearOptions();
-            marketAgentUser.load(function (callback) {
-                callback([{
-                    "label": dataTable.row($('#user-grid').find('.selected')).data().marketAgentUserName,
-                    "value": "dummy"
-                }])
-            });
-            marketAgentUser.setValue("dummy");
-        }
+        // if(dataTable.row($('#user-grid').find('.selected')).data().marketAgentUserId !== null){
+        //     let marketAgentUser = requestEditor.field('marketAgentUserId').inst();
+        //
+        //     marketAgentUser.clear();
+        //     marketAgentUser.clearOptions();
+        //     marketAgentUser.load(function (callback) {
+        //         callback([{
+        //             "label": dataTable.row($('#user-grid').find('.selected')).data().marketAgentUserName,
+        //             "value": "dummy"
+        //         }])
+        //     });
+        //     marketAgentUser.setValue("dummy");
+        // }
 
         if(dataTable.row($('#user-grid').find('.selected')).data().INN!==null){
             let client = requestEditor.field('clientID').inst();
@@ -1041,6 +1076,7 @@ $(document).ready(function () {
             {"data": "palletsQty"},
             {"data": "routeListNumber"},
             {"data": "arrivalTimeToNextRoutePoint"},
+            {"data": "requestID"},
             // {"data": "boxQty"},
 
         ],
@@ -1072,7 +1108,8 @@ $(document).ready(function () {
             {"name": "routeListNumber", "searchable": true, "targets": 24},
             {"name": "arrivalTimeToNextRoutePoint", "searchable": true, "targets": 25},
             // {"name": "boxQty", "searchable": true, "targets": 26},
-            {"className": "dt-center", "targets": 10}
+            {"className": "dt-center", "targets": 10},
+            {"name": "requestID", "searchable": true, "targets": 26, visible: false},
 
         ],
     });

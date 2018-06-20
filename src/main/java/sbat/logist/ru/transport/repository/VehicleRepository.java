@@ -7,9 +7,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 import sbat.logist.ru.constant.DataSource;
+import sbat.logist.ru.transport.domain.TransportCompany;
 import sbat.logist.ru.transport.domain.User;
 import sbat.logist.ru.transport.domain.Vehicle;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,8 @@ public interface VehicleRepository extends DataTablesRepository<Vehicle, Long> {
 
     @Override
     DataTablesOutput<Vehicle> findAll(DataTablesInput input);
+
+    List<Vehicle> findTop10ByTransportCompany(@Param("transportCompany") @Valid TransportCompany transportCompany);
 
     List<Vehicle> findByLicenseNumberContaining(@Param("licenseNumber") String licenseNumber);
     List<Vehicle> findTop10ByLicenseNumberContaining(@Param("licenseNumber") String licenseNumber);

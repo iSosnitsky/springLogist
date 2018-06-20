@@ -28,7 +28,8 @@ public enum RequestStatus {
     STOP_LIST("Стоп-лист"),
     TRANSPORTATION("Маршрутный лист закрыт, товар передан экспедитору на погрузку"),
     UNKNOWN("Неизвестный статус"),
-    UPDATED("заявка обновлена из 1С");
+    UPDATED("заявка обновлена из 1С"),
+    ROUTE_LIST_MADE("Создан маршрутный лист");
 
     @Getter
     private final String rusRequestStatusName;

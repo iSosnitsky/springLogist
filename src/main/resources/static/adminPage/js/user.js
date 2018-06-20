@@ -240,6 +240,7 @@ $(document).ready(function () {
     var usersDataTable = $("#usersTable").DataTable({
             processing: true,
             serverSide: true,
+            searchDelay: 800,
             ajax: {
                 contentType: 'application/json',
                 processing: true,
@@ -259,18 +260,15 @@ $(document).ready(function () {
             "buttons": [
                 {
                     extend: "create",
-                    editor: usersEditor,
-                    text: 'добавить запись'
+                    editor: usersEditor
                 },
                 {
                     extend: "edit",
-                    editor: usersEditor,
-                    text: "изменить"
+                    editor: usersEditor
                 },
                 {
                     extend: "remove",
-                    editor: usersEditor,
-                    text: 'удалить запись'
+                    editor: usersEditor
                 }
             ],
             "paging": 10,

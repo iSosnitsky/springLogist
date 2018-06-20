@@ -5,12 +5,12 @@
 
 @font-face {
     font-family: "Gerbera Light";
-    src: url("media/Gerbera-Light.otf") format("opentype");
+    src: url("../../media/Gerbera-Light.otf") format("opentype");
 }
 
 @font-face {
     font-family: "Gerbera Medium";
-    src: url("media/Gerbera-Medium.otf") format("opentype");
+    src: url("../../media/Gerbera-Medium.otf") format("opentype");
 }
 
 h2 {
@@ -31,6 +31,9 @@ div.container {
     text-align: center;
 }
 
+.error{
+    color: #D41317;
+}
 div.main {
     width: 320px;
     margin-top: 80px;
