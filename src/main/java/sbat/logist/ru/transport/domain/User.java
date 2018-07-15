@@ -35,7 +35,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "USERID")
-    private Long userID;
+    private Integer userID;
 
     @JsonView(DataTablesOutput.View.class)
     @Column(name = "USERIDEXTERNAL", nullable = false)

@@ -263,7 +263,7 @@ $(window).on('load', function () {
         $('#box-quantity').html(requestData.boxQty);
         $('#client-INN').html(requestData.clientId.clientName + ' ' + requestData.clientId.inn);
         $('#sales-representative').html(requestData.marketAgentUserId.userName);
-        $('#arrival-point').html(requestData.destinationPointId.pointName);
+        if(requestData.destinationPointId) $('#arrival-point').html(requestData.destinationPointId.pointName);
         $('#departure-warehouse').html(requestData.warehousePoint.pointName);
         if (requestData.routeListId) $('#pallet-quantity').html(requestData.routeListId.palletsQty);
 

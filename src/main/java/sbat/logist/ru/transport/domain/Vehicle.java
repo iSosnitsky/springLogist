@@ -76,12 +76,7 @@ public class Vehicle {
     private short isRented = 0;
 
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "route_lists_to_vehicles",
-            joinColumns = { @JoinColumn(name = "vehicle_id") },
-            inverseJoinColumns = { @JoinColumn(name = "route_list_id") }
-    )
+    @ManyToMany(mappedBy = "vehicles")
     List<RouteList> routeLists = new ArrayList<>();
 
 

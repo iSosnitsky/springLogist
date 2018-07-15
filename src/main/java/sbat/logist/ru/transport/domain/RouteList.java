@@ -79,9 +79,9 @@ public class RouteList {
     @JsonView(DataTablesOutput.View.class)
     private RouteListStatus status;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="routeID")
-    @JsonView(DataTablesOutput.View.class)
+//    @JsonView(DataTablesOutput.View.class)
     private Route routeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -149,9 +149,21 @@ public class RouteList {
     private List<Request> requests = new ArrayList<>(0);
 
 
-    @ManyToMany(mappedBy = "routeLists")
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "route_lists_to_drivers",
+            joinColumns = { @JoinColumn(name = "route_list_id") },
+            inverseJoinColumns = { @JoinColumn(name = "driver_id") }
+    )
     private List<Driver> drivers = new ArrayList<>();
-    @ManyToMany(mappedBy = "routeLists")
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "route_lists_to_vehicles",
+            joinColumns = { @JoinColumn(name = "route_list_id") },
+            inverseJoinColumns = { @JoinColumn(name = "vehicle_id") }
+    )
     private List<Vehicle> vehicles = new ArrayList<>();
 
 

@@ -13,7 +13,7 @@ import java.sql.Date;
 
 @Data
 @Entity
-@Table(name="REQUESTS_HISTORY")
+@Table(name="requests_history")
 public class RequestHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

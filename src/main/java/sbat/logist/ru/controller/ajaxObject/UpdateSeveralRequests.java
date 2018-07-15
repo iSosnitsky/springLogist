@@ -101,7 +101,9 @@ public class UpdateSeveralRequests {
             routeList.setTransportCompany(this.transportCompany);
             if(this.driverIds!=null) {
                 driverRepository.findAllById(this.driverIds)
-                        .forEach(this.drivers::add);
+                        .forEach(x -> {
+                            this.drivers.add(x);
+                        });
                 routeList.setDrivers(this.drivers);
             }
             if(this.vehicles!=null){

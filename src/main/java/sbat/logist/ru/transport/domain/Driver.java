@@ -42,12 +42,7 @@ public class Driver {
     @Column(name="LICENSE")
     private String license;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "route_lists_to_drivers",
-            joinColumns = { @JoinColumn(name = "driver_id") },
-            inverseJoinColumns = { @JoinColumn(name = "route_list_id") }
-    )
+    @ManyToMany(mappedBy = "drivers")
     Set<RouteList> routeLists = new HashSet<>();
 
 

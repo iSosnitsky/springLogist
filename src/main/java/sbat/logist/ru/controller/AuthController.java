@@ -63,11 +63,6 @@ public class AuthController {
 		return "redirect:/login-error";
 	}
 
-    @RequestMapping(value = "/login-jquery")
-    public String loginJquery() {
-        return "login-jquery";
-    }
-
     @RequestMapping("/login-error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);

@@ -65,7 +65,7 @@ public class RequestsRestController {
 
     @CrossOrigin(origins = "http://localhost:*")
     @JsonView(DataTablesOutput.View.class)
-    @RequestMapping(value = "/data/requests", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/data/requestsTest", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
     public DataTablesOutput<Request> getRequests() {
         return requestDTReqpository.findAll(new DataTablesInput());
     }
@@ -177,7 +177,7 @@ public class RequestsRestController {
 
     @CrossOrigin(origins = "http://localhost:*")
     @JsonView(DataTablesOutput.View.class)
-    @RequestMapping(value = "/data/routeLists", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/data/routeListsTest", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
     public DataTablesOutput<RouteList> getRouteLists() {
         return routeListDTRepository.findAll(new DataTablesInput());
     }
