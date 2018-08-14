@@ -1,5 +1,6 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sbat.logist.ru.constant.DataSource;
@@ -7,6 +8,7 @@ import sbat.logist.ru.constant.VehicleLoadingType;
 import sbat.logist.ru.constant.VehicleType;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @NoArgsConstructor
 @Entity
@@ -25,9 +27,8 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private DataSource dataSource;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="TRANSPORT_COMPANY_ID")
-    private TransportCompany transportCompany;
+    @Column(name="TRANSPORT_COMPANY_ID")
+    private Integer transportCompanyId;
 
     @Column(name="LICENSE_NUMBER")
     private String licenseNumber;
@@ -42,14 +43,21 @@ public class Vehicle {
     private String volume;
 
     @Column(name="LOADING_TYPE")
-    private VehicleLoadingType loadingType;
+    private String loadingType;
 
     @Column(name="PALLETS_QUANTITY")
     private Integer palletsQuantity;
 
     @Column(name="TYPE")
-    private VehicleType type;
+    private String type;
 
     @Column(name="WIALON_ID")
     private String wialonId;
+
+    @Column(name="IS_RENTED")
+    private Boolean isRented;
+
+    @JsonIgnore
+    @Column(name="LAST_TIME_MODIFIED")
+    private Date lastTimeModified;
 }

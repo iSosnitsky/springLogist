@@ -1,8 +1,10 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -13,13 +15,8 @@ public class Driver {
     @Column(name="ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="VEHICLE_ID")
-    private Vehicle vehicle;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="TRANSPORT_COMPANY_ID")
-    private TransportCompany transportCompany;
+    @Column(name="TRANSPORT_COMPANY_ID")
+    private Integer transportCompanyId;
 
     @Column(name="FULL_NAME")
     private String fullName;
@@ -32,4 +29,8 @@ public class Driver {
 
     @Column(name="LICENSE")
     private String license;
+
+    @JsonIgnore
+    @Column(name="LAST_TIME_MODIFIED")
+    private Date lastTimeModified;
 }

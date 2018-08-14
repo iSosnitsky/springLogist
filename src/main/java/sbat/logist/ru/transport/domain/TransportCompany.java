@@ -1,8 +1,10 @@
 package sbat.logist.ru.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -44,8 +46,12 @@ public class TransportCompany {
     private String keywords;
 
     @Column(name="DIRECTOR_FULLNAME")
-    private String directorFullname;
+    private String directorFullName;
 
     @Column(name="CHIEF_ACC_FULLNAME")
-    private String chiefAccFullname;
+    private String chiefAccFullName;
+
+    @JsonIgnore
+    @Column(name="LAST_TIME_MODIFIED")
+    private Date lastTimeModified;
 }

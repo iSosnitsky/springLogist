@@ -1,5 +1,6 @@
 package sbat.logist.ru.parser.command;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ public class JsonStringToObjectCommand implements Command<String, Optional<Data1
     public Optional<Data1c> execute(String json) {
         Objects.requireNonNull(json);
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         try {
             Data1c value = mapper.readValue(json, Data1c.class);
             value.setJson(json);
